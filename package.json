@@ -1,9 +1,15 @@
 {
-  "private": true,
   "version": "0.0.1",
   "name": "react-bounding-box",
   "description": "HTML Canvas to display bounding boxes on an image",
   "main": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alx/react-bounding-box.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alx/react-bounding-box/issues"
+  },
   "scripts": {
     "clean": "rimraf dist/*",
     "copy": "copyfiles -f ./src/index.html ./dist",
