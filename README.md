@@ -44,3 +44,14 @@ Commented options are not yet implemented.
       }
     };
 ```
+
+## Changelog
+
+### v0.0.1 - 08/02/2917
+* First commit
+* Simple example with mouse hover on boxes
+
+## History
+
+* Inspiration: [DenseCap](http://cs.stanford.edu/people/karpathy/densecap/)
+* First prototype in production: [recognition.tate.org.uk](http://recognition.tate.org.uk/)
