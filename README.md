@@ -14,6 +14,8 @@ Demo: [https://alx.github.io/react-bounding-box/](https://alx.github.io/react-bo
 />
 ```
 
+Complete example: [src/components/Main.js](https://github.com/alx/react-bounding-box/blob/master/src/components/Main.js)
+
 ## Params
 
 Commented options are not yet implemented.
