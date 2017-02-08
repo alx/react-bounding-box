@@ -1,7 +1,7 @@
 # react-bounding-box
 HTML Canvas to display bounding boxes on an image
 
-
+![Screenshot](https://raw.githubusercontent.com/alx/react-bounding-box/master/dist/screenshot.png)
 
 ## Usage
 
@@ -12,7 +12,7 @@ HTML Canvas to display bounding boxes on an image
 />
 ```
 
-# Params
+## Params
 
 Commented options are not yet implemented.
 
