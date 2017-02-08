@@ -3,6 +3,8 @@ HTML Canvas to display bounding boxes on an image
 
 ![Screenshot](https://raw.githubusercontent.com/alx/react-bounding-box/master/dist/screenshot.png)
 
+Demo: [https://alx.github.io/react-bounding-box/](https://alx.github.io/react-bounding-box/)
+
 ## Usage
 
 ```
