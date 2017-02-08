@@ -1,0 +1,15 @@
+/* Base Application Styles */
+body {
+  color: #fff;
+  background: #222;
+}
+
+.index {
+  width: 400px;
+  margin: 0 auto;
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 80vh;
+}
