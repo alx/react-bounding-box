@@ -55,5 +55,5 @@ Commented options are not yet implemented.
 
 ## History
 
-* Inspiration: [DenseCap](http://cs.stanford.edu/people/karpathy/densecap/)
-* First prototype in production: [recognition.tate.org.uk](http://recognition.tate.org.uk/)
+* 06/2016 - Inspiration: [DenseCap](http://cs.stanford.edu/people/karpathy/densecap/)
+* 09/2016 - First prototype in production: [recognition.tate.org.uk](http://recognition.tate.org.uk/)
