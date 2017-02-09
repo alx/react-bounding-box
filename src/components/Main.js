@@ -20,11 +20,7 @@ class AppComponent extends React.Component {
         //{ xmin: 10, xmax: 50, ymin: 10, ymax: 100},
         //{ xmin: 150, ymin: 150, with: 100, height: 100, color: '#4a4a4a'},
         //{ size: [350, 350, 50, 50], label: 'hello'}
-      ],
-      options: {
-        //showLabels: false,
-        //hoverColor: '#0fc'
-      }
+      ]
     };
 
     return (
@@ -32,8 +28,7 @@ class AppComponent extends React.Component {
 
         <pre>
           &lt;BoundingboxComponent image=params.image<br/>
-                                   boxes=params.boxes<br/>
-                                   options=params.options
+                                   boxes=params.boxes
           /&gt;
         </pre>
 

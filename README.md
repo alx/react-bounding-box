@@ -47,6 +47,9 @@ Commented options are not yet implemented.
 
 ## Changelog
 
+### v0.0.5 - 09/02/2917
+* add missing BoundingboxComponent displayName
+
 ### v0.0.4 - 09/02/2917
 * fix issue with canvas width/height on firefox
 

@@ -107,7 +107,7 @@ class BoundingboxComponent extends React.Component {
     background.src = this.props.image;
 
     // Make sure the image is loaded first otherwise nothing will draw.
-    background.onload = ((e, img) => {
+    background.onload = (() => {
 
       canvas.width = background.width;
       canvas.height = background.height;
@@ -174,7 +174,7 @@ class BoundingboxComponent extends React.Component {
   }
 }
 
-//BoundingboxComponent.displayName = 'BoundingboxComponent';
+BoundingboxComponent.displayName = 'BoundingboxComponent';
 
 // Uncomment properties you need
 BoundingboxComponent.propTypes = {

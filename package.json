@@ -1,8 +1,8 @@
 {
-  "version": "0.0.4",
+  "version": "0.0.5",
   "name": "react-bounding-box",
   "description": "HTML Canvas to display bounding boxes on an image",
-  "main": "",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/alx/react-bounding-box.git"
@@ -13,9 +13,8 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "copy": "copyfiles -f ./src/index.html ./dist",
-    "dist": "npm run copy & webpack --env=dist",
     "copy_docs": "copyfiles -f ./src/index.html ./docs",
-    "docs": "npm run copy_docs & webpack --env=docs",
+    "dist": "npm run copy & npm run copy_docs & webpack --env=dist & webpack --env=docs",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
     "release:major": "npm version major && npm publish && git push --follow-tags",
