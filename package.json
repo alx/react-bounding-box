@@ -1,12 +1,9 @@
 {
-  "version": "0.0.2",
+  "version": "0.1.0",
   "name": "react-bounding-box",
   "description": "HTML Canvas to display bounding boxes on an image",
   "main": "",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alx/react-bounding-box.git"
-  },
+  "repository": "",
   "bugs": {
     "url": "https://github.com/alx/react-bounding-box/issues"
   },
@@ -27,7 +24,6 @@
     "test": "karma start",
     "test:watch": "karma start --autoWatch=true --singleRun=false"
   },
-  "repository": "",
   "keywords": [],
   "author": "Alexandre Girard",
   "devDependencies": {
