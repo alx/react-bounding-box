@@ -35,9 +35,11 @@ Commented options are not yet implemented.
         //{ size: [350, 350, 50, 50], label: 'hello'}
       ],
       options: {
-        color_normal: 'rgba(255,225,255,1)',
-        color_selected: 'rgba(0,225,204,1)',
-        color_unselected: 'rgba(100,100,100,1)'
+        colors: {
+          normal: 'rgba(255,225,255,1)',
+          selected: 'rgba(0,225,204,1)',
+          unselected: 'rgba(100,100,100,1)'
+        }
         //showLabels: false
       }
     };
@@ -47,6 +49,8 @@ Commented options are not yet implemented.
 
 ### v0.0.2 - 09/02/2917
 * get image size with javascript
+* review options colors structure
+* options is optional, and defaultProps for colors
 
 ### v0.0.1 - 08/02/2917
 * First commit

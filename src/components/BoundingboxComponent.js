@@ -19,12 +19,12 @@ class BoundingboxComponent extends React.Component {
 
     let [x, y, width, height] = box;
 
-    let colorStyle = this.props.options.color_normal;
+    let colorStyle = this.props.options.colors.normal;
     if(this.state.hoverIndex >= 0) {
-      colorStyle = this.props.options.color_unselected;
+      colorStyle = this.props.options.colors.unselected;
     }
     if(selected) {
-      colorStyle = this.props.options.color_selected;
+      colorStyle = this.props.options.colors.selected;
     }
 
     let lineWidth = 2;
@@ -90,7 +90,7 @@ class BoundingboxComponent extends React.Component {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let background = new Image();
-    background.src = this.props.image.url;
+    background.src = this.props.image;
     ctx.drawImage(background,0,0);
     return true;
   }
@@ -104,7 +104,7 @@ class BoundingboxComponent extends React.Component {
     let ctx = canvas.getContext('2d');
 
     let background = new Image();
-    background.src = this.props.image.url;
+    background.src = this.props.image;
 
     // Make sure the image is loaded first otherwise nothing will draw.
     background.onload = ((e) => {
@@ -184,11 +184,22 @@ BoundingboxComponent.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.object)
   ]),
   options: React.PropTypes.shape({
-    color_normal: React.PropTypes.string,
-    color_selected: React.PropTypes.string,
-    color_unselected: React.PropTypes.string
+    colors: React.PropTypes.shape({
+      normal: React.PropTypes.string,
+      selected: React.PropTypes.string,
+      unselected: React.PropTypes.string
+    })
   })
 };
-// BoundingboxComponent.defaultProps = {};
+
+BoundingboxComponent.defaultProps = {
+  options: {
+    colors: {
+      normal: 'rgba(255,225,255,1)',
+      selected: 'rgba(0,225,204,1)',
+      unselected: 'rgba(100,100,100,1)'
+    }
+  }
+};
 
 export default BoundingboxComponent;

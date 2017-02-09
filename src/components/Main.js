@@ -22,9 +22,6 @@ class AppComponent extends React.Component {
         //{ size: [350, 350, 50, 50], label: 'hello'}
       ],
       options: {
-        color_normal: 'rgba(255,225,255,1)',
-        color_selected: 'rgba(0,225,204,1)',
-        color_unselected: 'rgba(100,100,100,1)'
         //showLabels: false,
         //hoverColor: '#0fc'
       }
@@ -42,7 +39,6 @@ class AppComponent extends React.Component {
 
         <BoundingboxComponent image={params.image}
                               boxes={params.boxes}
-                              options={params.options}
         />
 
         <p>Params object:</p>
