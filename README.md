@@ -22,11 +22,7 @@ Commented options are not yet implemented.
 
 ```
     const params = {
-      image: {
-        url: 'http://i.imgur.com/gF7QYwa.jpg',
-        width: 1536,
-        height: 1535
-      },
+      image: 'http://i.imgur.com/gF7QYwa.jpg',
       boxes: [
         // coord(0,0) = top left corner of image
         //[x, y, width, height]
@@ -48,6 +44,9 @@ Commented options are not yet implemented.
 ```
 
 ## Changelog
+
+### v0.0.2 - 09/02/2917
+* get image size with javascript
 
 ### v0.0.1 - 08/02/2917
 * First commit

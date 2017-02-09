@@ -9,11 +9,7 @@ class AppComponent extends React.Component {
   render() {
 
     const params = {
-      image: {
-        url: 'http://i.imgur.com/gF7QYwa.jpg',
-        width: 1536,
-        height: 1535
-      },
+      image: 'http://i.imgur.com/gF7QYwa.jpg',
       boxes: [
         // coord(0,0) = top left corner of image
         //[x, y, width, height]

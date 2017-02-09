@@ -103,14 +103,15 @@ class BoundingboxComponent extends React.Component {
     let canvas = ReactDOM.findDOMNode(this.refs.canvasImage);
     let ctx = canvas.getContext('2d');
 
-    canvas.width = this.props.image.width;
-    canvas.height = this.props.image.height;
-
     let background = new Image();
     background.src = this.props.image.url;
 
     // Make sure the image is loaded first otherwise nothing will draw.
-    background.onload = (() => {
+    background.onload = ((e) => {
+
+      canvas.width = e.path[0].naturalWidth;
+      canvas.height = e.path[0].naturalHeight;
+
       ctx.drawImage(background,0,0);
       this.renderBoxes();
 
@@ -177,11 +178,7 @@ class BoundingboxComponent extends React.Component {
 
 // Uncomment properties you need
 BoundingboxComponent.propTypes = {
-  image: React.PropTypes.shape({
-    url: React.PropTypes.string,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number
-  }),
+  image: React.PropTypes.string,
   boxes: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.array),
     React.PropTypes.arrayOf(React.PropTypes.object)

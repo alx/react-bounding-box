@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "name": "react-bounding-box",
   "description": "HTML Canvas to display bounding boxes on an image",
   "main": "",
@@ -14,6 +14,8 @@
     "clean": "rimraf dist/*",
     "copy": "copyfiles -f ./src/index.html ./dist",
     "dist": "npm run copy & webpack --env=dist",
+    "copy_docs": "copyfiles -f ./src/index.html ./docs",
+    "docs": "npm run copy_docs & webpack --env=docs",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
     "release:major": "npm version major && npm publish && git push --follow-tags",
