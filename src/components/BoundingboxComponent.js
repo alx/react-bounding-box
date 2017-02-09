@@ -107,10 +107,10 @@ class BoundingboxComponent extends React.Component {
     background.src = this.props.image;
 
     // Make sure the image is loaded first otherwise nothing will draw.
-    background.onload = ((e) => {
+    background.onload = ((e, img) => {
 
-      canvas.width = e.path[0].naturalWidth;
-      canvas.height = e.path[0].naturalHeight;
+      canvas.width = background.width;
+      canvas.height = background.height;
 
       ctx.drawImage(background,0,0);
       this.renderBoxes();

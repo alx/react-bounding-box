@@ -47,6 +47,9 @@ Commented options are not yet implemented.
 
 ## Changelog
 
+### v0.0.4 - 09/02/2917
+* fix issue with canvas width/height on firefox
+
 ### v0.0.3 - 09/02/2917
 * review options colors structure
 * options is optional, and defaultProps for colors
