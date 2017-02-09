@@ -1,5 +1,5 @@
 {
-  "version": "0.0.2",
+  "version": "0.0.3",
   "name": "react-bounding-box",
   "description": "HTML Canvas to display bounding boxes on an image",
   "main": "",

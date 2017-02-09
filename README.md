@@ -47,10 +47,12 @@ Commented options are not yet implemented.
 
 ## Changelog
 
-### v0.0.2 - 09/02/2917
-* get image size with javascript
+### v0.0.3 - 09/02/2917
 * review options colors structure
 * options is optional, and defaultProps for colors
+
+### v0.0.2 - 09/02/2917
+* get image size with javascript
 
 ### v0.0.1 - 08/02/2917
 * First commit
