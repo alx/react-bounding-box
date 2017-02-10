@@ -3,8 +3,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-require('styles//Boundingbox.css');
-
 class BoundingboxComponent extends React.Component {
 
   state = {
