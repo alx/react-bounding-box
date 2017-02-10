@@ -1,5 +1,5 @@
 {
-  "version": "0.0.5",
+  "version": "0.0.6",
   "name": "react-bounding-box",
   "description": "HTML Canvas to display bounding boxes on an image",
   "main": "src/index.js",
@@ -26,7 +26,11 @@
     "test": "karma start",
     "test:watch": "karma start --autoWatch=true --singleRun=false"
   },
-  "keywords": ["react", "canvas", "bounding-boxes"],
+  "keywords": [
+    "react",
+    "canvas",
+    "bounding-boxes"
+  ],
   "author": "Alexandre Girard",
   "devDependencies": {
     "babel-core": "^6.0.0",
