@@ -36,13 +36,10 @@ class BoundingboxComponent extends React.Component {
     if(y < lineWidth / 2)
       y = lineWidth / 2;
 
-    /* TODO: re-implement item.meta.size with canvas size
-    const item = this.props.item;
-    if((x + width) > item.meta.width)
-      width = item.meta.width - lineWidth - x;
-    if((y + height) > item.meta.height)
-      height = item.meta.height - lineWidth - y;
-    */
+    if((x + width) > canvas.width)
+      width = canvas.width - lineWidth - x;
+    if((y + height) > canvas.height)
+      height = canvas.height - lineWidth - y;
 
     // Left segment
     ctx.strokeStyle = colorStyle;
@@ -65,10 +62,10 @@ class BoundingboxComponent extends React.Component {
     /* uncomment to DEBUG
     ctx.font = "30px Arial";
     ctx.fillStyle = 'rgba(225,0,0,1)';
-    ctx.fillText(this.props.boxids[index].map(i => i.slice(0, 2)).join(','), x,y+height);
+    //ctx.fillText(this.props.boxids[index].map(i => i.slice(0, 2)).join(','), x,y+height);
     ctx.fillStyle = 'rgba(0,0,225,1)';
     ctx.fillText(index,x+width,y);
-    */
+  */
   }
 
   renderBoxes() {
@@ -115,8 +112,6 @@ class BoundingboxComponent extends React.Component {
 
       canvas.onmousemove = ((e) => {
 
-        this.setState({hoverIndex: -1});
-
         // Get the current mouse position
         const r = canvas.getBoundingClientRect();
         const scaleX = canvas.width / r.width;
@@ -147,9 +142,6 @@ class BoundingboxComponent extends React.Component {
         }
 
         this.setState({hoverIndex: selectedBox.index});
-
-        // Draw the rectangles by Z (ASC)
-        this.renderBoxes();
       });
 
       canvas.onmouseout = () => {
