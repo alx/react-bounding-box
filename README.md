@@ -1,5 +1,6 @@
-# react-bounding-box
-HTML Canvas to display bounding boxes on an image
+# React Bounding Box Component
+
+React Bounding Box Component displays bounding boxes on an image inside and HTML Canvas.
 
 ![Screenshot](https://raw.githubusercontent.com/alx/react-bounding-box/master/dist/screenshot.png)
 
@@ -8,13 +9,11 @@ Demo: [https://alx.github.io/react-bounding-box/](https://alx.github.io/react-bo
 ## Usage
 
 ```
-<BoundingboxComponent image={params.image}
-                      boxes={params.boxes}
-                      options={params.options}
+<Boundingbox image={params.image}
+             boxes={params.boxes}
+             options={params.options}
 />
 ```
-
-Complete example: [src/components/Main.js](https://github.com/alx/react-bounding-box/blob/master/src/components/Main.js)
 
 ## Params
 
@@ -39,6 +38,10 @@ Commented options are not yet implemented.
           normal: 'rgba(255,225,255,1)',
           selected: 'rgba(0,225,204,1)',
           unselected: 'rgba(100,100,100,1)'
+        },
+        style: {
+          maxWidth: '100%',
+          maxHeight: '90vh'
         }
         //showLabels: false
       }
@@ -47,20 +50,24 @@ Commented options are not yet implemented.
 
 ## Changelog
 
-### v0.0.5 - 09/02/2917
-* add missing BoundingboxComponent displayName
+### v0.0.7 - 15/02/2017
+* use react-cdk yeoman generator to make simple component and use storybook
+* eslint on bounding box component
 
-### v0.0.4 - 09/02/2917
+### v0.0.5 - 09/02/2017
+* add missing Boundingbox displayName
+
+### v0.0.4 - 09/02/2017
 * fix issue with canvas width/height on firefox
 
-### v0.0.3 - 09/02/2917
+### v0.0.3 - 09/02/2017
 * review options colors structure
 * options is optional, and defaultProps for colors
 
-### v0.0.2 - 09/02/2917
+### v0.0.2 - 09/02/2017
 * get image size with javascript
 
-### v0.0.1 - 08/02/2917
+### v0.0.1 - 08/02/2017
 * First commit
 * Simple example with mouse hover on boxes
 
