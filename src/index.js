@@ -56,22 +56,25 @@ class Boundingbox extends React.Component {
           }
         });
 
+        this.props.onSelected(selectedBox.index);
         this.setState({ hoverIndex: selectedBox.index });
       });
 
       this.canvas.onmouseout = () => {
+        this.props.onSelected(-1);
         this.setState({ hoverIndex: -1 });
         // this.renderBoxes();
       };
     });
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     const ctx = this.canvas.getContext('2d');
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const background = new Image();
     background.src = this.props.image;
     ctx.drawImage(background, 0, 0);
+    this.setState({hoverIndex: nextProps.selectedIndex});
     return true;
   }
 
@@ -136,7 +139,7 @@ class Boundingbox extends React.Component {
     this.props.boxes
       .map((box, index) => {
         const selected = index === this.state.hoverIndex;
-        return { box, index, selected };
+        return {box: box, index: index, selected: selected};
       })
       .sort((a) => {
         return a.selected ? 1 : -1;
@@ -166,6 +169,8 @@ Boundingbox.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.array),
     React.PropTypes.arrayOf(React.PropTypes.object),
   ]),
+  selectedIndex: React.PropTypes.number,
+  onSelected: React.PropTypes.func,
   options: React.PropTypes.shape({
     colors: React.PropTypes.shape({
       normal: React.PropTypes.string,

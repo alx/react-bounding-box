@@ -50,6 +50,9 @@ Commented options are not yet implemented.
 
 ## Changelog
 
+### v0.0.8 - 16/02/2017
+* add selectedIndex and onSelected props to allow external modification/observation of selected bounding box
+
 ### v0.0.7 - 15/02/2017
 * use react-cdk yeoman generator to make simple component and use storybook
 * eslint on bounding box component
