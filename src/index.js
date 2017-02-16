@@ -82,18 +82,17 @@ class Boundingbox extends React.Component {
     this.renderBoxes();
   }
 
-
   renderBox(index, box, selected) {
     const ctx = this.canvas.getContext('2d');
 
     let [x, y, width, height] = box;
 
-    let colorStyle = this.props.options.colors.normal;
+    let color = this.props.options.colors.normal;
     if (this.state.hoverIndex >= 0) {
-      colorStyle = this.props.options.colors.unselected;
+      color = this.props.options.colors.unselected;
     }
     if (selected) {
-      colorStyle = this.props.options.colors.selected;
+      color = this.props.options.colors.selected;
     }
 
     let lineWidth = 2;
@@ -106,25 +105,7 @@ class Boundingbox extends React.Component {
     if ((x + width) > this.canvas.width) { width = this.canvas.width - lineWidth - x; }
     if ((y + height) > this.canvas.height) { height = this.canvas.height - lineWidth - y; }
 
-    // Left segment
-    const tenPercent = width / 10;
-    const ninetyPercent = 9 * tenPercent;
-    ctx.strokeStyle = colorStyle;
-    ctx.lineWidth = lineWidth;
-    ctx.beginPath();
-    ctx.moveTo(x + tenPercent, y);
-    ctx.lineTo(x, y);
-    ctx.lineTo(x, y + height);
-    ctx.lineTo(x + tenPercent, y + height);
-    ctx.stroke();
-
-    // Right segment
-    ctx.beginPath();
-    ctx.moveTo(x + ninetyPercent, y);
-    ctx.lineTo(x + width, y);
-    ctx.lineTo(x + width, y + height);
-    ctx.lineTo(x + ninetyPercent, y + height);
-    ctx.stroke();
+    this.props.drawBox(ctx, x, y, width, height, color, lineWidth)
 
     /* uncomment to DEBUG
     ctx.font = "30px Arial";
@@ -170,6 +151,7 @@ Boundingbox.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.object),
   ]),
   selectedIndex: React.PropTypes.number,
+  drawBox: React.PropTypes.func,
   onSelected: React.PropTypes.func,
   options: React.PropTypes.shape({
     colors: React.PropTypes.shape({
@@ -182,6 +164,28 @@ Boundingbox.propTypes = {
 };
 
 Boundingbox.defaultProps = {
+  onSelected: function(){},
+  drawBox: function(ctx, x, y, width, height, color, lineWidth) {
+    // Left segment
+    const tenPercent = width / 10;
+    const ninetyPercent = 9 * tenPercent;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.beginPath();
+    ctx.moveTo(x + tenPercent, y);
+    ctx.lineTo(x, y);
+    ctx.lineTo(x, y + height);
+    ctx.lineTo(x + tenPercent, y + height);
+    ctx.stroke();
+
+    // Right segment
+    ctx.beginPath();
+    ctx.moveTo(x + ninetyPercent, y);
+    ctx.lineTo(x + width, y);
+    ctx.lineTo(x + width, y + height);
+    ctx.lineTo(x + ninetyPercent, y + height);
+    ctx.stroke();
+  },
   options: {
     colors: {
       normal: 'rgba(255,225,255,1)',

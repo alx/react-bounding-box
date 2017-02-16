@@ -50,6 +50,9 @@ Commented options are not yet implemented.
 
 ## Changelog
 
+### v0.0.9 - 16/02/2017
+* add drawBox function prop to customize how the box will be displayed
+
 ### v0.0.8 - 16/02/2017
 * add selectedIndex and onSelected props to allow external modification/observation of selected bounding box
 
