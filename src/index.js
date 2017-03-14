@@ -38,7 +38,8 @@ class Boundingbox extends React.Component {
 
         const selectedBox = { index: -1, dimensions: null };
         this.props.boxes.forEach((box, index) => {
-          const [bx, by, bw, bh] = box;
+          const coord = box.coord ? box.coord : box;
+          const [bx, by, bw, bh] = coord;
 
           if (x >= bx && x <= bx + bw &&
              y >= by && y <= by + bh) {
@@ -74,7 +75,7 @@ class Boundingbox extends React.Component {
     const background = new Image();
     background.src = this.props.image;
     ctx.drawImage(background, 0, 0);
-    this.setState({hoverIndex: nextProps.selectedIndex});
+    this.setState({ hoverIndex: nextProps.selectedIndex });
     return true;
   }
 
@@ -82,16 +83,12 @@ class Boundingbox extends React.Component {
     this.renderBoxes();
   }
 
-  renderBox(index, box, selected) {
-    const ctx = this.canvas.getContext('2d');
-
-    let [x, y, width, height] = box;
-
+  renderBox(box, index) {
     let color = this.props.options.colors.normal;
     if (this.state.hoverIndex >= 0) {
       color = this.props.options.colors.unselected;
     }
-    if (selected) {
+    if (index === this.state.hoverIndex) {
       color = this.props.options.colors.selected;
     }
 
@@ -99,33 +96,19 @@ class Boundingbox extends React.Component {
     if (this.canvas.width > 600) { lineWidth = 3; }
     if (this.canvas.width > 1000) { lineWidth = 5; }
 
-    if (x < lineWidth / 2) { x = lineWidth / 2; }
-    if (y < lineWidth / 2) { y = lineWidth / 2; }
-
-    if ((x + width) > this.canvas.width) { width = this.canvas.width - lineWidth - x; }
-    if ((y + height) > this.canvas.height) { height = this.canvas.height - lineWidth - y; }
-
-    this.props.drawBox(ctx, x, y, width, height, color, lineWidth)
-
-    /* uncomment to DEBUG
-    ctx.font = "30px Arial";
-    ctx.fillStyle = 'rgba(225,0,0,1)';
-    //ctx.fillText(this.props.boxids[index].map(i => i.slice(0, 2)).join(','), x,y+height);
-    ctx.fillStyle = 'rgba(0,0,225,1)';
-    ctx.fillText(index,x+width,y);
-  */
+    this.props.drawBox(this.canvas, box, color, lineWidth);
   }
 
   renderBoxes() {
     this.props.boxes
       .map((box, index) => {
         const selected = index === this.state.hoverIndex;
-        return {box: box, index: index, selected: selected};
+        return { box, index, selected };
       })
       .sort((a) => {
         return a.selected ? 1 : -1;
       })
-      .forEach(box => this.renderBox(box.index, box.box, box.selected));
+      .forEach(box => this.renderBox(box.box, box.index));
   }
 
 
@@ -164,8 +147,19 @@ Boundingbox.propTypes = {
 };
 
 Boundingbox.defaultProps = {
-  onSelected: function(){},
-  drawBox: function(ctx, x, y, width, height, color, lineWidth) {
+  onSelected() {},
+  drawBox(canvas, box, color, lineWidth) {
+    const ctx = canvas.getContext('2d');
+
+    const coord = box.coord ? box.coord : box;
+    let [x, y, width, height] = coord;
+
+    if (x < lineWidth / 2) { x = lineWidth / 2; }
+    if (y < lineWidth / 2) { y = lineWidth / 2; }
+
+    if ((x + width) > canvas.width) { width = canvas.width - lineWidth - x; }
+    if ((y + height) > canvas.height) { height = canvas.height - lineWidth - y; }
+
     // Left segment
     const tenPercent = width / 10;
     const ninetyPercent = 9 * tenPercent;
@@ -185,6 +179,12 @@ Boundingbox.defaultProps = {
     ctx.lineTo(x + width, y + height);
     ctx.lineTo(x + ninetyPercent, y + height);
     ctx.stroke();
+
+    if (box.label) {
+      ctx.font = '60px Arial';
+      ctx.fillStyle = 'rgba(225,0,0,1)';
+      ctx.fillText(box.label, x, y + height);
+    }
   },
   options: {
     colors: {

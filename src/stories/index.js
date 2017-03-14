@@ -37,4 +37,21 @@ storiesOf('Boundingbox', module)
       boxes={params.boxes}
       onSelected={action('selected')}
     />);
+  })
+  .add('label display', () => {
+    const params = {
+      image: 'http://i.imgur.com/gF7QYwa.jpg',
+      boxes: [
+        // coord(0,0) = top left corner of image
+        // [x, y, width, height]
+        { coord: [0, 0, 250, 250], label: 'test' },
+        { coord: [300, 0, 250, 250], label: 'A' },
+        { coord: [700, 0, 300, 25], label: 'B' },
+        { coord: [1100, 0, 25, 300], label: 'C' },
+      ],
+    };
+    return (<Boundingbox
+      image={params.image}
+      boxes={params.boxes}
+    />);
   });

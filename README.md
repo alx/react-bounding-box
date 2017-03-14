@@ -29,9 +29,10 @@ Commented options are not yet implemented.
         [300, 0, 250, 250],
         [700, 0, 300, 25],
         [1100, 0, 25, 300]
-        //{ xmin: 10, xmax: 50, ymin: 10, ymax: 100},
-        //{ xmin: 150, ymin: 150, with: 100, height: 100, color: '#4a4a4a'},
-        //{ size: [350, 350, 50, 50], label: 'hello'}
+        // {coord: [0, 0, 250, 250], label: "test"},
+        // {coord: [300, 0, 250, 250], label: "A"},
+        // {coord: [700, 0, 300, 25], label: "B"},
+        // {coord: [1100, 0, 25, 300], label: "C"}
       ],
       options: {
         colors: {
@@ -49,6 +50,10 @@ Commented options are not yet implemented.
 ```
 
 ## Changelog
+
+### v0.0.10 - 14/03/2017
+* new object model available inside boxes prop
+* change drawBox function prop to support box label
 
 ### v0.0.9 - 16/02/2017
 * add drawBox function prop to customize how the box will be displayed
