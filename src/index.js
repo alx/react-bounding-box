@@ -97,6 +97,7 @@ class Boundingbox extends React.Component {
     if (this.canvas.width > 1000) { lineWidth = 5; }
 
     this.props.drawBox(this.canvas, box, color, lineWidth);
+    if(box.label) { this.props.drawLabel(this.canvas, box) };
   }
 
   renderBoxes() {
@@ -135,6 +136,7 @@ Boundingbox.propTypes = {
   ]),
   selectedIndex: React.PropTypes.number,
   drawBox: React.PropTypes.func,
+  drawLabel: React.PropTypes.func,
   onSelected: React.PropTypes.func,
   options: React.PropTypes.shape({
     colors: React.PropTypes.shape({
@@ -179,12 +181,15 @@ Boundingbox.defaultProps = {
     ctx.lineTo(x + width, y + height);
     ctx.lineTo(x + ninetyPercent, y + height);
     ctx.stroke();
+  },
+  drawLabel(canvas, box) {
+    const ctx = canvas.getContext('2d');
 
-    if (box.label) {
-      ctx.font = '60px Arial';
-      ctx.fillStyle = 'rgba(225,0,0,1)';
-      ctx.fillText(box.label, x, y + height);
-    }
+    let [x, y, width, height] = box.coord;
+
+    ctx.font = '60px Arial';
+    ctx.fillStyle = 'rgba(225,0,0,1)';
+    ctx.fillText(box.label, x, y + height);
   },
   options: {
     colors: {

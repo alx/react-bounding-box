@@ -51,6 +51,9 @@ Commented options are not yet implemented.
 
 ## Changelog
 
+### v0.0.11 - 14/03/2017
+* specific drawLabel prop function
+
 ### v0.0.10 - 14/03/2017
 * new object model available inside boxes prop
 * change drawBox function prop to support box label
