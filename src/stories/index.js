@@ -54,4 +54,10 @@ storiesOf('Boundingbox', module)
       image={params.image}
       boxes={params.boxes}
     />);
+  })
+  .add('pixel segmentation', () => {
+    return (<Boundingbox
+      image={'./ADE_val_00000761.jpg'}
+      segmentationJson={'./ADE_val_00000761.json'}
+    />);
   });

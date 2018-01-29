@@ -1,6 +1,7 @@
 /* global Image */
 
 import React from 'react';
+import seedrandom from 'seedrandom';
 
 class Boundingbox extends React.Component {
 
@@ -10,6 +11,26 @@ class Boundingbox extends React.Component {
       canvasCreated: false,
       hoverIndex: -1,
     };
+
+    if(props.segmentationJson) {
+      fetch(props.segmentationJson)
+      .then(response => response.json())
+      .then(response => {
+
+        if(response.body &&
+           response.body.predictions &&
+           response.body.predictions[0] &&
+           response.body.predictions[0].vals &&
+           response.body.predictions[0].vals.length > 0) {
+
+          this.setState({
+            pixelSegmentation: response.body.predictions[0].vals,
+            isSegmented: false
+          });
+
+        }
+      });
+    }
   }
 
   componentDidMount() {
@@ -37,25 +58,35 @@ class Boundingbox extends React.Component {
         // ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         const selectedBox = { index: -1, dimensions: null };
-        this.props.boxes.forEach((box, index) => {
-          const coord = box.coord ? box.coord : box;
-          const [bx, by, bw, bh] = coord;
 
-          if (x >= bx && x <= bx + bw &&
-             y >= by && y <= by + bh) {
-              // The mouse honestly hits the rect
-            const insideBox = !selectedBox.dimensions || (
-                bx >= selectedBox.dimensions[0] &&
-                bx <= selectedBox.dimensions[0] + selectedBox.dimensions[2] &&
-                by >= selectedBox.dimensions[1] &&
-                by <= selectedBox.dimensions[1] + selectedBox.dimensions[3]
-              );
-            if (insideBox) {
-              selectedBox.index = index;
-              selectedBox.dimensions = box;
+        if(this.props.boxes &&
+           this.props.boxes.length > 0) {
+
+          this.props.boxes.forEach((box, index) => {
+            const coord = box.coord ? box.coord : box;
+            const [bx, by, bw, bh] = coord;
+
+            if (x >= bx && x <= bx + bw &&
+               y >= by && y <= by + bh) {
+                // The mouse honestly hits the rect
+              const insideBox = !selectedBox.dimensions || (
+                  bx >= selectedBox.dimensions[0] &&
+                  bx <= selectedBox.dimensions[0] + selectedBox.dimensions[2] &&
+                  by >= selectedBox.dimensions[1] &&
+                  by <= selectedBox.dimensions[1] + selectedBox.dimensions[3]
+                );
+              if (insideBox) {
+                selectedBox.index = index;
+                selectedBox.dimensions = box;
+              }
             }
-          }
-        });
+          });
+
+        }
+        else if(this.state.pixelSegmentation &&
+                this.state.pixelSegmentation.length > 0) {
+          selectedBox.index = this.state.pixelSegmentation[x + this.canvas.width * y];
+        }
 
         this.props.onSelected(selectedBox.index);
         this.setState({ hoverIndex: selectedBox.index });
@@ -83,6 +114,14 @@ class Boundingbox extends React.Component {
     this.renderBoxes();
   }
 
+  segmentColor(classIndex) {
+    const random = seedrandom(classIndex);
+    const r = Math.floor(random() * 255);
+    const g = Math.floor(random() * 255);
+    const b = Math.floor(random() * 255);
+    return [r, g, b];
+  };
+
   renderBox(box, index) {
     let color = this.props.options.colors.normal;
     if (this.state.hoverIndex >= 0) {
@@ -101,15 +140,40 @@ class Boundingbox extends React.Component {
   }
 
   renderBoxes() {
-    this.props.boxes
-      .map((box, index) => {
-        const selected = index === this.state.hoverIndex;
-        return { box, index, selected };
-      })
-      .sort((a) => {
-        return a.selected ? 1 : -1;
-      })
-      .forEach(box => this.renderBox(box.box, box.index));
+    if(this.props.boxes &&
+       this.props.boxes.length > 0) {
+
+      this.props.boxes
+        .map((box, index) => {
+          const selected = index === this.state.hoverIndex;
+          return { box, index, selected };
+        })
+        .sort((a) => {
+          return a.selected ? 1 : -1;
+        })
+        .forEach(box => this.renderBox(box.box, box.index));
+    }
+    else if(this.state.pixelSegmentation &&
+            this.state.pixelSegmentation.length > 0 &&
+            !this.state.isSegmented
+           ) {
+
+      const ctx = this.canvas.getContext('2d');
+      var imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height),
+          pix = imgd.data;
+
+      for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
+          const segmentClass = this.state.pixelSegmentation[j];
+          const segmentColor = this.segmentColor(segmentClass);
+          pix[i] = Math.round((pix[i] + segmentColor[0]) / 2);
+          pix[i + 1] = Math.round((pix[i + 1] + segmentColor[1]) / 2);
+          pix[i + 2] = Math.round((pix[i + 2] + segmentColor[2]) / 2);
+          pix[i + 3] = 200;
+      }
+
+      ctx.putImageData(imgd, 0, 0);
+      this.setState({isSegmented: true});
+    }
   }
 
 
@@ -134,6 +198,7 @@ Boundingbox.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.array),
     React.PropTypes.arrayOf(React.PropTypes.object),
   ]),
+  segmentationJson: React.PropTypes.string,
   selectedIndex: React.PropTypes.number,
   drawBox: React.PropTypes.func,
   drawLabel: React.PropTypes.func,
