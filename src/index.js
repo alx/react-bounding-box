@@ -23,10 +23,8 @@ class Boundingbox extends React.Component {
            response.body.predictions[0].vals &&
            response.body.predictions[0].vals.length > 0) {
 
-          this.setState({
-            pixelSegmentation: response.body.predictions[0].vals,
-            isSegmented: false
-          });
+          this.setState({isSegmented: false});
+          this.renderSegmentation(response.body.predictions[0].vals);
 
         }
       });
@@ -46,6 +44,17 @@ class Boundingbox extends React.Component {
 
       ctx.drawImage(background, 0, 0);
       this.renderBoxes();
+
+      if(this.state.pixelSegmentation &&
+         this.state.pixelSegmentation.length > 0 &&
+         !this.state.isSegmented) {
+        this.renderSegmentation(this.state.pixelSegmentation);
+      }
+      else if(this.props.pixelSegmentation &&
+         this.props.pixelSegmentation.length > 0 &&
+         !this.state.isSegmented) {
+        this.renderSegmentation(this.props.pixelSegmentation);
+      }
 
       this.canvas.onmousemove = ((e) => {
         // Get the current mouse position
@@ -107,6 +116,11 @@ class Boundingbox extends React.Component {
     background.src = this.props.image;
     ctx.drawImage(background, 0, 0);
     this.setState({ hoverIndex: nextProps.selectedIndex });
+    if(nextProps.segmentationPixels) {
+      this.setState({
+        isSegmented: false
+      });
+    }
     return true;
   }
 
@@ -153,29 +167,25 @@ class Boundingbox extends React.Component {
         })
         .forEach(box => this.renderBox(box.box, box.index));
     }
-    else if(this.state.pixelSegmentation &&
-            this.state.pixelSegmentation.length > 0 &&
-            !this.state.isSegmented
-           ) {
-
-      const ctx = this.canvas.getContext('2d');
-      var imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height),
-          pix = imgd.data;
-
-      for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
-          const segmentClass = this.state.pixelSegmentation[j];
-          const segmentColor = this.segmentColor(segmentClass);
-          pix[i] = Math.round((pix[i] + segmentColor[0]) / 2);
-          pix[i + 1] = Math.round((pix[i + 1] + segmentColor[1]) / 2);
-          pix[i + 2] = Math.round((pix[i + 2] + segmentColor[2]) / 2);
-          pix[i + 3] = 200;
-      }
-
-      ctx.putImageData(imgd, 0, 0);
-      this.setState({isSegmented: true});
-    }
   }
 
+  renderSegmentation(segmentation) {
+    const ctx = this.canvas.getContext('2d');
+    var imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height),
+        pix = imgd.data;
+
+    for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
+        const segmentClass = segmentation[j];
+        const segmentColor = this.segmentColor(segmentClass);
+        pix[i] = Math.round((pix[i] + segmentColor[0]) / 2);
+        pix[i + 1] = Math.round((pix[i + 1] + segmentColor[1]) / 2);
+        pix[i + 2] = Math.round((pix[i + 2] + segmentColor[2]) / 2);
+        pix[i + 3] = 200;
+    }
+
+    ctx.putImageData(imgd, 0, 0);
+    this.setState({isSegmented: true});
+  }
 
   render() {
     return (
