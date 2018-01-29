@@ -170,17 +170,42 @@ class Boundingbox extends React.Component {
   }
 
   renderSegmentation(segmentation) {
-    const ctx = this.canvas.getContext('2d');
-    var imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height),
-        pix = imgd.data;
 
-    for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
-        const segmentClass = segmentation[j];
-        const segmentColor = this.segmentColor(segmentClass);
-        pix[i] = Math.round((pix[i] + segmentColor[0]) / 2);
-        pix[i + 1] = Math.round((pix[i + 1] + segmentColor[1]) / 2);
-        pix[i + 2] = Math.round((pix[i + 2] + segmentColor[2]) / 2);
-        pix[i + 3] = 200;
+    let ctx = null;
+    let imgd = null;
+
+    if(this.props.separateSegmentation) {
+
+      this.segCanvas.width = this.canvas.width;
+      this.segCanvas.height = this.canvas.height;
+      ctx = this.segCanvas.getContext('2d');
+      imgd = ctx.getImageData(0, 0, this.segCanvas.width, this.segCanvas.height);
+      let pix = imgd.data;
+
+      for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
+          const segmentClass = segmentation[j];
+          const segmentColor = this.segmentColor(segmentClass);
+          pix[i] = segmentColor[0];
+          pix[i + 1] = segmentColor[1];
+          pix[i + 2] = segmentColor[2];
+          pix[i + 3] = 255;
+      }
+
+    } else {
+
+      ctx = this.canvas.getContext('2d');
+      imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      let pix = imgd.data;
+
+      for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
+          const segmentClass = segmentation[j];
+          const segmentColor = this.segmentColor(segmentClass);
+          pix[i] = Math.round((pix[i] + segmentColor[0]) / 2);
+          pix[i + 1] = Math.round((pix[i + 1] + segmentColor[1]) / 2);
+          pix[i + 2] = Math.round((pix[i + 2] + segmentColor[2]) / 2);
+          pix[i + 3] = 200;
+      }
+
     }
 
     ctx.putImageData(imgd, 0, 0);
@@ -188,14 +213,20 @@ class Boundingbox extends React.Component {
   }
 
   render() {
-    return (
+    return (<div>
       <canvas
         style={this.props.options.style}
         ref={(canvas) => {
           this.canvas = canvas;
         }}
       />
-    );
+      <canvas
+        style={this.props.options.style}
+        ref={(canvas) => {
+          this.segCanvas = canvas;
+        }}
+      />
+    </div>);
   }
 }
 

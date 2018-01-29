@@ -62,6 +62,13 @@ storiesOf('Boundingbox', module)
       pixelSegmentation={json.body.predictions[0].vals}
     />);
   })
+  .add('pixel segmentation', () => {
+    var json = require('../../public/ADE_val_00000761.json')
+    return (<Boundingbox
+      image={'./ADE_val_00000761.jpg'}
+      pixelSegmentation={json.body.predictions[0].vals}
+    />);
+  })
   .add('pixel segmentation from json url', () => {
     return (<Boundingbox
       image={'./ADE_val_00000761.jpg'}
@@ -72,5 +79,6 @@ storiesOf('Boundingbox', module)
     return (<Boundingbox
       image={'http://localhost/ADE_val_00000761.jpg'}
       segmentationJson={'./ADE_val_00000761.json'}
+      separateSegmentation={true}
     />);
   });
