@@ -75,6 +75,12 @@ storiesOf('Boundingbox', module)
       segmentationJson={'./ADE_val_00000761.json'}
     />);
   })
+  .add('pixel segmentation - no square result', () => {
+    return (<Boundingbox
+      image={'./multi.jpeg'}
+      segmentationJson={'./multi.json'}
+    />);
+  })
   .add('pixel segmentation on remote image', () => {
     return (<Boundingbox
       image={'http://localhost/ADE_val_00000761.jpg'}
