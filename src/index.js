@@ -174,7 +174,7 @@ class Boundingbox extends React.Component {
     let ctx = null;
     let imgd = null;
 
-    if(this.props.separateSegmentation) {
+    if(this.props.separateSegmentation && this.segCanvas) {
 
       this.segCanvas.width = this.canvas.width;
       this.segCanvas.height = this.canvas.height;
@@ -213,6 +213,19 @@ class Boundingbox extends React.Component {
   }
 
   render() {
+
+    // Hide separate segmentation canvas if no segmentation
+    let separateSegmentationCanvas = null;
+    if(typeof(this.props.separateSegmentation) != 'undefined' &&
+      this.props.separateSegmentation) {
+      separateSegmentationCanvas = <canvas
+        style={this.props.options.style}
+        ref={(canvas) => {
+          this.segCanvas = canvas;
+        }}
+      />
+    }
+
     return (<div>
       <canvas
         style={this.props.options.style}
@@ -220,12 +233,7 @@ class Boundingbox extends React.Component {
           this.canvas = canvas;
         }}
       />
-      <canvas
-        style={this.props.options.style}
-        ref={(canvas) => {
-          this.segCanvas = canvas;
-        }}
-      />
+      {separateSegmentationCanvas}
     </div>);
   }
 }
