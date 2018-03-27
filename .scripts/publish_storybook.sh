@@ -20,15 +20,14 @@ rm -rf .out || exit 0;
 mkdir .out;
 
 # run our compile script, discussed above
-build-storybook -o .out
+build-storybook -o .out -s ./src/stories/static/
 
 # go to the out directory and create a *new* Git repo
 cd .out
 git init
 
-# inside this git repo we'll pretend to be a new user
-git config user.name "GH Pages Bot"
-git config user.email "hello@ghbot.com"
+git config user.name "Alexandre Girard"
+git config user.email "git@alexgirard.com"
 
 # The first and only commit to this new Git repo contains all the
 # files present with the commit message "Deploy to GitHub Pages".

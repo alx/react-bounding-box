@@ -81,18 +81,13 @@ storiesOf('Boundingbox', module)
     //
     return (<Boundingbox
       image={demoImage}
-      segmentationJsonUrl={'https://github.com/alx/react-bounding-box/raw/master/src/stories/static/segmentation.json'}
+      segmentationJsonUrl={'./segmentation.json'}
     />);
   })
   .add('pixel segmentation color scheme', () => {
-    //
-    // If github is down, you can use these url locally:
-    //   image={'http://localhost:9010/image.jpg'}
-    //   segmentationJsonUrl={'./segmentation.json'}
-    //
     return (<Boundingbox
       image={demoImage}
-      segmentationJsonUrl={'https://github.com/alx/react-bounding-box/raw/master/src/stories/static/segmentation.json'}
+      segmentationJsonUrl={'./segmentation.json'}
       segmentationColors={
         ['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d','#666666']
       }
@@ -102,11 +97,10 @@ storiesOf('Boundingbox', module)
     //
     // If github is down, you can use these url locally:
     //   image={'http://localhost:9010/image.jpg'}
-    //   segmentationJsonUrl={'./segmentation.json'}
     //
     return (<Boundingbox
       image={'https://alx.github.io/react-bounding-box/static/image.jpg'}
-      segmentationJsonUrl={'https://github.com/alx/react-bounding-box/raw/master/src/stories/static/segmentation.json'}
+      segmentationJsonUrl={'./segmentation.json'}
       separateSegmentation={true}
     />);
   })
@@ -114,7 +108,6 @@ storiesOf('Boundingbox', module)
     //
     // If github is down, you can use these url locally:
     //   image={'http://localhost:9010/image.jpg'}
-    //   segmentationJsonUrl={'./segmentation.json'}
     //
     //
     // css for this story is avaible in ./static/styles.css
@@ -122,7 +115,7 @@ storiesOf('Boundingbox', module)
     return (<div className="cssStory">
       <Boundingbox
         image={'https://alx.github.io/react-bounding-box/static/image.jpg'}
-        segmentationJsonUrl={'https://github.com/alx/react-bounding-box/raw/master/src/stories/static/segmentation.json'}
+        segmentationJsonUrl={'./segmentation.json'}
         separateSegmentation={true}
       />
     </div>);
