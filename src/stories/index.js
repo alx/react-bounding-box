@@ -99,7 +99,7 @@ storiesOf('Boundingbox', module)
     //   image={'http://localhost:9010/image.jpg'}
     //
     return (<Boundingbox
-      image={'https://alx.github.io/react-bounding-box/static/image.jpg'}
+      image={'https://alx.github.io/react-bounding-box/image.jpg'}
       segmentationJsonUrl={'./segmentation.json'}
       separateSegmentation={true}
     />);
@@ -114,7 +114,7 @@ storiesOf('Boundingbox', module)
     //
     return (<div className="cssStory">
       <Boundingbox
-        image={'https://alx.github.io/react-bounding-box/static/image.jpg'}
+        image={'https://alx.github.io/react-bounding-box/image.jpg'}
         segmentationJsonUrl={'./segmentation.json'}
         separateSegmentation={true}
       />
