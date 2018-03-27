@@ -2,12 +2,16 @@ import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import Boundingbox from '../index';
 
-import "./styles.css";
+import './static/styles.css';
+
+import demoImage from './static/image.jpg';
+import demoImageLarge from './static/imageLarge.png';
+import segmentationJson from './static/segmentation.json';
 
 storiesOf('Boundingbox', module)
   .add('default view', () => {
     const params = {
-      image: 'http://i.imgur.com/gF7QYwa.jpg',
+      image: demoImageLarge,
       boxes: [
         // coord(0,0) = top left corner of image
         // [x, y, width, height]
@@ -24,7 +28,7 @@ storiesOf('Boundingbox', module)
   })
   .add('box selection', () => {
     const params = {
-      image: 'http://i.imgur.com/gF7QYwa.jpg',
+      image: demoImageLarge,
       boxes: [
         // coord(0,0) = top left corner of image
         // [x, y, width, height]
@@ -42,7 +46,7 @@ storiesOf('Boundingbox', module)
   })
   .add('label display', () => {
     const params = {
-      image: 'http://i.imgur.com/gF7QYwa.jpg',
+      image: demoImageLarge,
       boxes: [
         // coord(0,0) = top left corner of image
         // [x, y, width, height]
@@ -58,29 +62,27 @@ storiesOf('Boundingbox', module)
     />);
   })
   .add('pixel segmentation', () => {
-    var json = require('../../public/ADE_val_00000761.json')
     return (<Boundingbox
-      image={'./ADE_val_00000761.jpg'}
-      pixelSegmentation={json.body.predictions[0].vals}
+      image={demoImage}
+      pixelSegmentation={segmentationJson.body.predictions[0].vals}
     />);
   })
   .add('pixel segmentation', () => {
-    var json = require('../../public/ADE_val_00000761.json')
     return (<Boundingbox
-      image={'./ADE_val_00000761.jpg'}
-      pixelSegmentation={json.body.predictions[0].vals}
+      image={demoImage}
+      pixelSegmentation={segmentationJson.body.predictions[0].vals}
     />);
   })
   .add('pixel segmentation from json url', () => {
     return (<Boundingbox
-      image={'./ADE_val_00000761.jpg'}
-      segmentationJson={'./ADE_val_00000761.json'}
+      image={demoImage}
+      segmentationJsonUrl={'./segmentation.json'}
     />);
   })
   .add('pixel segmentation color scheme', () => {
     return (<Boundingbox
-      image={'./ADE_val_00000761.jpg'}
-      segmentationJson={'./ADE_val_00000761.json'}
+      image={demoImage}
+      segmentationJsonUrl={'./segmentation.json'}
       segmentationColors={
         ['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d','#666666']
       }
@@ -88,16 +90,19 @@ storiesOf('Boundingbox', module)
   })
   .add('pixel segmentation on remote image', () => {
     return (<Boundingbox
-      image={'http://localhost:9010/ADE_val_00000761.jpg'}
-      segmentationJson={'./ADE_val_00000761.json'}
+      image={'https://alx.github.io/react-bounding-box/static/image.jpg'}
+      segmentationJsonUrl={'./segmentation.json'}
       separateSegmentation={true}
     />);
   })
   .add('pixel segmentation on remote image with css', () => {
+    //
+    // css for this story is avaible in ./static/styles.css
+    //
     return (<div className="cssStory">
       <Boundingbox
-        image={'http://localhost:9010/ADE_val_00000761.jpg'}
-        segmentationJson={'./ADE_val_00000761.json'}
+        image={'https://alx.github.io/react-bounding-box/static/image.jpg'}
+        segmentationJsonUrl={'./segmentation.json'}
         separateSegmentation={true}
       />
     </div>);

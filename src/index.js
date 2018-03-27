@@ -13,8 +13,8 @@ class Boundingbox extends React.Component {
       segmentColors: []
     };
 
-    if(props.segmentationJson) {
-      fetch(props.segmentationJson)
+    if(props.segmentationJsonUrl) {
+      fetch(props.segmentationJsonUrl)
       .then(response => response.json())
       .then(response => {
 
@@ -275,7 +275,7 @@ Boundingbox.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.array),
     React.PropTypes.arrayOf(React.PropTypes.object),
   ]),
-  segmentationJson: React.PropTypes.string,
+  segmentationJsonUrl: React.PropTypes.string,
   segmentationColors: React.PropTypes.array,
   selectedIndex: React.PropTypes.number,
   drawBox: React.PropTypes.func,

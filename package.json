@@ -17,7 +17,7 @@
     "testonly": "mocha --require .scripts/mocha_runner src/**/tests/**/*.js",
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js",
-    "storybook": "start-storybook -s ./public -p 9010",
+    "storybook": "start-storybook -s ./public,./src/stories/static -p 9010",
     "publish-storybook": "bash .scripts/publish_storybook.sh"
   },
   "devDependencies": {
