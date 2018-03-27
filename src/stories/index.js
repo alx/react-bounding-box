@@ -77,6 +77,15 @@ storiesOf('Boundingbox', module)
       segmentationJson={'./ADE_val_00000761.json'}
     />);
   })
+  .add('pixel segmentation color scheme', () => {
+    return (<Boundingbox
+      image={'./ADE_val_00000761.jpg'}
+      segmentationJson={'./ADE_val_00000761.json'}
+      segmentationColors={
+        ['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d','#666666']
+      }
+    />);
+  })
   .add('pixel segmentation on remote image', () => {
     return (<Boundingbox
       image={'http://localhost:9010/ADE_val_00000761.jpg'}

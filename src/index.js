@@ -10,6 +10,7 @@ class Boundingbox extends React.Component {
     this.state = {
       canvasCreated: false,
       hoverIndex: -1,
+      segmentColors: []
     };
 
     if(props.segmentationJson) {
@@ -129,10 +130,35 @@ class Boundingbox extends React.Component {
   }
 
   segmentColor(classIndex) {
-    const random = seedrandom(classIndex);
-    const r = Math.floor(random() * 255);
-    const g = Math.floor(random() * 255);
-    const b = Math.floor(random() * 255);
+
+    let segmentColors = this.state.segmentColors;
+
+    if(segmentColors[classIndex] &&
+      segmentColors[classIndex].length === 3) {
+      return segmentColors[classIndex];
+    }
+
+    let r;
+    let g;
+    let b;
+
+    if(this.props.segmentationColors &&
+       this.props.segmentationColors[classIndex]) {
+      const hex = this.props.segmentationColors[classIndex];
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      r = parseInt(result[1], 16);
+      g = parseInt(result[2], 16);
+      b = parseInt(result[3], 16);
+    } else {
+      const random = seedrandom(classIndex);
+      r = Math.floor(random() * 255);
+      g = Math.floor(random() * 255);
+      b = Math.floor(random() * 255);
+    }
+
+    segmentColors[classIndex] = [r, g, b];
+    this.setState({segmentColors: segmentColors});
+
     return [r, g, b];
   };
 
@@ -250,6 +276,7 @@ Boundingbox.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.object),
   ]),
   segmentationJson: React.PropTypes.string,
+  segmentationColors: React.PropTypes.array,
   selectedIndex: React.PropTypes.number,
   drawBox: React.PropTypes.func,
   drawLabel: React.PropTypes.func,
