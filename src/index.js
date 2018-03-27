@@ -219,6 +219,7 @@ class Boundingbox extends React.Component {
     if(typeof(this.props.separateSegmentation) != 'undefined' &&
       this.props.separateSegmentation) {
       separateSegmentationCanvas = <canvas
+        className="boundingSegmentationCanvas"
         style={this.props.options.style}
         ref={(canvas) => {
           this.segCanvas = canvas;
@@ -228,6 +229,7 @@ class Boundingbox extends React.Component {
 
     return (<div>
       <canvas
+        className="boundingBoxCanvas"
         style={this.props.options.style}
         ref={(canvas) => {
           this.canvas = canvas;

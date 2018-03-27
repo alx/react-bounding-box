@@ -2,6 +2,8 @@ import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import Boundingbox from '../index';
 
+import "./styles.css";
+
 storiesOf('Boundingbox', module)
   .add('default view', () => {
     const params = {
@@ -77,8 +79,17 @@ storiesOf('Boundingbox', module)
   })
   .add('pixel segmentation on remote image', () => {
     return (<Boundingbox
-      image={'http://localhost/ADE_val_00000761.jpg'}
+      image={'http://localhost:9010/ADE_val_00000761.jpg'}
       segmentationJson={'./ADE_val_00000761.json'}
       separateSegmentation={true}
     />);
+  })
+  .add('pixel segmentation on remote image with css', () => {
+    return (<div className="cssStory">
+      <Boundingbox
+        image={'http://localhost:9010/ADE_val_00000761.jpg'}
+        segmentationJson={'./ADE_val_00000761.json'}
+        separateSegmentation={true}
+      />
+    </div>);
   });
