@@ -83,6 +83,10 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
+### v0.1.0 - 22/05/2018
+
+* Fix deprecated `React.PropTypes`
+
 ### v0.0.14 - 30/01/2018
 * add image segmentation display available in [deepdetect](https://github.com/beniz/deepdetect/)
 
