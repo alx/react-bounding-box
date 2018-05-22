@@ -75,7 +75,13 @@ class Boundingbox extends React.Component {
 
           this.props.boxes.forEach((box, index) => {
             const coord = box.coord ? box.coord : box;
-            const [bx, by, bw, bh] = coord;
+
+            let [bx, by, bw, bh] = [0, 0, 0, 0]
+            if (coord.xmin) {
+              [bx, by, bw, bh] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+            } else {
+              [bx, by, bw, bh] = coord;
+            }
 
             if (x >= bx && x <= bx + bw &&
                y >= by && y <= by + bh) {
@@ -298,7 +304,13 @@ Boundingbox.defaultProps = {
     const ctx = canvas.getContext('2d');
 
     const coord = box.coord ? box.coord : box;
-    let [x, y, width, height] = coord;
+
+    let [x, y, width, height] = [0, 0, 0, 0]
+    if (coord.xmin) {
+      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+    } else {
+      [x, y, width, height] = coord;
+    }
 
     if (x < lineWidth / 2) { x = lineWidth / 2; }
     if (y < lineWidth / 2) { y = lineWidth / 2; }
@@ -329,7 +341,12 @@ Boundingbox.defaultProps = {
   drawLabel(canvas, box) {
     const ctx = canvas.getContext('2d');
 
-    let [x, y, width, height] = box.coord;
+    let [x, y, width, height] = [0, 0, 0, 0]
+    if (coord.xmin) {
+      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+    } else {
+      [x, y, width, height] = coord;
+    }
 
     ctx.font = '60px Arial';
     ctx.fillStyle = 'rgba(225,0,0,1)';
