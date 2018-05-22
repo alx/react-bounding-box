@@ -1,6 +1,6 @@
 {
   "name": "react-bounding-box",
-  "version": "0.0.16",
+  "version": "0.1.0",
   "description": "React Bounding Box Component",
   "repository": {
     "type": "git",
@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
+    "prop-types": "^15.6.1",
     "seedrandom": "^2.4.3"
   },
   "main": "dist/index.js",

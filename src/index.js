@@ -1,6 +1,7 @@
 /* global Image */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import seedrandom from 'seedrandom';
 
 class Boundingbox extends React.Component {
@@ -270,24 +271,24 @@ Boundingbox.displayName = 'Boundingbox';
 
 // Uncomment properties you need
 Boundingbox.propTypes = {
-  image: React.PropTypes.string,
-  boxes: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.array),
-    React.PropTypes.arrayOf(React.PropTypes.object),
+  image: PropTypes.string,
+  boxes: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.array),
+    PropTypes.arrayOf(PropTypes.object),
   ]),
-  segmentationJsonUrl: React.PropTypes.string,
-  segmentationColors: React.PropTypes.array,
-  selectedIndex: React.PropTypes.number,
-  drawBox: React.PropTypes.func,
-  drawLabel: React.PropTypes.func,
-  onSelected: React.PropTypes.func,
-  options: React.PropTypes.shape({
-    colors: React.PropTypes.shape({
-      normal: React.PropTypes.string,
-      selected: React.PropTypes.string,
-      unselected: React.PropTypes.string,
+  segmentationJsonUrl: PropTypes.string,
+  segmentationColors: PropTypes.array,
+  selectedIndex: PropTypes.number,
+  drawBox: PropTypes.func,
+  drawLabel: PropTypes.func,
+  onSelected: PropTypes.func,
+  options: PropTypes.shape({
+    colors: PropTypes.shape({
+      normal: PropTypes.string,
+      selected: PropTypes.string,
+      unselected: PropTypes.string,
     }),
-    style: React.PropTypes.object,
+    style: PropTypes.object,
   }),
 };
 
