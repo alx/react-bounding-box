@@ -341,6 +341,8 @@ Boundingbox.defaultProps = {
   drawLabel(canvas, box) {
     const ctx = canvas.getContext('2d');
 
+    const coord = box.coord ? box.coord : box;
+
     let [x, y, width, height] = [0, 0, 0, 0]
     if (coord.xmin) {
       [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
