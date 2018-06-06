@@ -260,7 +260,7 @@ class Boundingbox extends React.Component {
       />
     }
 
-    return (<div>
+    return (<div className={this.props.className}>
       <canvas
         className="boundingBoxCanvas"
         style={this.props.options.style}
