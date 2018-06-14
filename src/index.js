@@ -301,6 +301,10 @@ Boundingbox.propTypes = {
 Boundingbox.defaultProps = {
   onSelected() {},
   drawBox(canvas, box, color, lineWidth) {
+
+    if(typeof box === 'undefined')
+      return null;
+
     const ctx = canvas.getContext('2d');
 
     const coord = box.coord ? box.coord : box;
@@ -339,6 +343,10 @@ Boundingbox.defaultProps = {
     ctx.stroke();
   },
   drawLabel(canvas, box) {
+
+    if(typeof box === 'undefined')
+      return null;
+
     const ctx = canvas.getContext('2d');
 
     const coord = box.coord ? box.coord : box;
