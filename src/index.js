@@ -170,6 +170,10 @@ class Boundingbox extends React.Component {
   };
 
   renderBox(box, index) {
+
+    if(typeof box === 'undefined')
+      return null;
+
     let color = this.props.options.colors.normal;
     if (this.state.hoverIndex >= 0) {
       color = this.props.options.colors.unselected;
