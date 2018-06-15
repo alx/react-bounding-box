@@ -74,6 +74,10 @@ class Boundingbox extends React.Component {
            this.props.boxes.length > 0) {
 
           this.props.boxes.forEach((box, index) => {
+
+            if(typeof box === 'undefined')
+              return null;
+
             const coord = box.coord ? box.coord : box;
 
             let [bx, by, bw, bh] = [0, 0, 0, 0]
