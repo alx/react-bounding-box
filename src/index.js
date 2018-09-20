@@ -75,7 +75,7 @@ class Boundingbox extends React.Component {
 
           this.props.boxes.forEach((box, index) => {
 
-            if(typeof box === 'undefined')
+            if(!box || typeof box === 'undefined')
               return null;
 
             const coord = box.coord ? box.coord : box;
@@ -175,7 +175,7 @@ class Boundingbox extends React.Component {
 
   renderBox(box, index) {
 
-    if(typeof box === 'undefined')
+    if(!box || typeof box === 'undefined')
       return null;
 
     let color = this.props.options.colors.normal;
@@ -310,7 +310,7 @@ Boundingbox.defaultProps = {
   onSelected() {},
   drawBox(canvas, box, color, lineWidth) {
 
-    if(typeof box === 'undefined')
+    if(!box || typeof box === 'undefined')
       return null;
 
     const ctx = canvas.getContext('2d');
@@ -352,7 +352,7 @@ Boundingbox.defaultProps = {
   },
   drawLabel(canvas, box) {
 
-    if(typeof box === 'undefined')
+    if(!box || typeof box === 'undefined')
       return null;
 
     const ctx = canvas.getContext('2d');
