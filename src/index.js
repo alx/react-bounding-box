@@ -125,8 +125,11 @@ class Boundingbox extends React.Component {
     const ctx = this.canvas.getContext('2d');
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const background = new Image();
-    background.src = this.props.image;
-    ctx.drawImage(background, 0, 0);
+    background.src = nextProps.image;
+    background.onload = function () {
+      ctx.drawImage(background, 0, 0);
+      // TODO update boxes, pixelsegmentation, mouse move event etc
+    }
     this.setState({ hoverIndex: nextProps.selectedIndex });
     if(nextProps.segmentationPixels) {
       this.setState({
