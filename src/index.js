@@ -222,8 +222,6 @@ class Boundingbox extends React.Component {
 
   renderSegmentation(segmentation) {
 
-    console.log('renderSegmentation');
-
     let ctx = null;
     let imgd = null;
 
@@ -270,8 +268,6 @@ class Boundingbox extends React.Component {
     const { boxes, segmentationMasks } = this.props;
 
     const ctx = this.canvas.getContext('2d');
-    let imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-    let pix = imgd.data;
 
     segmentationMasks.forEach((mask, index) => {
 
