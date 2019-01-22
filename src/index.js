@@ -47,16 +47,26 @@ class Boundingbox extends React.Component {
       ctx.drawImage(background, 0, 0);
       this.renderBoxes();
 
-      if(this.state.pixelSegmentation &&
+      const hasSegmentedState = this.state.pixelSegmentation &&
          this.state.pixelSegmentation.length > 0 &&
-         !this.state.isSegmented) {
-        this.renderSegmentation(this.state.pixelSegmentation);
-      }
-      else if(this.props.pixelSegmentation &&
+         !this.state.isSegmented;
+
+      const hasSegmentedProps = this.props.pixelSegmentation &&
          this.props.pixelSegmentation.length > 0 &&
-         !this.state.isSegmented) {
+         !this.state.isSegmented;
+
+      const hasSegmentionMasks = this.props.segmentationMasks &&
+         this.props.segmentationMasks.length > 0 &&
+         !this.state.isSegmented;
+
+      if(hasSegmentedState)
+        this.renderSegmentation(this.state.pixelSegmentation);
+
+      if(hasSegmentedProps)
         this.renderSegmentation(this.props.pixelSegmentation);
-      }
+
+      if(hasSegmentionMasks)
+        this.renderSegmentationMasks();
 
       this.canvas.onmousemove = ((e) => {
         // Get the current mouse position
@@ -128,7 +138,7 @@ class Boundingbox extends React.Component {
     background.src = this.props.image;
     ctx.drawImage(background, 0, 0);
     this.setState({ hoverIndex: nextProps.selectedIndex });
-    if(nextProps.segmentationPixels) {
+    if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
       this.setState({
         isSegmented: false
       });
@@ -212,6 +222,8 @@ class Boundingbox extends React.Component {
 
   renderSegmentation(segmentation) {
 
+    console.log('renderSegmentation');
+
     let ctx = null;
     let imgd = null;
 
@@ -250,6 +262,55 @@ class Boundingbox extends React.Component {
     }
 
     ctx.putImageData(imgd, 0, 0);
+    this.setState({isSegmented: true});
+  }
+
+  renderSegmentationMasks() {
+
+    const { boxes, segmentationMasks } = this.props;
+
+    const ctx = this.canvas.getContext('2d');
+    let imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    let pix = imgd.data;
+
+    segmentationMasks.forEach((mask, index) => {
+
+      // Fetch segment color,
+      // using box label or current mask index
+      const segmentColor = this.segmentColor(boxes[index].label ? boxes[index].label : index);
+
+      // Fetch image data
+      // using the box coordinates
+      // and the mask dimensions
+      const maskData = ctx.getImageData(
+        parseInt(boxes[index].xmin, 10),
+        parseInt(boxes[index].ymin, 10),
+        mask.width,
+        mask.height
+      );
+
+      // Fill image data with new mask color
+      for (let i = 0, j = 0; i < maskData.data.length; j++, i += 4) {
+        if(mask.data[j] > 0) {
+          maskData.data[i] = Math.round((maskData.data[i] + segmentColor[0]) / 2);
+          maskData.data[i + 1] = Math.round((maskData.data[i + 1] + segmentColor[1]) / 2);
+          maskData.data[i + 2] = Math.round((maskData.data[i + 2] + segmentColor[2]) / 2);
+          maskData.data[i + 3] = 190;
+        }
+      }
+
+      // Put new mask data on displayed canvas
+      ctx.putImageData(
+        maskData,
+        parseInt(boxes[index].xmin, 10),
+        parseInt(boxes[index].ymin, 10),
+        0,
+        0,
+        mask.width,
+        mask.height
+      );
+    });
+
     this.setState({isSegmented: true});
   }
 
@@ -292,6 +353,7 @@ Boundingbox.propTypes = {
   ]),
   segmentationJsonUrl: PropTypes.string,
   segmentationColors: PropTypes.array,
+  segmentationMasks: PropTypes.array,
   selectedIndex: PropTypes.number,
   drawBox: PropTypes.func,
   drawLabel: PropTypes.func,

@@ -6,7 +6,11 @@ import './static/styles.css';
 
 import demoImage from './static/image.jpg';
 import demoImageLarge from './static/imageLarge.png';
+import demoImageDog from './static/dog.jpg';
+
 import segmentationJson from './static/segmentation.json';
+import segmentationMasksJson from './static/segmentationMasks.json';
+import segmentationMasksBoxesJson from './static/segmentationMasksBoxes.json';
 
 storiesOf('Boundingbox', module)
   .add('default view', () => {
@@ -119,4 +123,11 @@ storiesOf('Boundingbox', module)
         separateSegmentation={true}
       />
     </div>);
+  })
+  .add('segmentation masks', () => {
+    return (<Boundingbox
+      image={demoImageDog}
+      segmentationMasks={segmentationMasksJson}
+      boxes={segmentationMasksBoxesJson}
+    />);
   });
