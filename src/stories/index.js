@@ -129,5 +129,6 @@ storiesOf('Boundingbox', module)
       image={demoImageDog}
       segmentationMasks={segmentationMasksJson}
       boxes={segmentationMasksBoxesJson}
+      separateSegmentation={true}
     />);
   });

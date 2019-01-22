@@ -236,7 +236,7 @@ class Boundingbox extends React.Component {
       for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
           const segmentClass = segmentation[j];
           const segmentColor = this.segmentColor(segmentClass);
-          pix[i] = segmentColor[0];
+          pix[i]     = segmentColor[0];
           pix[i + 1] = segmentColor[1];
           pix[i + 2] = segmentColor[2];
           pix[i + 3] = 255;
@@ -265,9 +265,15 @@ class Boundingbox extends React.Component {
 
   renderSegmentationMasks() {
 
-    const { boxes, segmentationMasks } = this.props;
+    const {
+      boxes,
+      segmentationMasks,
+      segmentationTransparency
+    } = this.props;
 
-    const ctx = this.canvas.getContext('2d');
+    this.segCanvas.width = this.canvas.width;
+    this.segCanvas.height = this.canvas.height;
+    const ctx = this.segCanvas.getContext('2d');
 
     segmentationMasks.forEach((mask, index) => {
 
@@ -288,10 +294,10 @@ class Boundingbox extends React.Component {
       // Fill image data with new mask color
       for (let i = 0, j = 0; i < maskData.data.length; j++, i += 4) {
         if(mask.data[j] > 0) {
-          maskData.data[i] = Math.round((maskData.data[i] + segmentColor[0]) / 2);
-          maskData.data[i + 1] = Math.round((maskData.data[i + 1] + segmentColor[1]) / 2);
-          maskData.data[i + 2] = Math.round((maskData.data[i + 2] + segmentColor[2]) / 2);
-          maskData.data[i + 3] = 190;
+          maskData.data[i]     = segmentColor[0];
+          maskData.data[i + 1] = segmentColor[1];
+          maskData.data[i + 2] = segmentColor[2];
+          maskData.data[i + 3] = segmentationTransparency;
         }
       }
 
@@ -312,19 +318,6 @@ class Boundingbox extends React.Component {
 
   render() {
 
-    // Hide separate segmentation canvas if no segmentation
-    let separateSegmentationCanvas = null;
-    if(typeof(this.props.separateSegmentation) != 'undefined' &&
-      this.props.separateSegmentation) {
-      separateSegmentationCanvas = <canvas
-        className="boundingSegmentationCanvas"
-        style={this.props.options.style}
-        ref={(canvas) => {
-          this.segCanvas = canvas;
-        }}
-      />
-    }
-
     return (<div className={this.props.className}>
       <canvas
         className="boundingBoxCanvas"
@@ -333,7 +326,16 @@ class Boundingbox extends React.Component {
           this.canvas = canvas;
         }}
       />
-      {separateSegmentationCanvas}
+      { this.props.separateSegmentation ?
+        <canvas
+          className="boundingSegmentationCanvas"
+          style={this.props.options.style}
+          ref={(canvas) => {
+            this.segCanvas = canvas;
+          }}
+        />
+        : null
+      }
     </div>);
   }
 }
@@ -347,9 +349,11 @@ Boundingbox.propTypes = {
     PropTypes.arrayOf(PropTypes.array),
     PropTypes.arrayOf(PropTypes.object),
   ]),
+  separateSegmentation: PropTypes.bool,
   segmentationJsonUrl: PropTypes.string,
   segmentationColors: PropTypes.array,
   segmentationMasks: PropTypes.array,
+  segmentationTransparency: PropTypes.number,
   selectedIndex: PropTypes.number,
   drawBox: PropTypes.func,
   drawLabel: PropTypes.func,
@@ -365,6 +369,8 @@ Boundingbox.propTypes = {
 };
 
 Boundingbox.defaultProps = {
+  separateSegmentation: false,
+  segmentationTransparency: 190,
   onSelected() {},
   drawBox(canvas, box, color, lineWidth) {
 
