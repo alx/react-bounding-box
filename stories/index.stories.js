@@ -89,13 +89,13 @@ storiesOf('Boundingbox', module)
     //
     return (<Boundingbox
       image={demoImage}
-      segmentationJsonUrl={'./segmentation.json'}
+      segmentationJsonUrl={'./static/segmentation.json'}
     />);
   })
   .add('pixel segmentation color scheme', () => {
     return (<Boundingbox
       image={demoImage}
-      segmentationJsonUrl={'./segmentation.json'}
+      segmentationJsonUrl={'./static/segmentation.json'}
       segmentationColors={
         ['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d','#666666']
       }
@@ -108,7 +108,7 @@ storiesOf('Boundingbox', module)
     //
     return (<Boundingbox
       image={'https://alx.github.io/react-bounding-box/image.jpg'}
-      segmentationJsonUrl={'./segmentation.json'}
+      segmentationJsonUrl={'./static/segmentation.json'}
       separateSegmentation={true}
     />);
   })
@@ -123,7 +123,7 @@ storiesOf('Boundingbox', module)
     return (<div className="cssStory">
       <Boundingbox
         image={'https://alx.github.io/react-bounding-box/image.jpg'}
-        segmentationJsonUrl={'./segmentation.json'}
+        segmentationJsonUrl={'./static/segmentation.json'}
         separateSegmentation={true}
       />
     </div>);
