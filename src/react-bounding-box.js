@@ -318,7 +318,7 @@ class Boundingbox extends Component {
 
   render() {
 
-    return (<div className={this.props.className}>
+    return <div className={this.props.className}>
       <canvas
         className="boundingBoxCanvas"
         style={this.props.options.style}
@@ -336,7 +336,7 @@ class Boundingbox extends Component {
         />
         : null
       }
-    </div>);
+    </div>;
   }
 }
 
