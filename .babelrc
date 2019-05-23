@@ -1,3 +1,10 @@
 {
-  "presets": ["react-app"]
+  "presets": [
+    "env",
+    "react"
+  ],
+  "plugins": [
+    "babel-plugin-transform-class-properties",
+    "babel-plugin-add-module-exports"
+  ]
 }

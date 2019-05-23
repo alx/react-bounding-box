@@ -1,10 +1,113 @@
 /* global Image */
 
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import seedrandom from 'seedrandom';
 
-class Boundingbox extends React.Component {
+export default class Boundingbox extends Component {
+static propTypes = {
+  image: PropTypes.string,
+  boxes: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.array),
+    PropTypes.arrayOf(PropTypes.object),
+  ]),
+  separateSegmentation: PropTypes.bool,
+  segmentationJsonUrl: PropTypes.string,
+  segmentationColors: PropTypes.array,
+  segmentationMasks: PropTypes.array,
+  segmentationTransparency: PropTypes.number,
+  selectedIndex: PropTypes.number,
+  drawBox: PropTypes.func,
+  drawLabel: PropTypes.func,
+  onSelected: PropTypes.func,
+  options: PropTypes.shape({
+    colors: PropTypes.shape({
+      normal: PropTypes.string,
+      selected: PropTypes.string,
+      unselected: PropTypes.string,
+    }),
+    style: PropTypes.object,
+  }),
+};
+
+static defaultProps = {
+  separateSegmentation: false,
+  segmentationTransparency: 190,
+  onSelected() {},
+  drawBox(canvas, box, color, lineWidth) {
+
+    if(!box || typeof box === 'undefined')
+      return null;
+
+    const ctx = canvas.getContext('2d');
+
+    const coord = box.coord ? box.coord : box;
+
+    let [x, y, width, height] = [0, 0, 0, 0]
+    if (coord.xmin) {
+      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+    } else {
+      [x, y, width, height] = coord;
+    }
+
+    if (x < lineWidth / 2) { x = lineWidth / 2; }
+    if (y < lineWidth / 2) { y = lineWidth / 2; }
+
+    if ((x + width) > canvas.width) { width = canvas.width - lineWidth - x; }
+    if ((y + height) > canvas.height) { height = canvas.height - lineWidth - y; }
+
+    // Left segment
+    const tenPercent = width / 10;
+    const ninetyPercent = 9 * tenPercent;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.beginPath();
+    ctx.moveTo(x + tenPercent, y);
+    ctx.lineTo(x, y);
+    ctx.lineTo(x, y + height);
+    ctx.lineTo(x + tenPercent, y + height);
+    ctx.stroke();
+
+    // Right segment
+    ctx.beginPath();
+    ctx.moveTo(x + ninetyPercent, y);
+    ctx.lineTo(x + width, y);
+    ctx.lineTo(x + width, y + height);
+    ctx.lineTo(x + ninetyPercent, y + height);
+    ctx.stroke();
+  },
+  drawLabel(canvas, box) {
+
+    if(!box || typeof box === 'undefined')
+      return null;
+
+    const ctx = canvas.getContext('2d');
+
+    const coord = box.coord ? box.coord : box;
+
+    let [x, y, width, height] = [0, 0, 0, 0]
+    if (coord.xmin) {
+      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+    } else {
+      [x, y, width, height] = coord;
+    }
+
+    ctx.font = '60px Arial';
+    ctx.fillStyle = 'rgba(225,0,0,1)';
+    ctx.fillText(box.label, x, y + height);
+  },
+  options: {
+    colors: {
+      normal: 'rgba(255,225,255,1)',
+      selected: 'rgba(0,225,204,1)',
+      unselected: 'rgba(100,100,100,1)',
+    },
+    style: {
+      maxWidth: '100%',
+      maxHeight: '90vh',
+    },
+  }
+}
 
   constructor(props) {
     super(props);
@@ -339,112 +442,3 @@ class Boundingbox extends React.Component {
     </div>);
   }
 }
-
-Boundingbox.displayName = 'Boundingbox';
-
-// Uncomment properties you need
-Boundingbox.propTypes = {
-  image: PropTypes.string,
-  boxes: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.array),
-    PropTypes.arrayOf(PropTypes.object),
-  ]),
-  separateSegmentation: PropTypes.bool,
-  segmentationJsonUrl: PropTypes.string,
-  segmentationColors: PropTypes.array,
-  segmentationMasks: PropTypes.array,
-  segmentationTransparency: PropTypes.number,
-  selectedIndex: PropTypes.number,
-  drawBox: PropTypes.func,
-  drawLabel: PropTypes.func,
-  onSelected: PropTypes.func,
-  options: PropTypes.shape({
-    colors: PropTypes.shape({
-      normal: PropTypes.string,
-      selected: PropTypes.string,
-      unselected: PropTypes.string,
-    }),
-    style: PropTypes.object,
-  }),
-};
-
-Boundingbox.defaultProps = {
-  separateSegmentation: false,
-  segmentationTransparency: 190,
-  onSelected() {},
-  drawBox(canvas, box, color, lineWidth) {
-
-    if(!box || typeof box === 'undefined')
-      return null;
-
-    const ctx = canvas.getContext('2d');
-
-    const coord = box.coord ? box.coord : box;
-
-    let [x, y, width, height] = [0, 0, 0, 0]
-    if (coord.xmin) {
-      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
-    } else {
-      [x, y, width, height] = coord;
-    }
-
-    if (x < lineWidth / 2) { x = lineWidth / 2; }
-    if (y < lineWidth / 2) { y = lineWidth / 2; }
-
-    if ((x + width) > canvas.width) { width = canvas.width - lineWidth - x; }
-    if ((y + height) > canvas.height) { height = canvas.height - lineWidth - y; }
-
-    // Left segment
-    const tenPercent = width / 10;
-    const ninetyPercent = 9 * tenPercent;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
-    ctx.beginPath();
-    ctx.moveTo(x + tenPercent, y);
-    ctx.lineTo(x, y);
-    ctx.lineTo(x, y + height);
-    ctx.lineTo(x + tenPercent, y + height);
-    ctx.stroke();
-
-    // Right segment
-    ctx.beginPath();
-    ctx.moveTo(x + ninetyPercent, y);
-    ctx.lineTo(x + width, y);
-    ctx.lineTo(x + width, y + height);
-    ctx.lineTo(x + ninetyPercent, y + height);
-    ctx.stroke();
-  },
-  drawLabel(canvas, box) {
-
-    if(!box || typeof box === 'undefined')
-      return null;
-
-    const ctx = canvas.getContext('2d');
-
-    const coord = box.coord ? box.coord : box;
-
-    let [x, y, width, height] = [0, 0, 0, 0]
-    if (coord.xmin) {
-      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
-    } else {
-      [x, y, width, height] = coord;
-    }
-
-    ctx.font = '60px Arial';
-    ctx.fillStyle = 'rgba(225,0,0,1)';
-    ctx.fillText(box.label, x, y + height);
-  },
-  options: {
-    colors: {
-      normal: 'rgba(255,225,255,1)',
-      selected: 'rgba(0,225,204,1)',
-      unselected: 'rgba(100,100,100,1)',
-    },
-    style: {
-      maxWidth: '100%',
-      maxHeight: '90vh',
-    },
-  },
-};
-
-export default Boundingbox;

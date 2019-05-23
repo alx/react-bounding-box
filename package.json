@@ -1,6 +1,6 @@
 {
   "name": "react-bounding-box",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "React Bounding Box Component",
   "repository": {
     "type": "git",
@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "build": "webpack src/react-bounding-box.js dist/react-bounding-box.js",
     "prepare": ". ./.scripts/prepublish.sh",
     "lint": "eslint src",
     "lintfix": "eslint src --fix",
@@ -21,28 +22,22 @@
     "publish-storybook": "bash .scripts/publish_storybook.sh"
   },
   "devDependencies": {
-    "@kadira/storybook": "^2.18.1",
-    "babel-cli": "^6.14.0",
-    "babel-core": "^6.14.0",
-    "babel-eslint": "^6.1.2",
-    "babel-loader": "^6.2.5",
-    "babel-plugin-transform-runtime": "^6.15.0",
-    "babel-polyfill": "^6.13.0",
-    "babel-preset-react-app": "^0.2.1",
-    "chai": "^3.5.0",
-    "enzyme": "^2.2.0",
-    "eslint": "^3.6.0",
-    "eslint-config-airbnb": "^12.0.0",
-    "eslint-plugin-import": "^1.16.0",
-    "eslint-plugin-jsx-a11y": "^2.2.2",
-    "eslint-plugin-react": "^6.3.0",
-    "git-url-parse": "^6.0.1",
-    "jsdom": "^9.5.0",
-    "mocha": "^3.0.2",
-    "react": "^16.3.2",
-    "react-addons-test-utils": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "sinon": "^1.17.6"
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.2",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "webpack": "^2.5.1"
   },
   "peerDependencies": {
     "react": "^0.14.7 || ^15.0.0"
