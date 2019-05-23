@@ -1,6 +1,6 @@
 {
   "name": "react-bounding-box",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "React Bounding Box Component",
   "repository": {
     "type": "git",
@@ -47,7 +47,7 @@
     "prop-types": "^15.6.1",
     "seedrandom": "^2.4.3"
   },
-  "main": "dist/index.js",
+  "main": "src/react-bounding-box.js",
   "engines": {
     "npm": "^3.0.0"
   }
