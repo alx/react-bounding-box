@@ -37,7 +37,10 @@ class Boundingbox extends Component {
     const ctx = this.canvas.getContext('2d');
 
     const background = new Image();
-    background.src = this.props.image;
+    background.src = this.props.options.base64Image ?
+      'data:image/png;base64,' + this.props.image
+      :
+      this.props.image;
 
     // Make sure the image is loaded first otherwise nothing will draw.
     background.onload = (() => {
@@ -132,10 +135,16 @@ class Boundingbox extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
     const ctx = this.canvas.getContext('2d');
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
     const background = new Image();
-    background.src = this.props.image;
+    background.src = this.props.options.base64Image ?
+      'data:image/png;base64,' + this.props.image
+      :
+      this.props.image;
+
     ctx.drawImage(background, 0, 0);
     this.setState({ hoverIndex: nextProps.selectedIndex });
     if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
@@ -362,6 +371,7 @@ Boundingbox.propTypes = {
       unselected: PropTypes.string,
     }),
     style: PropTypes.object,
+    base64Image: PropTypes.bool,
   }),
 };
 
@@ -442,6 +452,7 @@ Boundingbox.defaultProps = {
       maxWidth: '100%',
       maxHeight: '90vh',
     },
+    base64Image: false,
   }
 }
 
