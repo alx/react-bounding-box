@@ -83,6 +83,10 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
+### v0.5.2 - 16/12/2019
+
+* Use absolute value to compute width and height from coordinates
+
 ### v0.1.0 - 22/05/2018
 
 * Fix deprecated `React.PropTypes`

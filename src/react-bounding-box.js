@@ -94,10 +94,32 @@ class Boundingbox extends Component {
             const coord = box.coord ? box.coord : box;
 
             let [bx, by, bw, bh] = [0, 0, 0, 0]
-            if (coord.xmin) {
-              [bx, by, bw, bh] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+
+            if (
+              coord.xmin &&
+              coord.xmax &&
+              coord.ymin &&
+              coord.ymax
+            ) {
+
+              // coord is an object containing xmin, xmax, ymin, ymax attributes
+              // width is absolute value of (xmax - xmin)
+              // height is absolute value of (ymax - ymin)
+              // absolute value takes care of various possible referentials:
+              //   - sometimes 0,0 is top-left corner
+              //   - sometimes 0,0 is bottom-left corner
+              [bx, by, bw, bh] = [
+                coord.xmin,
+                coord.ymax,
+                Math.abs(coord.xmax - coord.xmin),
+                Math.abs(coord.ymax - coord.ymin)
+              ];
+
             } else {
+
+              // coord is an array containing [x, y, width, height] values
               [bx, by, bw, bh] = coord;
+
             }
 
             if (x >= bx && x <= bx + bw &&
