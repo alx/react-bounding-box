@@ -126,14 +126,26 @@ var Boundingbox = function (_Component) {
                   bw = 0,
                   bh = 0;
 
-              if (coord.xmin) {
-                var _ref = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+
+              if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
+                var _ref = [coord.xmin, coord.ymax, Math.abs(coord.xmax - coord.xmin), Math.abs(coord.ymax - coord.ymin)];
+
+                // coord is an object containing xmin, xmax, ymin, ymax attributes
+                // width is absolute value of (xmax - xmin)
+                // height is absolute value of (ymax - ymin)
+                // absolute value takes care of various possible referentials:
+                //   - sometimes 0,0 is top-left corner
+                //   - sometimes 0,0 is bottom-left corner
+
                 bx = _ref[0];
                 by = _ref[1];
                 bw = _ref[2];
                 bh = _ref[3];
               } else {
                 var _coord = (0, _slicedToArray3.default)(coord, 4);
+
+                // coord is an array containing [x, y, width, height] values
+
 
                 bx = _coord[0];
                 by = _coord[1];

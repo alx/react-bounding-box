@@ -412,10 +412,32 @@ Boundingbox.defaultProps = {
     const coord = box.coord ? box.coord : box;
 
     let [x, y, width, height] = [0, 0, 0, 0]
-    if (coord.xmin) {
-      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+
+    if (
+      coord.xmin &&
+      coord.xmax &&
+      coord.ymin &&
+      coord.ymax
+    ) {
+
+      // coord is an object containing xmin, xmax, ymin, ymax attributes
+      // width is absolute value of (xmax - xmin)
+      // height is absolute value of (ymax - ymin)
+      // absolute value takes care of various possible referentials:
+      //   - sometimes 0,0 is top-left corner
+      //   - sometimes 0,0 is bottom-left corner
+      [x, y, width, height] = [
+        coord.xmin,
+        coord.ymax,
+        Math.abs(coord.xmax - coord.xmin),
+        Math.abs(coord.ymax - coord.ymin)
+      ];
+
     } else {
+
+      // coord is an array containing [x, y, width, height] values
       [x, y, width, height] = coord;
+
     }
 
     if (x < lineWidth / 2) { x = lineWidth / 2; }
@@ -454,10 +476,32 @@ Boundingbox.defaultProps = {
     const coord = box.coord ? box.coord : box;
 
     let [x, y, width, height] = [0, 0, 0, 0]
-    if (coord.xmin) {
-      [x, y, width, height] = [coord.xmin, coord.ymax, coord.xmax - coord.xmin, coord.ymin - coord.ymax];
+
+    if (
+      coord.xmin &&
+      coord.xmax &&
+      coord.ymin &&
+      coord.ymax
+    ) {
+
+      // coord is an object containing xmin, xmax, ymin, ymax attributes
+      // width is absolute value of (xmax - xmin)
+      // height is absolute value of (ymax - ymin)
+      // absolute value takes care of various possible referentials:
+      //   - sometimes 0,0 is top-left corner
+      //   - sometimes 0,0 is bottom-left corner
+      [x, y, width, height] = [
+        coord.xmin,
+        coord.ymax,
+        Math.abs(coord.xmax - coord.xmin),
+        Math.abs(coord.ymax - coord.ymin)
+      ];
+
     } else {
+
+      // coord is an array containing [x, y, width, height] values
       [x, y, width, height] = coord;
+
     }
 
     ctx.font = '60px Arial';
