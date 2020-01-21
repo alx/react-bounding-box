@@ -83,6 +83,10 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
+### v0.5.4 - 21/01/2020
+
+* FIX: update background width and height after loading a new image
+
 ### v0.5.2 - 16/12/2019
 
 * Use absolute value to compute width and height from coordinates

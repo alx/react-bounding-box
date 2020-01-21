@@ -167,13 +167,19 @@ class Boundingbox extends Component {
       :
       this.props.image;
 
-    ctx.drawImage(background, 0, 0);
-    this.setState({ hoverIndex: nextProps.selectedIndex });
-    if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
-      this.setState({
-        isSegmented: false
-      });
-    }
+    background.onload = (() => {
+      this.canvas.width = background.width;
+      this.canvas.height = background.height;
+
+      ctx.drawImage(background, 0, 0);
+      this.setState({ hoverIndex: nextProps.selectedIndex });
+      if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
+        this.setState({
+          isSegmented: false
+        });
+      }
+    });
+
     return true;
   }
 
