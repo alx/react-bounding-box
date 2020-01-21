@@ -191,9 +191,11 @@ class Boundingbox extends Component {
 
         const backgroundData = backgroundContext.getImageData(0, 0, width, height);
 
-        const isDataDiff = ctxData.some((data, i) => {
-          return backgroundData[i] !== data;
-        })
+        var isDataDiff = false,
+            length = ctxData.length,
+            i;
+
+        for (i = length; i--;) if (ctxData[i] !== backgroundData[i]) isDataDiff = true;
 
         if(isDataDiff) {
           // Not same data, redraw new image
