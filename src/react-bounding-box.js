@@ -168,17 +168,55 @@ class Boundingbox extends Component {
       this.props.image;
 
     background.onload = (() => {
-      this.canvas.width = background.width;
-      this.canvas.height = background.height;
 
-      ctx.drawImage(background, 0, 0);
-      this.setState({ hoverIndex: nextProps.selectedIndex });
-      if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
-        this.setState({
-          isSegmented: false
-        });
+      const { width, height } = background;
+
+      const isSameDimension =
+            this.canvas.width === width &&
+            this.canvas.height === height;
+
+      if(isSameDimension) {
+
+        // image has same dimension, but does it contains same data ?
+
+        const ctxData = ctx.getImageData(0, 0, width, height);
+
+        const backgroundCanvas = document.createElement('canvas');
+        backgroundCanvas.width = width;
+        backgroundCanvas.height = height;
+
+        const backgroundContext = backgroundCanvas.getContext('2d');
+        backgroundContext.clearRect(0, 0, width, height);
+        backgroundContext.drawImage(background, 0, 0);
+
+        const backgroundData = backgroundContext.getImageData(0, 0, width, height);
+
+        const isDataDiff = ctxData.some((data, i) => {
+          return backgroundData[i] !== data;
+        })
+
+        if(isDataDiff) {
+          // Not same data, redraw new image
+          this.canvas.width = background.width;
+          this.canvas.height = background.height;
+          ctx.drawImage(background, 0, 0);
+        }
+
+      } else {
+        // Not same dimension, redraw new image
+        this.canvas.width = background.width;
+        this.canvas.height = background.height;
+        ctx.drawImage(background, 0, 0);
       }
+
     });
+
+    this.setState({ hoverIndex: nextProps.selectedIndex });
+    if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
+      this.setState({
+        isSegmented: false
+      });
+    }
 
     return true;
   }

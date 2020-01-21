@@ -83,6 +83,10 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
+### v0.5.5 - 21/01/2020
+
+* FIX: check new image dimension and data before to redraw it in canvas
+
 ### v0.5.4 - 21/01/2020
 
 * FIX: update background width and height after loading a new image
