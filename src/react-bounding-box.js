@@ -158,60 +158,32 @@ class Boundingbox extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    const ctx = this.canvas.getContext('2d');
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    //
+    // Canvas redraw can be forced with nextProps.redraw property
+    //
+    // It helps with image gallery where sometimes you want to load a new image
+    // and other times you just want to update the selected bounding box
+    //
+    if( typeof nextProps.forceRedraw === 'undefined' || nextProps.forceRedraw) {
 
-    const background = new Image();
-    background.src = this.props.options.base64Image ?
-      'data:image/png;base64,' + this.props.image
-      :
-      this.props.image;
+      const ctx = this.canvas.getContext('2d');
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    background.onload = (() => {
+      const background = new Image();
+      background.src = this.props.options.base64Image ?
+        'data:image/png;base64,' + this.props.image
+        :
+        this.props.image;
 
-      const { width, height } = background;
+      background.onload = (() => {
 
-      const isSameDimension =
-            this.canvas.width === width &&
-            this.canvas.height === height;
-
-      if(isSameDimension) {
-
-        // image has same dimension, but does it contains same data ?
-
-        const ctxData = ctx.getImageData(0, 0, width, height);
-
-        const backgroundCanvas = document.createElement('canvas');
-        backgroundCanvas.width = width;
-        backgroundCanvas.height = height;
-
-        const backgroundContext = backgroundCanvas.getContext('2d');
-        backgroundContext.clearRect(0, 0, width, height);
-        backgroundContext.drawImage(background, 0, 0);
-
-        const backgroundData = backgroundContext.getImageData(0, 0, width, height);
-
-        var isDataDiff = false,
-            length = ctxData.length,
-            i;
-
-        for (i = length; i--;) if (ctxData[i] !== backgroundData[i]) isDataDiff = true;
-
-        if(isDataDiff) {
-          // Not same data, redraw new image
           this.canvas.width = background.width;
           this.canvas.height = background.height;
           ctx.drawImage(background, 0, 0);
-        }
 
-      } else {
-        // Not same dimension, redraw new image
-        this.canvas.width = background.width;
-        this.canvas.height = background.height;
-        ctx.drawImage(background, 0, 0);
-      }
+      });
 
-    });
+    }
 
     this.setState({ hoverIndex: nextProps.selectedIndex });
     if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {

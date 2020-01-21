@@ -83,6 +83,10 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
+### v0.5.7 - 21/01/2020
+
+* FIX: use props.forceRedraw property to redraw canvas
+
 ### v0.5.6 - 21/01/2020
 
 * FIX: replace array.some() method by classic for() loop
