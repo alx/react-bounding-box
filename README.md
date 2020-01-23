@@ -83,6 +83,10 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
+### v0.5.8 - 23/01/2020
+
+* FIX: only resize canvas when loaded image change dimensions
+
 ### v0.5.7 - 21/01/2020
 
 * FIX: use props.forceRedraw property to redraw canvas
