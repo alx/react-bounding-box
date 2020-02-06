@@ -1411,16 +1411,19 @@ var Boundingbox = function (_Component) {
         if (_this3.canvas.width !== background.width && _this3.canvas.height !== background.height) {
           _this3.canvas.width = background.width;
           _this3.canvas.height = background.height;
+          ctx.drawImage(background, 0, 0);
         }
       };
 
       ctx.drawImage(background, 0, 0);
 
       this.setState({ hoverIndex: nextProps.selectedIndex });
-      if (nextProps.pixelSegmentation || nextProps.segmentationMasks) {
-        this.setState({
-          isSegmented: false
-        });
+
+      var hasSegmentedProps = nextProps.pixelSegmentation && nextProps.pixelSegmentation.length > 0;
+
+      if (hasSegmentedProps) {
+        this.setState({ isSegmented: false });
+        this.renderSegmentation(nextProps.pixelSegmentation);
       }
 
       return true;

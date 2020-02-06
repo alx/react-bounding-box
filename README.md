@@ -83,24 +83,20 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
-### v0.5.8 - 23/01/2020
+### v0.5.10 - 26/02/2020
 
+* FIX: segmentation is redrawn when nextProps.pixelSegmentation is updated
+
+### v0.5.9 - 23/01/2020
+
+* FIX: add missing redraw when resizing canvas after loading a new image
 * FIX: only resize canvas when loaded image change dimensions
 
 ### v0.5.7 - 21/01/2020
 
 * FIX: use props.forceRedraw property to redraw canvas
-
-### v0.5.6 - 21/01/2020
-
 * FIX: replace array.some() method by classic for() loop
-
-### v0.5.5 - 21/01/2020
-
 * FIX: check new image dimension and data before to redraw it in canvas
-
-### v0.5.4 - 21/01/2020
-
 * FIX: update background width and height after loading a new image
 
 ### v0.5.2 - 16/12/2019

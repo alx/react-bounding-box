@@ -177,6 +177,7 @@ class Boundingbox extends Component {
       ) {
         this.canvas.width = background.width;
         this.canvas.height = background.height;
+        ctx.drawImage(background, 0, 0);
       }
 
     });
@@ -184,10 +185,13 @@ class Boundingbox extends Component {
     ctx.drawImage(background, 0, 0);
 
     this.setState({ hoverIndex: nextProps.selectedIndex });
-    if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
-      this.setState({
-        isSegmented: false
-      });
+
+    const hasSegmentedProps = nextProps.pixelSegmentation &&
+       nextProps.pixelSegmentation.length > 0;
+
+    if(hasSegmentedProps) {
+      this.setState({isSegmented: false});
+      this.renderSegmentation(nextProps.pixelSegmentation);
     }
 
     return true;
