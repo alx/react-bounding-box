@@ -83,7 +83,12 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
-### v0.5.10 - 26/02/2020
+### v0.5.12 - 13/02/2020
+
+* FIX: Image is not redrawn on update 
+  [#15](https://github.com/alx/react-bounding-box/issues/15) - Thanks [@testower](https://github.com/testower)
+
+### v0.5.10 - 26/01/2020
 
 * FIX: segmentation is redrawn when nextProps.pixelSegmentation is updated
 
