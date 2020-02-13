@@ -158,38 +158,42 @@ class Boundingbox extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    //
-    // Canvas redraw can be forced with nextProps.redraw property
-    //
-    // It helps with image gallery where sometimes you want to load a new image
-    // and other times you just want to update the selected bounding box
-    //
-    if( typeof nextProps.forceRedraw === 'undefined' || nextProps.forceRedraw) {
+    const ctx = this.canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-      const ctx = this.canvas.getContext('2d');
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const background = new Image();
+    background.src = nextProps.options.base64Image ?
+      'data:image/png;base64,' + this.props.image
+      :
+      nextProps.image;
 
-      const background = new Image();
-      background.src = this.props.options.base64Image ?
-        'data:image/png;base64,' + this.props.image
-        :
-        this.props.image;
+    // Check canvas dimension with loaded image dimension
+    // in order to change canvas dimension if needed
+    background.onload = (() => {
 
-      background.onload = (() => {
+      if(
+        this.canvas.width !== background.width &&
+        this.canvas.height !== background.height
+      ) {
+        this.canvas.width = background.width;
+        this.canvas.height = background.height;
+        ctx.drawImage(background, 0, 0);
+        this.renderBoxes(nextProps.boxes);
+      }
 
-          this.canvas.width = background.width;
-          this.canvas.height = background.height;
-          ctx.drawImage(background, 0, 0);
+    });
 
-      });
-
-    }
+    ctx.drawImage(background, 0, 0);
+    this.renderBoxes(nextProps.boxes);
 
     this.setState({ hoverIndex: nextProps.selectedIndex });
-    if(nextProps.pixelSegmentation || nextProps.segmentationMasks) {
-      this.setState({
-        isSegmented: false
-      });
+
+    const hasSegmentedProps = nextProps.pixelSegmentation &&
+       nextProps.pixelSegmentation.length > 0;
+
+    if(hasSegmentedProps) {
+      this.setState({isSegmented: false});
+      this.renderSegmentation(nextProps.pixelSegmentation);
     }
 
     return true;
@@ -253,7 +257,11 @@ class Boundingbox extends Component {
     if(box.label) { this.props.drawLabel(this.canvas, box) };
   }
 
-  renderBoxes() {
+  renderBoxes(boxes) {
+
+    if(typeof boxes === 'undefined')
+      boxes = this.props.boxes;
+
     if(this.props.boxes &&
        this.props.boxes.length > 0) {
 
