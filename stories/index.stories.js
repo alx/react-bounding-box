@@ -16,7 +16,23 @@ import segmentationJson from './static/segmentation.json';
 import segmentationMasksJson from './static/segmentationMasks.json';
 import segmentationMasksBoxesJson from './static/segmentationMasksBoxes.json';
 
+import { withState, Store } from '@sambego/storybook-state';
+
+const store = new Store({
+  index: 0,
+  images: [
+    demoImage,
+    demoImageLarge,
+    demoImageDog
+  ],
+  boxes: [
+    [0, 0, 250, 250],
+  ]
+});
+
 storiesOf('Boundingbox', module)
+  .addDecorator(withState())
+  .addParameters({ state: { store } })
   .add('default view', () => {
     const params = {
       image: demoImageLarge,
@@ -67,12 +83,6 @@ storiesOf('Boundingbox', module)
     return (<Boundingbox
       image={params.image}
       boxes={params.boxes}
-    />);
-  })
-  .add('pixel segmentation', () => {
-    return (<Boundingbox
-      image={demoImage}
-      pixelSegmentation={segmentationJson.body.predictions[0].vals}
     />);
   })
   .add('pixel segmentation', () => {
@@ -135,4 +145,21 @@ storiesOf('Boundingbox', module)
       boxes={segmentationMasksBoxesJson}
       separateSegmentation={true}
     />);
-  });
+  })
+  .add('redraw image', () => state => [
+      <button onClick={() => {
+        store.set({index: 0})
+      }}>demoImage</button>,
+      <button onClick={() => {
+        store.set({index: 1})
+      }}>demoImageLarge</button>,
+      <button onClick={() => {
+        console.log('click')
+        store.set({index: 2})
+      }}>demoImageDog</button>,
+      <p>current index: {state.index}</p>,
+      <Boundingbox
+        image={state.images[state.index]}
+        boxes={state.boxes}
+      />
+   ]);
