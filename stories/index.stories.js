@@ -26,7 +26,15 @@ const store = new Store({
     demoImageDog
   ],
   boxes: [
-    [0, 0, 250, 250],
+    [
+      [0, 0, 250, 250]
+    ],
+    [
+      [50, 50, 250, 250]
+    ],
+    [
+      [100, 100, 250, 250]
+    ]
   ]
 });
 
@@ -147,19 +155,19 @@ storiesOf('Boundingbox', module)
     />);
   })
   .add('redraw image', () => state => [
-      <button onClick={() => {
+      <button key='btn-demoImage' onClick={() => {
         store.set({index: 0})
       }}>demoImage</button>,
-      <button onClick={() => {
+      <button key='btn-demoImageLarge' onClick={() => {
         store.set({index: 1})
       }}>demoImageLarge</button>,
-      <button onClick={() => {
-        console.log('click')
+      <button key='btn-demoImageDog' onClick={() => {
         store.set({index: 2})
       }}>demoImageDog</button>,
-      <p>current index: {state.index}</p>,
+      <p key='current-index'>current index: {state.index}</p>,
       <Boundingbox
+        key='bounding-box'
         image={state.images[state.index]}
-        boxes={state.boxes}
+        boxes={state.boxes[state.index]}
       />
    ]);

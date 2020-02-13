@@ -162,10 +162,10 @@ class Boundingbox extends Component {
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     const background = new Image();
-    background.src = this.props.options.base64Image ?
+    background.src = nextProps.options.base64Image ?
       'data:image/png;base64,' + this.props.image
       :
-      this.props.image;
+      nextProps.image;
 
     // Check canvas dimension with loaded image dimension
     // in order to change canvas dimension if needed
@@ -178,11 +178,13 @@ class Boundingbox extends Component {
         this.canvas.width = background.width;
         this.canvas.height = background.height;
         ctx.drawImage(background, 0, 0);
+        this.renderBoxes(nextProps.boxes);
       }
 
     });
 
     ctx.drawImage(background, 0, 0);
+    this.renderBoxes(nextProps.boxes);
 
     this.setState({ hoverIndex: nextProps.selectedIndex });
 
@@ -255,7 +257,11 @@ class Boundingbox extends Component {
     if(box.label) { this.props.drawLabel(this.canvas, box) };
   }
 
-  renderBoxes() {
+  renderBoxes(boxes) {
+
+    if(typeof boxes === 'undefined')
+      boxes = this.props.boxes;
+
     if(this.props.boxes &&
        this.props.boxes.length > 0) {
 
