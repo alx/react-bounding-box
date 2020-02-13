@@ -1402,7 +1402,7 @@ var Boundingbox = function (_Component) {
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
       var background = new Image();
-      background.src = this.props.options.base64Image ? 'data:image/png;base64,' + this.props.image : this.props.image;
+      background.src = nextProps.options.base64Image ? 'data:image/png;base64,' + this.props.image : nextProps.image;
 
       // Check canvas dimension with loaded image dimension
       // in order to change canvas dimension if needed
@@ -1412,10 +1412,12 @@ var Boundingbox = function (_Component) {
           _this3.canvas.width = background.width;
           _this3.canvas.height = background.height;
           ctx.drawImage(background, 0, 0);
+          _this3.renderBoxes(nextProps.boxes);
         }
       };
 
       ctx.drawImage(background, 0, 0);
+      this.renderBoxes(nextProps.boxes);
 
       this.setState({ hoverIndex: nextProps.selectedIndex });
 
@@ -1494,8 +1496,10 @@ var Boundingbox = function (_Component) {
     }
   }, {
     key: 'renderBoxes',
-    value: function renderBoxes() {
+    value: function renderBoxes(boxes) {
       var _this4 = this;
+
+      if (typeof boxes === 'undefined') boxes = this.props.boxes;
 
       if (this.props.boxes && this.props.boxes.length > 0) {
 
