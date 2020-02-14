@@ -15,6 +15,7 @@ import demoImageDog from './static/dog.jpg';
 import segmentationJson from './static/segmentation.json';
 import segmentationMasksJson from './static/segmentationMasks.json';
 import segmentationMasksBoxesJson from './static/segmentationMasksBoxes.json';
+import boxesBorderZeroJson from './static/boxesBorderZero.json';
 
 import { withState, Store } from '@sambego/storybook-state';
 
@@ -152,6 +153,12 @@ storiesOf('Boundingbox', module)
       segmentationMasks={segmentationMasksJson}
       boxes={segmentationMasksBoxesJson}
       separateSegmentation={true}
+    />);
+  })
+  .add('border on zero value', () => {
+    return (<Boundingbox
+      image={demoImageDog}
+      boxes={boxesBorderZeroJson}
     />);
   })
   .add('redraw image', () => state => [

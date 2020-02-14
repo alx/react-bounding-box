@@ -96,10 +96,10 @@ class Boundingbox extends Component {
             let [bx, by, bw, bh] = [0, 0, 0, 0]
 
             if (
-              coord.xmin &&
-              coord.xmax &&
-              coord.ymin &&
-              coord.ymax
+              typeof coord.xmin !== 'undefined' &&
+              typeof coord.xmax !== 'undefined' &&
+              typeof coord.ymin !== 'undefined' &&
+              typeof coord.ymax !== 'undefined'
             ) {
 
               // coord is an object containing xmin, xmax, ymin, ymax attributes
@@ -440,10 +440,10 @@ Boundingbox.defaultProps = {
     let [x, y, width, height] = [0, 0, 0, 0]
 
     if (
-      coord.xmin &&
-      coord.xmax &&
-      coord.ymin &&
-      coord.ymax
+      typeof coord.xmin !== 'undefined' &&
+      typeof coord.xmax !== 'undefined' &&
+      typeof coord.ymin !== 'undefined' &&
+      typeof coord.ymax !== 'undefined'
     ) {
 
       // coord is an object containing xmin, xmax, ymin, ymax attributes
@@ -504,10 +504,10 @@ Boundingbox.defaultProps = {
     let [x, y, width, height] = [0, 0, 0, 0]
 
     if (
-      coord.xmin &&
-      coord.xmax &&
-      coord.ymin &&
-      coord.ymax
+      typeof coord.xmin !== 'undefined' &&
+      typeof coord.xmax !== 'undefined' &&
+      typeof coord.ymin !== 'undefined' &&
+      typeof coord.ymax !== 'undefined'
     ) {
 
       // coord is an object containing xmin, xmax, ymin, ymax attributes
