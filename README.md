@@ -83,11 +83,13 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
-### v0.5.13 - 13/02/2020
+### v0.5.14 - 14/02/2020
 
-* FIX: update `minimatch` and `serialize-javascript` dependencies - [@dependabot](https://github.com/dependabot)
 * FIX: Image is not redrawn on update 
   [#15](https://github.com/alx/react-bounding-box/issues/15) - Thanks [@testower](https://github.com/testower)
+* FIX: display boxes when xmin/ymin on 0 value
+* FIX: split storybook stories to use state outside component
+* FIX: update `minimatch` and `serialize-javascript` dependencies - [@dependabot](https://github.com/dependabot)
 
 ### v0.5.10 - 26/01/2020
 
