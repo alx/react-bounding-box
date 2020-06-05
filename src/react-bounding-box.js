@@ -422,6 +422,7 @@ Boundingbox.propTypes = {
 
 Boundingbox.defaultProps = {
 
+  boxes: [],
   separateSegmentation: false,
   segmentationTransparency: 190,
   onSelected() {},
