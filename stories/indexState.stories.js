@@ -10,8 +10,11 @@ import demoImageDog from './static/dog.jpg';
 
 import { withState, Store } from '@sambego/storybook-state';
 
+import segmentationJson from './static/segmentation.json';
+
 const store = new Store({
   index: 0,
+  isSegmentation: false,
   images: [
     demoImage,
     demoImageLarge,
@@ -27,6 +30,11 @@ const store = new Store({
     [
       [100, 100, 250, 250]
     ]
+  ],
+  segmentations: [
+    segmentationJson.body.predictions[0].vals,
+    [],
+    []
   ]
 });
 
@@ -49,4 +57,15 @@ storiesOf('Boundingbox with State', module)
         image={state.images[state.index]}
         boxes={state.boxes[state.index]}
       />
+   ])
+  .add('switch segmentation/bounding boxes', () => state => [
+    <p>Segmentation is <b>{state.isSegmentation ? 'On' : 'Off'}</b></p>,
+    <button key='btn-toggleSegmentation' onClick={() => {
+      store.set({isSegmentation: !state.isSegmentation})
+    }}>Toggle Segmentation</button>,
+    <Boundingbox
+      image={state.images[0]}
+      boxes={state.isSegmentation ? [] : state.boxes[0]}
+      pixelSegmentation={state.isSegmentation ? state.segmentations[0] : []}
+    />
    ]);
