@@ -260,7 +260,10 @@ class Boundingbox extends Component {
   renderBoxes(boxes) {
 
     if(typeof boxes === 'undefined')
-      boxes = this.props.boxes || [];
+      boxes = this.props.boxes;
+
+    if(boxes === null)
+      boxes = []
 
     boxes
       .map((box, index) => {
