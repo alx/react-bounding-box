@@ -1401,6 +1401,12 @@ var Boundingbox = function (_Component) {
       var ctx = this.canvas.getContext('2d');
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+      if (this.segCanvas) {
+        // Clean segCanvas when receiving new props
+        var segCtx = this.segCanvas.getContext('2d');
+        segCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
       var background = new Image();
       background.src = nextProps.options.base64Image ? 'data:image/png;base64,' + this.props.image : nextProps.image;
 
