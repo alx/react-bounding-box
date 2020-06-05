@@ -1499,7 +1499,9 @@ var Boundingbox = function (_Component) {
     value: function renderBoxes(boxes) {
       var _this4 = this;
 
-      if (typeof boxes === 'undefined') boxes = this.props.boxes || [];
+      if (typeof boxes === 'undefined') boxes = this.props.boxes;
+
+      if (boxes === null) boxes = [];
 
       boxes.map(function (box, index) {
         var selected = index === _this4.state.hoverIndex;
