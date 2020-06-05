@@ -260,21 +260,18 @@ class Boundingbox extends Component {
   renderBoxes(boxes) {
 
     if(typeof boxes === 'undefined')
-      boxes = this.props.boxes;
+      boxes = this.props.boxes || [];
 
-    if(this.props.boxes &&
-       this.props.boxes.length > 0) {
+    boxes
+      .map((box, index) => {
+        const selected = index === this.state.hoverIndex;
+        return { box, index, selected };
+      })
+      .sort((a) => {
+        return a.selected ? 1 : -1;
+      })
+      .forEach(box => this.renderBox(box.box, box.index));
 
-      this.props.boxes
-        .map((box, index) => {
-          const selected = index === this.state.hoverIndex;
-          return { box, index, selected };
-        })
-        .sort((a) => {
-          return a.selected ? 1 : -1;
-        })
-        .forEach(box => this.renderBox(box.box, box.index));
-    }
   }
 
   renderSegmentation(segmentation) {
