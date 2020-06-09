@@ -83,6 +83,14 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ## Changelog
 
+### v0.5.19 - 09/06/2020
+
+* fix: disable pointer-events on segmentation canvas
+* fix: clean segCanvas when receiving new props
+* fix: check null on this.props.boxes in renderBoxes
+* fix: set boxes as empty array by default
+* fix: remove unused backup file
+
 ### v0.5.14 - 14/02/2020
 
 * FIX: Image is not redrawn on update 
