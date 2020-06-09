@@ -109,10 +109,10 @@ class Boundingbox extends Component {
               //   - sometimes 0,0 is top-left corner
               //   - sometimes 0,0 is bottom-left corner
               [bx, by, bw, bh] = [
-                coord.xmin,
-                coord.ymax,
-                Math.abs(coord.xmax - coord.xmin),
-                Math.abs(coord.ymax - coord.ymin)
+                Math.min(coord.xmin, coord.xmax),
+                Math.min(coord.ymin, coord.ymax),
+                Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
+                Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
               ];
 
             } else {
@@ -461,10 +461,10 @@ Boundingbox.defaultProps = {
       //   - sometimes 0,0 is top-left corner
       //   - sometimes 0,0 is bottom-left corner
       [x, y, width, height] = [
-        coord.xmin,
-        coord.ymax,
-        Math.abs(coord.xmax - coord.xmin),
-        Math.abs(coord.ymax - coord.ymin)
+        Math.min(coord.xmin, coord.xmax),
+        Math.min(coord.ymin, coord.ymax),
+        Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
+        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
       ];
 
     } else {
@@ -525,10 +525,10 @@ Boundingbox.defaultProps = {
       //   - sometimes 0,0 is top-left corner
       //   - sometimes 0,0 is bottom-left corner
       [x, y, width, height] = [
-        coord.xmin,
-        coord.ymax,
-        Math.abs(coord.xmax - coord.xmin),
-        Math.abs(coord.ymax - coord.ymin)
+        Math.min(coord.xmin, coord.xmax),
+        Math.min(coord.ymin, coord.ymax),
+        Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
+        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
       ];
 
     } else {
