@@ -11,11 +11,14 @@ import Boundingbox from '../src/react-bounding-box';
 import demoImage from './static/image.jpg';
 import demoImageLarge from './static/imageLarge.png';
 import demoImageDog from './static/dog.jpg';
+import demoImageAgeReal from './static/age_real.png';
 
 import segmentationJson from './static/segmentation.json';
 import segmentationMasksJson from './static/segmentationMasks.json';
 import segmentationMasksBoxesJson from './static/segmentationMasksBoxes.json';
+
 import boxesBorderZeroJson from './static/boxesBorderZero.json';
+import boxesAgeReal from './static/boxesAgeReal.json';
 
 storiesOf('Boundingbox', module)
   .add('default view', () => {
@@ -33,6 +36,25 @@ storiesOf('Boundingbox', module)
     return (<Boundingbox
       image={params.image}
       boxes={params.boxes}
+    />);
+  })
+  .add('default view - xmin/max coord', () => {
+    const params = {
+      image: demoImageLarge,
+      boxes: [
+        {xmin: 0, ymin: 0, xmax: 50, ymax: 50},
+        {xmin: 100, ymin: 100, xmax: 200, ymax: 200}
+      ],
+    };
+    return (<Boundingbox
+      image={params.image}
+      boxes={params.boxes}
+    />);
+  })
+  .add('default view - Age Real', () => {
+    return (<Boundingbox
+      image={demoImageAgeReal}
+      boxes={boxesAgeReal}
     />);
   })
   .add('box selection', () => {
