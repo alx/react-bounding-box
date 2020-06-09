@@ -392,7 +392,7 @@ class Boundingbox extends Component {
       { this.props.separateSegmentation ?
         <canvas
           className="boundingSegmentationCanvas"
-          style={this.props.options.style}
+          style={this.props.options.styleSegmentation}
           ref={(canvas) => {
             this.segCanvas = canvas;
           }}
@@ -425,6 +425,7 @@ Boundingbox.propTypes = {
       unselected: PropTypes.string,
     }),
     style: PropTypes.object,
+    styleSegmentation: PropTypes.object,
     base64Image: PropTypes.bool,
   }),
 };
@@ -550,6 +551,11 @@ Boundingbox.defaultProps = {
     style: {
       maxWidth: '100%',
       maxHeight: '90vh',
+    },
+    styleSegmentation: {
+      maxWidth: '100%',
+      maxHeight: '90vh',
+      pointerEvents: 'none',
     },
     base64Image: false,
   }
