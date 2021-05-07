@@ -424,6 +424,7 @@ Boundingbox.propTypes = {
       selected: PropTypes.string,
       unselected: PropTypes.string,
     }),
+    shape: PropTypes.string,
     style: PropTypes.object,
     styleSegmentation: PropTypes.object,
     base64Image: PropTypes.bool,
@@ -480,25 +481,38 @@ Boundingbox.defaultProps = {
     if ((x + width) > canvas.width) { width = canvas.width - lineWidth - x; }
     if ((y + height) > canvas.height) { height = canvas.height - lineWidth - y; }
 
-    // Left segment
-    const tenPercent = width / 10;
-    const ninetyPercent = 9 * tenPercent;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
-    ctx.beginPath();
-    ctx.moveTo(x + tenPercent, y);
-    ctx.lineTo(x, y);
-    ctx.lineTo(x, y + height);
-    ctx.lineTo(x + tenPercent, y + height);
-    ctx.stroke();
+    if(this.props.options.shape === 'rectangle'){
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+      ctx.beginPath();
+      ctx.moveTo(x + width, y);
+      ctx.lineTo(x, y);
+      ctx.lineTo(x, y + height);
+      ctx.lineTo(x + width, y + height);
+      ctx.lineTo(x + width, y);
+      ctx.stroke();
+    }else {
+      // Left segment
+      const tenPercent = width / 10;
+      const ninetyPercent = 9 * tenPercent;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+      ctx.beginPath();
+      ctx.moveTo(x + tenPercent, y);
+      ctx.lineTo(x, y);
+      ctx.lineTo(x, y + height);
+      ctx.lineTo(x + tenPercent, y + height);
+      ctx.stroke();
 
-    // Right segment
-    ctx.beginPath();
-    ctx.moveTo(x + ninetyPercent, y);
-    ctx.lineTo(x + width, y);
-    ctx.lineTo(x + width, y + height);
-    ctx.lineTo(x + ninetyPercent, y + height);
-    ctx.stroke();
+      // Right segment
+      ctx.beginPath();
+      ctx.moveTo(x + ninetyPercent, y);
+      ctx.lineTo(x + width, y);
+      ctx.lineTo(x + width, y + height);
+      ctx.lineTo(x + ninetyPercent, y + height);
+      ctx.stroke();
+    }
+    
   },
   drawLabel(canvas, box) {
 
@@ -558,6 +572,7 @@ Boundingbox.defaultProps = {
       pointerEvents: 'none',
     },
     base64Image: false,
+    shape: 'rectangle',
   }
 }
 
