@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+*.min.js
+package-lock.json
+.scripts
+stories/static
+public
