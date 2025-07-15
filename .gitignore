@@ -1,3 +1,5 @@
 node_modules
 *.log
 .idea
+CLAUDE.md
+plan.md
