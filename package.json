@@ -32,9 +32,9 @@
     "release": "npm version patch && git push --follow-tags",
     "release:minor": "npm version minor && git push --follow-tags",
     "release:major": "npm version major && git push --follow-tags",
-    "storybook": "start-storybook -p 6006 -s ./stories",
+    "storybook": "storybook dev -p 6006",
     "publish-storybook": "bash .scripts/publish_storybook.sh",
-    "build-storybook": "build-storybook -o storybook-static"
+    "build-storybook": "storybook build -o storybook-static"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
@@ -43,14 +43,13 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@eslint/js": "^9.31.0",
+    "@storybook/addon-docs": "^8.3.6",
+    "@storybook/addon-links": "^8.3.6",
+    "@storybook/react": "^8.3.6",
+    "@storybook/react-webpack5": "^8.3.6",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^14.3.1",
     "@testing-library/react-hooks": "^8.0.1",
-    "@storybook/react": "^6.5.16",
-    "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/addons": "^6.5.16",
-    "@sambego/storybook-state": "^2.0.1",
     "@types/jest": "^29.5.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
@@ -58,6 +57,7 @@
     "audit-ci": "^7.1.0",
     "babel-loader": "^9.2.1",
     "eslint": "^8.57.1",
+    "eslint-plugin-storybook": "9.0.17",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-canvas-mock": "^2.5.2",
@@ -66,6 +66,7 @@
     "prettier": "^3.6.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "storybook": "^8.3.6",
     "typescript": "^5.0.0",
     "webpack": "^5.100.1",
     "webpack-bundle-analyzer": "^4.10.0",
@@ -76,6 +77,8 @@
     "react": ">=16.8.0"
   },
   "dependencies": {
+    "@storybook/addon-actions": "^8.3.6",
+    "@storybook/blocks": "^8.3.6",
     "prop-types": "^15.6.1",
     "seedrandom": "^2.4.3"
   },

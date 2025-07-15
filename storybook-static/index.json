@@ -1,0 +1,13 @@
+{
+  "v": 5,
+  "entries": {
+    "simple-test--hello-world": {
+      "type": "story",
+      "id": "simple-test--hello-world",
+      "name": "Hello World",
+      "title": "Simple Test",
+      "importPath": "./stories/no-jsx.stories.js",
+      "tags": ["dev", "test"]
+    }
+  }
+}

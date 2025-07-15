@@ -80,6 +80,9 @@ export interface UseImageLoaderReturn {
   loadImage: (src: string) => Promise<HTMLImageElement>;
   loadingState: Record<string, 'loading' | 'loaded' | 'error'>;
   imageCache: Map<string, HTMLImageElement>;
+  preloadImages: (urls: string[]) => Promise<HTMLImageElement[]>;
+  clearCache: () => void;
+  removeFromCache: (src: string) => void;
 }
 
 export interface UseMouseInteractionConfig {
@@ -93,7 +96,10 @@ export interface UseMouseInteractionReturn {
   hoveredIndex: number;
   handleMouseMove: (event: React.MouseEvent<HTMLCanvasElement>) => void;
   handleMouseOut: () => void;
+  handleCanvasClick: (event: React.MouseEvent<HTMLCanvasElement>) => void;
   selectBox: (index: number) => void;
+  clearSelection: () => void;
+  getCurrentBox: () => BoundingBox | null;
 }
 
 export interface UseSegmentationConfig {
@@ -109,6 +115,10 @@ export interface UseSegmentationReturn {
   segmentColors: Map<number, [number, number, number]>;
   renderSegmentation: (canvasRef: React.RefObject<HTMLCanvasElement>) => void;
   generateSegmentColor: (classIndex: number) => [number, number, number];
+  loadSegmentationFromUrl: (url: string) => Promise<number[]>;
+  clearSegmentation: () => void;
+  getSegmentationStats: () => { totalPixels: number; uniqueClasses: number; classCounts: { [key: string]: number }; backgroundPixels: number } | null;
+  isProcessing: boolean;
 }
 
 export interface UseBoundingBoxConfig {
@@ -116,7 +126,7 @@ export interface UseBoundingBoxConfig {
   boxes: BoundingBox[];
   options?: Partial<BoundingBoxOptions>;
   segmentation?: UseSegmentationConfig;
-  onSelection?: (index: number, box: BoundingBox) => void;
+  onSelection?: (index: number) => void;
 }
 
 export interface UseBoundingBoxReturn {
@@ -127,8 +137,13 @@ export interface UseBoundingBoxReturn {
   isLoading: boolean;
   error: string | null;
   selectBox: (index: number) => void;
+  clearSelection: () => void;
+  getCurrentBox: () => BoundingBox | null;
   renderBoxes: () => void;
   renderSegmentation: () => void;
+  handleMouseMove: (event: React.MouseEvent<HTMLCanvasElement>) => void;
+  handleMouseOut: (event: React.MouseEvent<HTMLCanvasElement>) => void;
+  handleCanvasClick: (event: React.MouseEvent<HTMLCanvasElement>) => void;
 }
 
 // Utility types

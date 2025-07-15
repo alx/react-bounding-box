@@ -115,7 +115,7 @@ export const findSmallestContainingBox = (
   y: number,
   boxes: BoundingBox[]
 ): { index: number; box: BoundingBox } | null => {
-  let smallestBox: { index: number; box: BoundingBox; area: number } | null = null;
+  let smallestBox: { index: number; box: BoundingBox; area: number } | undefined;
 
   boxes.forEach((box, index) => {
     if (isPointInBox(x, y, box)) {

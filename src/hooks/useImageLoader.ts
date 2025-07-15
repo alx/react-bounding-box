@@ -50,7 +50,9 @@ export const useImageLoader = (): UseImageLoaderReturn => {
       // Manage cache size
       if (imageCache.current.size >= IMAGE_CACHE_MAX_SIZE) {
         const firstKey = imageCache.current.keys().next().value;
-        imageCache.current.delete(firstKey);
+        if (firstKey) {
+          imageCache.current.delete(firstKey);
+        }
       }
       
       // Cache the loaded image
