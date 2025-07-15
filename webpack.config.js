@@ -1,61 +1,68 @@
-"use strict";
+const path = require('path');
+const webpack = require('webpack');
 
-var webpack = require("webpack");
-
-var plugins = [
-  new webpack.EnvironmentPlugin({
-    NODE_ENV: "development",
-  }),
-];
-
-if (process.env.NODE_ENV === "production") {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        screw_ie8: true,
+module.exports = (env, argv) => {
+  const isProduction = argv.mode === 'production';
+  
+  return {
+    mode: isProduction ? 'production' : 'development',
+    entry: './src/react-bounding-box.js',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'react-bounding-box.js',
+      library: {
+        name: 'Boundingbox',
+        type: 'umd',
+        export: 'default'
       },
-      sourceMap: true,
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-    }),
-  );
-}
-
-module.exports = {
-  externals: [
-    {
-      react: {
-        root: "React",
-        commonjs2: "react",
-        commonjs: "react",
-        amd: "react",
-      },
-      "react-dom": {
-        root: "ReactDOM",
-        commonjs2: "react-dom",
-        commonjs: "react-dom",
-        amd: "react-dom",
-      },
-      "prop-types": {
-        root: "PropTypes",
-        commonjs2: "prop-types",
-        commonjs: "prop-types",
-        amd: "prop-types",
-      },
+      globalObject: 'this',
+      clean: true
     },
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        use: "babel-loader",
+    externals: {
+      react: {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
       },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs2: 'react-dom', 
+        commonjs: 'react-dom',
+        amd: 'react-dom'
+      },
+      'prop-types': {
+        root: 'PropTypes',
+        commonjs2: 'prop-types',
+        commonjs: 'prop-types', 
+        amd: 'prop-types'
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true
+            }
+          }
+        }
+      ]
+    },
+    plugins: [
+      new webpack.EnvironmentPlugin({
+        NODE_ENV: isProduction ? 'production' : 'development'
+      })
     ],
-  },
-  output: {
-    library: "Boundingbox",
-    libraryTarget: "umd",
-  },
-  plugins: plugins,
+    optimization: {
+      minimize: isProduction
+    },
+    devtool: isProduction ? 'source-map' : 'eval-source-map',
+    resolve: {
+      extensions: ['.js', '.jsx']
+    }
+  };
 };
