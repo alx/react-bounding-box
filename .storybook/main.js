@@ -1,5 +1,9 @@
 module.exports = {
-  stories: ['../stories/no-jsx.stories.js'],
+  stories: [
+    '../stories/legacy.stories.js',
+    '../stories/modern.stories.js',
+    '../stories/simple.stories.js'
+  ],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-docs',
@@ -17,7 +21,29 @@ module.exports = {
     ...options,
     presets: [
       ...options.presets,
-      '@babel/preset-react'
+      ['@babel/preset-react', { runtime: 'automatic' }]
+    ],
+    plugins: [
+      ...options.plugins || [],
+      '@babel/plugin-transform-react-jsx'
     ]
   }),
+  webpackFinal: async (config) => {
+    // Handle JSX files properly
+    config.module.rules.push({
+      test: /\.(js|jsx)$/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            ['@babel/preset-env', { targets: { node: 'current' } }],
+            ['@babel/preset-react', { runtime: 'automatic' }]
+          ]
+        }
+      },
+      exclude: /node_modules/
+    });
+    
+    return config;
+  },
 };

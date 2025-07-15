@@ -1,12 +1,193 @@
 {
   "v": 5,
   "entries": {
-    "simple-test--hello-world": {
+    "legacy-boundingbox-v1-x--default-view": {
       "type": "story",
-      "id": "simple-test--hello-world",
-      "name": "Hello World",
-      "title": "Simple Test",
-      "importPath": "./stories/no-jsx.stories.js",
+      "id": "legacy-boundingbox-v1-x--default-view",
+      "name": "📚 default view",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--x-min-max-coordinates": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--x-min-max-coordinates",
+      "name": "📐 xmin/max coordinates",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--age-real-dataset": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--age-real-dataset",
+      "name": "👤 Age Real dataset",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--box-selection": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--box-selection",
+      "name": "🖱️ box selection",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--label-display": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--label-display",
+      "name": "🏷️ label display",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--pixel-segmentation": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--pixel-segmentation",
+      "name": "🎨 pixel segmentation",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--segmentation-from-json-url": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--segmentation-from-json-url",
+      "name": "📄 segmentation from JSON URL",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--custom-color-scheme": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--custom-color-scheme",
+      "name": "🌈 custom color scheme",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--remote-image": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--remote-image",
+      "name": "🌐 remote image",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--remote-image-with-css": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--remote-image-with-css",
+      "name": "💅 remote image with CSS",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--segmentation-masks": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--segmentation-masks",
+      "name": "🎭 segmentation masks",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "legacy-boundingbox-v1-x--border-on-zero-value": {
+      "type": "story",
+      "id": "legacy-boundingbox-v1-x--border-on-zero-value",
+      "name": "🔲 border on zero value",
+      "title": "Legacy Boundingbox (v1.x)",
+      "importPath": "./stories/legacy.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--basic-modern-component": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--basic-modern-component",
+      "name": "📱 Basic Modern Component",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--enhanced-interactivity": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--enhanced-interactivity",
+      "name": "🖱️ Enhanced Interactivity",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--advanced-segmentation": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--advanced-segmentation",
+      "name": "🎨 Advanced Segmentation",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--performance-demo": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--performance-demo",
+      "name": "⚡ Performance Demo",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--custom-styling": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--custom-styling",
+      "name": "💅 Custom Styling",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--separate-segmentation": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--separate-segmentation",
+      "name": "🌐 Separate Segmentation Canvas",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--side-by-side-comparison": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--side-by-side-comparison",
+      "name": "🔄 Side by Side Comparison",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "modern-boundingbox-v2-x--legacy-compatibility": {
+      "type": "story",
+      "id": "modern-boundingbox-v2-x--legacy-compatibility",
+      "name": "🔗 Legacy Compatibility",
+      "title": "Modern BoundingBox (v2.x)",
+      "importPath": "./stories/modern.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
+      "tags": ["dev", "test"]
+    },
+    "react-bounding-box--basic-example": {
+      "type": "story",
+      "id": "react-bounding-box--basic-example",
+      "name": "Basic Example",
+      "title": "React Bounding Box",
+      "importPath": "./stories/simple.stories.js",
+      "componentPath": "./src/react-bounding-box.js",
       "tags": ["dev", "test"]
     }
   }
