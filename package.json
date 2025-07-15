@@ -11,53 +11,68 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "webpack src/react-bounding-box.js dist/react-bounding-box.js",
-    "prepare": ". ./.scripts/prepublish.sh",
+    "build": "webpack --mode=production",
+    "prepare": "husky",
     "lint": "eslint src",
     "lintfix": "eslint src --fix",
-    "testonly": "mocha --require .scripts/mocha_runner src/**/tests/**/*.js",
-    "test": "npm run lint && npm run testonly",
-    "test-watch": "npm run testonly -- --watch --watch-extensions js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "storybook": "start-storybook -p 6006 -s ./stories",
     "publish-storybook": "bash .scripts/publish_storybook.sh",
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
-    "@sambego/storybook-state": "^2.0.1",
-    "@storybook/addon-actions": "^5.3.13",
-    "@storybook/addon-links": "^5.3.13",
-    "@storybook/addons": "^5.3.13",
-    "@storybook/react": "^5.3.13",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.1.1",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-runtime": "^6.11.6",
-    "eslint": "^4.18.2",
-    "eslint-config-airbnb": "^15.0.2",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0",
-    "html-webpack-plugin": "^3.2.0",
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1",
-    "webpack": "^2.5.1"
+    "@babel/core": "^7.28.0",
+    "@babel/plugin-transform-class-properties": "^7.27.1",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@eslint/js": "^9.31.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^14.3.1",
+    "babel-loader": "^9.2.1",
+    "eslint": "^8.57.1",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-canvas-mock": "^2.5.2",
+    "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.6.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "webpack": "^5.100.1",
+    "webpack-cli": "^5.1.4"
   },
   "peerDependencies": {
-    "react": "^16.3.1"
+    "react": ">=16.8.0"
   },
   "dependencies": {
     "prop-types": "^15.6.1",
     "seedrandom": "^2.4.3"
   },
   "main": "dist/react-bounding-box.js",
+  "exports": {
+    ".": "./dist/react-bounding-box.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
-    "npm": "^3.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }
