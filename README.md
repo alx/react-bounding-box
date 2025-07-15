@@ -1,10 +1,32 @@
 # React Bounding Box Component
 
-React Bounding Box Component displays bounding boxes on an image inside and HTML Canvas.
+[![CI](https://github.com/alx/react-bounding-box/workflows/CI/badge.svg)](https://github.com/alx/react-bounding-box/actions)
+[![npm version](https://badge.fury.io/js/react-bounding-box.svg)](https://badge.fury.io/js/react-bounding-box)
+[![codecov](https://codecov.io/gh/alx/react-bounding-box/branch/master/graph/badge.svg)](https://codecov.io/gh/alx/react-bounding-box)
+
+React Bounding Box Component displays bounding boxes on an image inside an HTML Canvas.
 
 ![Screenshot](https://raw.githubusercontent.com/alx/react-bounding-box/master/dist/screenshot.png)
 
 Demo: [https://alx.github.io/react-bounding-box/](https://alx.github.io/react-bounding-box/)
+
+## Features
+
+- 🎯 Interactive bounding boxes with click selection
+- 🖼️ Image and base64 support
+- 🎨 Customizable colors and styling
+- 📱 Responsive design
+- 🧪 Comprehensive test coverage
+- 📦 Modern build system with Webpack 5
+- 🔒 TypeScript definitions included
+
+## Installation
+
+```bash
+npm install react-bounding-box
+# or
+yarn add react-bounding-box
+```
 
 ## Usage
 
@@ -81,86 +103,156 @@ To avoid this issue, the segmentation can be displayed side-by-side :
 
 ![Segmentation Remote](https://raw.githubusercontent.com/alx/react-bounding-box/master/public/assets/img/screenshot_segmentation_separate.png)
 
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run linting
+npm run lint
+
+# Build the project
+npm run build
+
+# Format code
+npm run format
+```
+
+## Security
+
+This project includes automated security scanning:
+
+```bash
+# Run security audit
+npm run security:audit
+
+# Check for vulnerabilities
+npm run security:check
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ## Changelog
+
+### v0.6.0 - 2025
+
+- **BREAKING**: Modernized to React 18+ with new JSX transform
+- **BREAKING**: Updated minimum Node.js requirement to 16+
+- Migrated to Webpack 5 and Babel 7
+- Added comprehensive Jest testing with React Testing Library
+- Implemented modern CI/CD with GitHub Actions
+- Added automated security scanning and code quality tools
+- Enhanced package exports and build output
+- Zero npm audit vulnerabilities
+
+## Previous Changelog
 
 ### v0.5.19 - 09/06/2020
 
-* fix: disable pointer-events on segmentation canvas
-* fix: clean segCanvas when receiving new props
-* fix: check null on this.props.boxes in renderBoxes
-* fix: set boxes as empty array by default
-* fix: remove unused backup file
+- fix: disable pointer-events on segmentation canvas
+- fix: clean segCanvas when receiving new props
+- fix: check null on this.props.boxes in renderBoxes
+- fix: set boxes as empty array by default
+- fix: remove unused backup file
 
 ### v0.5.14 - 14/02/2020
 
-* FIX: Image is not redrawn on update 
+- FIX: Image is not redrawn on update
   [#15](https://github.com/alx/react-bounding-box/issues/15) - Thanks [@testower](https://github.com/testower)
-* FIX: display boxes when xmin/ymin on 0 value
-* FIX: split storybook stories to use state outside component
-* FIX: update `minimatch` and `serialize-javascript` dependencies - [@dependabot](https://github.com/dependabot)
+- FIX: display boxes when xmin/ymin on 0 value
+- FIX: split storybook stories to use state outside component
+- FIX: update `minimatch` and `serialize-javascript` dependencies - [@dependabot](https://github.com/dependabot)
 
 ### v0.5.10 - 26/01/2020
 
-* FIX: segmentation is redrawn when nextProps.pixelSegmentation is updated
+- FIX: segmentation is redrawn when nextProps.pixelSegmentation is updated
 
 ### v0.5.9 - 23/01/2020
 
-* FIX: add missing redraw when resizing canvas after loading a new image
-* FIX: only resize canvas when loaded image change dimensions
+- FIX: add missing redraw when resizing canvas after loading a new image
+- FIX: only resize canvas when loaded image change dimensions
 
 ### v0.5.7 - 21/01/2020
 
-* FIX: use props.forceRedraw property to redraw canvas
-* FIX: replace array.some() method by classic for() loop
-* FIX: check new image dimension and data before to redraw it in canvas
-* FIX: update background width and height after loading a new image
+- FIX: use props.forceRedraw property to redraw canvas
+- FIX: replace array.some() method by classic for() loop
+- FIX: check new image dimension and data before to redraw it in canvas
+- FIX: update background width and height after loading a new image
 
 ### v0.5.2 - 16/12/2019
 
-* Use absolute value to compute width and height from coordinates
+- Use absolute value to compute width and height from coordinates
 
 ### v0.1.0 - 22/05/2018
 
-* Fix deprecated `React.PropTypes`
+- Fix deprecated `React.PropTypes`
 
 ### v0.0.14 - 30/01/2018
-* add image segmentation display available in [deepdetect](https://github.com/beniz/deepdetect/)
+
+- add image segmentation display available in [deepdetect](https://github.com/beniz/deepdetect/)
 
 ### v0.0.11 - 14/03/2017
-* specific drawLabel prop function
+
+- specific drawLabel prop function
 
 ### v0.0.10 - 14/03/2017
-* new object model available inside boxes prop
-* change drawBox function prop to support box label
+
+- new object model available inside boxes prop
+- change drawBox function prop to support box label
 
 ### v0.0.9 - 16/02/2017
-* add drawBox function prop to customize how the box will be displayed
+
+- add drawBox function prop to customize how the box will be displayed
 
 ### v0.0.8 - 16/02/2017
-* add selectedIndex and onSelected props to allow external modification/observation of selected bounding box
+
+- add selectedIndex and onSelected props to allow external modification/observation of selected bounding box
 
 ### v0.0.7 - 15/02/2017
-* use react-cdk yeoman generator to make simple component and use storybook
-* eslint on bounding box component
+
+- use react-cdk yeoman generator to make simple component and use storybook
+- eslint on bounding box component
 
 ### v0.0.5 - 09/02/2017
-* add missing Boundingbox displayName
+
+- add missing Boundingbox displayName
 
 ### v0.0.4 - 09/02/2017
-* fix issue with canvas width/height on firefox
+
+- fix issue with canvas width/height on firefox
 
 ### v0.0.3 - 09/02/2017
-* review options colors structure
-* options is optional, and defaultProps for colors
+
+- review options colors structure
+- options is optional, and defaultProps for colors
 
 ### v0.0.2 - 09/02/2017
-* get image size with javascript
+
+- get image size with javascript
 
 ### v0.0.1 - 08/02/2017
-* First commit
-* Simple example with mouse hover on boxes
+
+- First commit
+- Simple example with mouse hover on boxes
 
 ## History
 
-* 06/2016 - Inspiration: [DenseCap](http://cs.stanford.edu/people/karpathy/densecap/)
-* 09/2016 - First prototype in production: [recognition.tate.org.uk](http://recognition.tate.org.uk/)
+- 06/2016 - Inspiration: [DenseCap](http://cs.stanford.edu/people/karpathy/densecap/)
+- 09/2016 - First prototype in production: [recognition.tate.org.uk](http://recognition.tate.org.uk/)
