@@ -1,0 +1,298 @@
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+
+// Import both legacy and modern components
+import Boundingbox from '../src/react-bounding-box';
+import { BoundingBox } from '../src/components/BoundingBox';
+
+// Import modern hooks for advanced examples
+import { useBoundingBox } from '../src/hooks';
+
+import demoImage from './static/image.jpg';
+import demoImageLarge from './static/imageLarge.png';
+import demoImageDog from './static/dog.jpg';
+import demoImageAgeReal from './static/age_real.png';
+
+import segmentationJson from './static/segmentation.json';
+import segmentationMasksJson from './static/segmentationMasks.json';
+import segmentationMasksBoxesJson from './static/segmentationMasksBoxes.json';
+
+import boxesBorderZeroJson from './static/boxesBorderZero.json';
+import boxesAgeReal from './static/boxesAgeReal.json';
+
+// Modern hook-based custom component example
+function CustomBoundingBox({ image, boxes, onSelection }) {
+  const {
+    mainCanvasRef,
+    selectedIndex,
+    hoveredIndex,
+    handleMouseMove,
+    handleMouseOut,
+    handleCanvasClick,
+    isLoading,
+    error
+  } = useBoundingBox({
+    image,
+    boxes,
+    onSelection
+  });
+
+  if (error) {
+    return <div style={{ padding: '20px', color: 'red' }}>Error: {error}</div>;
+  }
+
+  if (isLoading) {
+    return <div style={{ padding: '20px' }}>Loading modern component...</div>;
+  }
+
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <canvas
+        ref={mainCanvasRef}
+        onMouseMove={handleMouseMove}
+        onMouseOut={handleMouseOut}
+        onClick={handleCanvasClick}
+        style={{ maxWidth: '100%', cursor: 'crosshair' }}
+        aria-label="Image with bounding boxes"
+      />
+      {selectedIndex >= 0 && (
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          background: 'rgba(0,0,0,0.8)',
+          color: 'white',
+          padding: '5px 10px',
+          borderRadius: '3px',
+          fontSize: '14px'
+        }}>
+          Selected: Box {selectedIndex}
+        </div>
+      )}
+      {hoveredIndex >= 0 && hoveredIndex !== selectedIndex && (
+        <div style={{
+          position: 'absolute',
+          top: '40px',
+          left: '10px',
+          background: 'rgba(0,100,200,0.8)',
+          color: 'white',
+          padding: '5px 10px',
+          borderRadius: '3px',
+          fontSize: '14px'
+        }}>
+          Hover: Box {hoveredIndex}
+        </div>
+      )}
+    </div>
+  );
+}
+
+storiesOf('Modern BoundingBox (v2.x)', module)
+  .add('🆕 Basic Modern Component', () => {
+    const boxes = [
+      [0, 0, 250, 250],
+      [300, 0, 250, 250],
+      [700, 0, 300, 25],
+      [1100, 0, 25, 300],
+    ];
+
+    return (
+      <div>
+        <h3>Modern BoundingBox Component (v2.x)</h3>
+        <p>Same API as legacy, but with improved performance and TypeScript support</p>
+        <BoundingBox
+          image={demoImageLarge}
+          boxes={boxes}
+          onSelected={action('modern-selected')}
+        />
+      </div>
+    );
+  })
+  .add('🆕 Modern with Enhanced Error Handling', () => {
+    return (
+      <div>
+        <h3>Enhanced Error Handling</h3>
+        <p>Modern component with comprehensive error states and loading indicators</p>
+        <BoundingBox
+          image="https://invalid-url.com/nonexistent.jpg"
+          boxes={[[10, 10, 50, 50]]}
+          onSelected={action('error-handling')}
+          onError={action('error-occurred')}
+          fallback={<div style={{ padding: '20px', background: '#f0f0f0' }}>Custom fallback UI</div>}
+        />
+      </div>
+    );
+  })
+  .add('🆕 Modern with Loading States', () => {
+    return (
+      <div>
+        <h3>Loading States</h3>
+        <p>Built-in loading indicators and states</p>
+        <BoundingBox
+          image={demoImageLarge}
+          boxes={[
+            [50, 50, 200, 200],
+            [300, 100, 150, 150]
+          ]}
+          loadingComponent={
+            <div style={{ 
+              padding: '40px', 
+              textAlign: 'center', 
+              background: '#f8f9fa',
+              border: '2px dashed #dee2e6',
+              borderRadius: '8px'
+            }}>
+              <div>🔄 Loading modern component...</div>
+            </div>
+          }
+          onLoadingChange={action('loading-state-changed')}
+          onSelected={action('modern-loading-selected')}
+        />
+      </div>
+    );
+  })
+  .add('🆕 Advanced Hook Usage', () => {
+    return (
+      <div>
+        <h3>Custom Hook-based Implementation</h3>
+        <p>Using useBoundingBox hook for maximum control and customization</p>
+        <CustomBoundingBox
+          image={demoImageDog}
+          boxes={[
+            [10, 10, 100, 100],
+            [150, 50, 120, 80],
+            [300, 100, 80, 120]
+          ]}
+          onSelection={action('hook-based-selection')}
+        />
+      </div>
+    );
+  })
+  .add('🆕 Modern Segmentation with Web Workers', () => {
+    return (
+      <div>
+        <h3>Enhanced Segmentation Processing</h3>
+        <p>Web Worker-powered segmentation for better performance</p>
+        <BoundingBox
+          image={demoImage}
+          pixelSegmentation={segmentationJson.body.predictions[0].vals}
+          segmentationOptions={{
+            useWebWorker: true,
+            transparency: 0.7,
+            blendMode: 'overlay'
+          }}
+          onSelected={action('modern-segmentation-selected')}
+        />
+      </div>
+    );
+  })
+  .add('🆕 Performance Monitoring', () => {
+    const boxes = Array.from({ length: 100 }, (_, i) => [
+      i % 10 * 80, Math.floor(i / 10) * 50, 70, 40
+    ]);
+
+    return (
+      <div>
+        <h3>Performance Monitoring (100 boxes)</h3>
+        <p>Modern component handles large numbers of boxes efficiently</p>
+        <BoundingBox
+          image={demoImageLarge}
+          boxes={boxes}
+          onSelected={action('performance-selected')}
+          performanceOptions={{
+            enableMonitoring: true,
+            onPerformanceUpdate: action('performance-metrics')
+          }}
+        />
+      </div>
+    );
+  })
+  .add('🆕 TypeScript Integration Example', () => {
+    // This would be TypeScript in a real implementation
+    const typedBoxes = [
+      { xmin: 10, ymin: 10, xmax: 110, ymax: 110 },
+      { xmin: 150, ymin: 50, xmax: 300, ymax: 200 },
+      { coord: [350, 100, 100, 80], label: 'TypeScript' }
+    ];
+
+    return (
+      <div>
+        <h3>TypeScript Support</h3>
+        <p>Full type safety and IntelliSense support</p>
+        <BoundingBox
+          image={demoImageAgeReal}
+          boxes={typedBoxes}
+          options={{
+            colors: {
+              normal: '#3b82f6',
+              selected: '#ef4444',
+              unselected: '#6b7280'
+            },
+            style: {
+              maxWidth: '600px',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px'
+            }
+          }}
+          onSelected={action('typescript-selected')}
+        />
+      </div>
+    );
+  });
+
+storiesOf('Migration Examples', module)
+  .add('🔄 Side-by-Side Comparison', () => {
+    const boxes = [
+      [50, 50, 150, 100],
+      [250, 80, 120, 120]
+    ];
+
+    return (
+      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+        <div style={{ flex: '1', minWidth: '300px' }}>
+          <h4>Legacy Component (v1.x)</h4>
+          <Boundingbox
+            image={demoImage}
+            boxes={boxes}
+            onSelected={action('legacy-selected')}
+          />
+        </div>
+        <div style={{ flex: '1', minWidth: '300px' }}>
+          <h4>Modern Component (v2.x)</h4>
+          <BoundingBox
+            image={demoImage}
+            boxes={boxes}
+            onSelected={action('modern-selected')}
+          />
+        </div>
+      </div>
+    );
+  })
+  .add('🔄 Drop-in Replacement Demo', () => {
+    return (
+      <div>
+        <h3>Drop-in Replacement</h3>
+        <p>Same API, enhanced performance and features</p>
+        <div style={{ marginBottom: '20px' }}>
+          <h4>Using legacy import (still works):</h4>
+          <pre style={{ background: '#f5f5f5', padding: '10px' }}>
+            {`import Boundingbox from 'react-bounding-box';`}
+          </pre>
+        </div>
+        <div style={{ marginBottom: '20px' }}>
+          <h4>Using modern import (recommended):</h4>
+          <pre style={{ background: '#f5f5f5', padding: '10px' }}>
+            {`import { BoundingBox } from 'react-bounding-box';`}
+          </pre>
+        </div>
+        <BoundingBox
+          image={demoImageDog}
+          boxes={segmentationMasksBoxesJson}
+          segmentationMasks={segmentationMasksJson}
+          separateSegmentation={true}
+          onSelected={action('drop-in-selected')}
+        />
+      </div>
+    );
+  });

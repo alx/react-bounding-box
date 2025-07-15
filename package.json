@@ -11,13 +11,19 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode=production",
+    "build": "npm run build:types && webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:analyze": "webpack-bundle-analyzer dist/stats.json",
+    "dev": "webpack serve --mode=development",
     "prepare": "husky",
-    "lint": "eslint src",
-    "lintfix": "eslint src --fix",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lintfix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "type-check": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:hooks": "jest src/hooks",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepack": "npm run build",
@@ -28,16 +34,27 @@
     "release:major": "npm version major && git push --follow-tags",
     "storybook": "start-storybook -p 6006 -s ./stories",
     "publish-storybook": "bash .scripts/publish_storybook.sh",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook -o storybook-static"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
     "@babel/plugin-transform-class-properties": "^7.27.1",
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@eslint/js": "^9.31.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^14.3.1",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@storybook/react": "^6.5.16",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/addons": "^6.5.16",
+    "@sambego/storybook-state": "^2.0.1",
+    "@types/jest": "^29.5.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/seedrandom": "^3.0.0",
     "audit-ci": "^7.1.0",
     "babel-loader": "^9.2.1",
     "eslint": "^8.57.1",
@@ -49,8 +66,11 @@
     "prettier": "^3.6.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "typescript": "^5.0.0",
     "webpack": "^5.100.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-bundle-analyzer": "^4.10.0",
+    "webpack-cli": "^5.1.4",
+    "worker-loader": "^3.0.8"
   },
   "peerDependencies": {
     "react": ">=16.8.0"
@@ -59,9 +79,28 @@
     "prop-types": "^15.6.1",
     "seedrandom": "^2.4.3"
   },
-  "main": "dist/react-bounding-box.js",
+  "main": "dist/main.js",
+  "types": "dist/types/index.d.ts",
   "exports": {
-    ".": "./dist/react-bounding-box.js"
+    ".": {
+      "import": "./dist/main.js",
+      "require": "./dist/main.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./hooks": {
+      "import": "./dist/hooks.js",
+      "require": "./dist/hooks.js",
+      "types": "./dist/types/hooks/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.js",
+      "require": "./dist/utils.js",
+      "types": "./dist/types/utils/index.d.ts"
+    },
+    "./legacy": {
+      "import": "./dist/legacy.js",
+      "require": "./dist/legacy.js"
+    }
   },
   "files": [
     "dist",

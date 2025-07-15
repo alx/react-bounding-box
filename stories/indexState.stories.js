@@ -38,10 +38,10 @@ const store = new Store({
   ]
 });
 
-storiesOf('Boundingbox with State', module)
+storiesOf('Legacy State Examples (v1.x)', module)
   .addDecorator(withState())
   .addParameters({ state: { store } })
-  .add('redraw image', () => state => [
+  .add('🔄 dynamic image switching', () => state => [
       <button key='btn-demoImage' onClick={() => {
         store.set({index: 0})
       }}>demoImage</button>,
@@ -58,7 +58,7 @@ storiesOf('Boundingbox with State', module)
         boxes={state.boxes[state.index]}
       />
    ])
-  .add('switch segmentation/bounding boxes', () => state => [
+  .add('🎛️ toggle segmentation/boxes', () => state => [
     <p>Segmentation is <b>{state.isSegmentation ? 'On' : 'Off'}</b></p>,
     <button key='btn-toggleSegmentation' onClick={() => {
       store.set({isSegmentation: !state.isSegmentation})

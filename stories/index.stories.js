@@ -20,8 +20,8 @@ import segmentationMasksBoxesJson from './static/segmentationMasksBoxes.json';
 import boxesBorderZeroJson from './static/boxesBorderZero.json';
 import boxesAgeReal from './static/boxesAgeReal.json';
 
-storiesOf('Boundingbox', module)
-  .add('default view', () => {
+storiesOf('Legacy Boundingbox (v1.x)', module)
+  .add('📚 default view', () => {
     const params = {
       image: demoImageLarge,
       boxes: [
@@ -33,12 +33,20 @@ storiesOf('Boundingbox', module)
         [1100, 0, 25, 300],
       ],
     };
-    return (<Boundingbox
-      image={params.image}
-      boxes={params.boxes}
-    />);
+    return (
+      <div>
+        <div style={{ padding: '10px', background: '#fff3cd', border: '1px solid #ffeaa7', borderRadius: '4px', marginBottom: '10px' }}>
+          <strong>Legacy v1.x Component:</strong> This example uses the original Boundingbox component. 
+          Check out the "Modern BoundingBox (v2.x)" section for updated examples with enhanced features.
+        </div>
+        <Boundingbox
+          image={params.image}
+          boxes={params.boxes}
+        />
+      </div>
+    );
   })
-  .add('default view - xmin/max coord', () => {
+  .add('📐 xmin/max coordinates', () => {
     const params = {
       image: demoImageLarge,
       boxes: [
@@ -51,13 +59,13 @@ storiesOf('Boundingbox', module)
       boxes={params.boxes}
     />);
   })
-  .add('default view - Age Real', () => {
+  .add('👤 Age Real dataset', () => {
     return (<Boundingbox
       image={demoImageAgeReal}
       boxes={boxesAgeReal}
     />);
   })
-  .add('box selection', () => {
+  .add('🖱️ box selection', () => {
     const params = {
       image: demoImageLarge,
       boxes: [
@@ -75,7 +83,7 @@ storiesOf('Boundingbox', module)
       onSelected={action('selected')}
     />);
   })
-  .add('label display', () => {
+  .add('🏷️ label display', () => {
     const params = {
       image: demoImageLarge,
       boxes: [
@@ -92,13 +100,13 @@ storiesOf('Boundingbox', module)
       boxes={params.boxes}
     />);
   })
-  .add('pixel segmentation', () => {
+  .add('🎨 pixel segmentation', () => {
     return (<Boundingbox
       image={demoImage}
       pixelSegmentation={segmentationJson.body.predictions[0].vals}
     />);
   })
-  .add('pixel segmentation from json url', () => {
+  .add('📄 segmentation from JSON URL', () => {
     //
     // If github is down, you can use these url locally:
     //   image={'http://localhost:9010/image.jpg'}
@@ -109,7 +117,7 @@ storiesOf('Boundingbox', module)
       segmentationJsonUrl={'./static/segmentation.json'}
     />);
   })
-  .add('pixel segmentation color scheme', () => {
+  .add('🌈 custom color scheme', () => {
     return (<Boundingbox
       image={demoImage}
       segmentationJsonUrl={'./static/segmentation.json'}
@@ -118,7 +126,7 @@ storiesOf('Boundingbox', module)
       }
     />);
   })
-  .add('pixel segmentation on remote image', () => {
+  .add('🌐 remote image', () => {
     //
     // If github is down, you can use these url locally:
     //   image={'http://localhost:9010/image.jpg'}
@@ -129,7 +137,7 @@ storiesOf('Boundingbox', module)
       separateSegmentation={true}
     />);
   })
-  .add('pixel segmentation on remote image with css', () => {
+  .add('💅 remote image with CSS', () => {
     //
     // If github is down, you can use these url locally:
     //   image={'http://localhost:9010/image.jpg'}
@@ -145,7 +153,7 @@ storiesOf('Boundingbox', module)
       />
     </div>);
   })
-  .add('segmentation masks', () => {
+  .add('🎭 segmentation masks', () => {
     return (<Boundingbox
       image={demoImageDog}
       segmentationMasks={segmentationMasksJson}
@@ -153,7 +161,7 @@ storiesOf('Boundingbox', module)
       separateSegmentation={true}
     />);
   })
-  .add('border on zero value', () => {
+  .add('🔲 border on zero value', () => {
     return (<Boundingbox
       image={demoImageDog}
       boxes={boxesBorderZeroJson}
