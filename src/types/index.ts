@@ -1,4 +1,5 @@
 // Type definitions for React Bounding Box component
+import React from 'react';
 
 export interface BoundingBoxCoord {
   x: number;

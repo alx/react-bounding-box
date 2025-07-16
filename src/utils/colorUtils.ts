@@ -1,4 +1,5 @@
 import seedrandom from 'seedrandom';
+// @ts-ignore - seedrandom has incomplete type definitions
 import type { ColorGenerator } from '@/types';
 import { COLOR_SEED_BASE } from '@/constants/defaults';
 
