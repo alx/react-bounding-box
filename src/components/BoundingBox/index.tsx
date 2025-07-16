@@ -1,6 +1,7 @@
 import React from 'react';
 import type { BoundingBoxProps } from '@/types';
 import { useBoundingBox } from '@/hooks/useBoundingBox';
+import { segmentationLogger } from '@/utils/logger';
 
 /**
  * Modern React Bounding Box component using hooks
@@ -68,18 +69,14 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
           if (data.body?.predictions?.[0]?.vals) {
             // This would need to update the segmentation data
             // Implementation depends on how we want to handle this
-            if (process.env.NODE_ENV !== 'production') {
-              console.log(
-                'Loaded segmentation data:',
-                data.body.predictions[0].vals
-              );
-            }
+            segmentationLogger.log(
+              'Loaded segmentation data:',
+              data.body.predictions[0].vals
+            );
           }
         })
         .catch(err => {
-          if (process.env.NODE_ENV !== 'production') {
-            console.error('Failed to load segmentation:', err);
-          }
+          segmentationLogger.error('Failed to load segmentation:', err);
         });
     }
   }, [segmentationJsonUrl]);

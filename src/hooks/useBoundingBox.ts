@@ -9,6 +9,7 @@ import { useImageLoader } from './useImageLoader';
 import { useMouseInteraction } from './useMouseInteraction';
 import { useSegmentation } from './useSegmentation';
 import { DEFAULT_OPTIONS } from '@/constants/defaults';
+import { hooksLogger } from '@/utils/logger';
 
 /**
  * Main hook that orchestrates all bounding box functionality
@@ -176,9 +177,7 @@ export const useBoundingBox = (
         ctx.lineTo(x + ninetyPercent, y + height);
         ctx.stroke();
       } catch (err) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn('Error drawing box:', err);
-        }
+        hooksLogger.warn('Error drawing box:', err);
       }
     },
     [mainCanvas.canvasRef]
@@ -206,9 +205,7 @@ export const useBoundingBox = (
       ctx.fillStyle = 'rgba(225,0,0,1)';
       ctx.fillText(box.label, x, y + height);
     } catch (err) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn('Error drawing label:', err);
-      }
+      hooksLogger.warn('Error drawing label:', err);
     }
   }, []);
 

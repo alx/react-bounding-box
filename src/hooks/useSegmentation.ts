@@ -6,6 +6,7 @@ import type {
 } from '@/types';
 import { createColorGenerator } from '@/utils/colorUtils';
 import { DEFAULT_SEGMENTATION_TRANSPARENCY } from '@/constants/defaults';
+import { segmentationLogger } from '@/utils/logger';
 
 /**
  * Custom hook for handling segmentation rendering and management
@@ -160,9 +161,7 @@ export const useSegmentation = (
           // renderSegmentationMasks(targetCanvas, segmentationMasks, boxes);
         }
       } catch (error) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.error('Error rendering segmentation:', error);
-        }
+        segmentationLogger.error('Error rendering segmentation:', error);
       } finally {
         setIsProcessing(false);
       }
@@ -193,9 +192,7 @@ export const useSegmentation = (
 
       return data;
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Error loading segmentation from URL:', error);
-      }
+      segmentationLogger.error('Error loading segmentation from URL:', error);
       throw error;
     } finally {
       setIsProcessing(false);

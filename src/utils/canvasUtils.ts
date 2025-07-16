@@ -1,6 +1,7 @@
 import type { BoundingBox, CanvasDrawFunction } from '@/types';
 import { extractCoordinates, clampToCanvas } from './coordinateUtils';
 import { RENDER_BATCH_SIZE } from '@/constants/defaults';
+import { canvasLogger } from './logger';
 
 /**
  * High-performance canvas renderer with batching and optimization
@@ -209,9 +210,7 @@ export const drawDefaultBox = (
 
     ctx.stroke();
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn('Error drawing box:', error);
-    }
+    canvasLogger.warn('Error drawing box:', error);
   }
 };
 
@@ -257,9 +256,7 @@ export const drawOptimizedLabel = (
     ctx.fillStyle = color;
     ctx.fillText(box.label, x + padding, y - padding);
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn('Error drawing label:', error);
-    }
+    canvasLogger.warn('Error drawing label:', error);
   }
 };
 

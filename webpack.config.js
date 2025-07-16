@@ -70,6 +70,7 @@ module.exports = (env, argv) => {
                 ['@babel/preset-react', { runtime: 'automatic' }],
                 '@babel/preset-typescript',
               ],
+              plugins: isProduction ? ['transform-remove-console'] : [],
             },
           },
         },

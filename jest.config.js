@@ -1,9 +1,9 @@
 module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['@testing-library/jest-dom', 'jest-canvas-mock'],
-  moduleFileExtensions: ['js', 'jsx'],
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.(js|jsx)',

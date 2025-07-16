@@ -1,0 +1,37 @@
+[
+  {
+    "filePath": "/home/alx/code/react-bounding-box/src/react-bounding-box.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "/home/alx/code/react-bounding-box/src/react-bounding-box.test.js",
+    "messages": [],
+    "suppressedMessages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'Boundingbox' is defined but never used. Allowed unused vars must match /^_/u.",
+        "line": 3,
+        "column": 8,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 3,
+        "endColumn": 19,
+        "suppressions": [{ "kind": "directive", "justification": "" }]
+      }
+    ],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  }
+]

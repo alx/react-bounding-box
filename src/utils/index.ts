@@ -21,6 +21,15 @@ export {
   isValidColor,
 } from './colorUtils';
 
+export {
+  logger,
+  canvasLogger,
+  segmentationLogger,
+  hooksLogger,
+  createLogger,
+} from './logger';
+export type { Logger } from './logger';
+
 // Re-export types for convenience
 export type {
   CoordinateTransform,
