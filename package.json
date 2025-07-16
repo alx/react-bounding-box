@@ -16,7 +16,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:analyze": "mkdir -p dist && npx webpack --mode=production --profile --json > dist/stats.json && npx webpack-bundle-analyzer dist/stats.json",
     "dev": "webpack serve --mode=development",
-    "prepare": "husky",
+    "prepare": "husky || exit 0",
     "lint": "eslint src",
     "lintfix": "eslint src --fix",
     "type-check": "tsc --noEmit",
