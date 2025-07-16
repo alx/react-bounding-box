@@ -48,8 +48,46 @@ jobs:
 
       - name: Check for console statements
         run: |
-          if grep -r "console\.\(log\|debug\|info\)" src/ --exclude-dir=__tests__ --exclude="*.test.*" --exclude="*.spec.*" | grep -v "process.env.NODE_ENV"; then
-            echo "Found console.log/debug/info statements in production code (without NODE_ENV guard)"
+          # Use ESLint to check for console statements in production code
+          # This will respect ESLint rules and exceptions properly
+
+          # Run ESLint and capture results
+          if npx eslint src --format json > eslint-results.json 2>/dev/null; then
+            echo "ESLint completed successfully"
+          else
+            echo "ESLint completed with warnings/errors"
+          fi
+
+          # Check for console statements (excluding logger.ts)
+          if cat eslint-results.json | node -e "
+            const results = JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8'));
+            let hasConsoleViolations = false;
+            
+            for (const result of results) {
+              // Skip logger.ts file
+              if (result.filePath.includes('logger.ts')) continue;
+              
+              const consoleMessages = result.messages.filter(msg => msg.ruleId === 'no-console');
+              
+              if (consoleMessages.length > 0) {
+                hasConsoleViolations = true;
+                console.log('Found console statements in: ' + result.filePath);
+                consoleMessages.forEach(msg => {
+                  console.log('  Line ' + msg.line + ': ' + msg.message);
+                });
+              }
+            }
+            
+            if (hasConsoleViolations) {
+              console.log('\\nAll console statements should use the logger utility from src/utils/logger.ts');
+              process.exit(1);
+            } else {
+              console.log('No console statements found in production code (excluding logger utility)');
+            }
+          "; then
+            echo "Console check passed"
+          else
+            echo "Console check failed"
             exit 1
           fi
 
