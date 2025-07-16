@@ -225,53 +225,60 @@ class Boundingbox extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const ctx = this.canvas.getContext('2d');
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  componentDidUpdate(prevProps) {
+    // Only update if image or boxes have changed
+    if (
+      prevProps.image !== this.props.image ||
+      prevProps.boxes !== this.props.boxes
+    ) {
+      const ctx = this.canvas.getContext('2d');
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    if (this.segCanvas) {
-      // Clean segCanvas when receiving new props
-      const segCtx = this.segCanvas.getContext('2d');
-      segCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-
-    const background = new Image();
-    background.src = nextProps.options.base64Image
-      ? 'data:image/png;base64,' + this.props.image
-      : nextProps.image;
-
-    // Check canvas dimension with loaded image dimension
-    // in order to change canvas dimension if needed
-    background.onload = () => {
-      if (
-        this.canvas.width !== background.width &&
-        this.canvas.height !== background.height
-      ) {
-        this.canvas.width = background.width;
-        this.canvas.height = background.height;
-        ctx.drawImage(background, 0, 0);
-        this.renderBoxes(nextProps.boxes);
+      if (this.segCanvas) {
+        // Clean segCanvas when receiving new props
+        const segCtx = this.segCanvas.getContext('2d');
+        segCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
-    };
 
-    ctx.drawImage(background, 0, 0);
-    this.renderBoxes(nextProps.boxes);
+      const background = new Image();
+      background.src = this.props.options.base64Image
+        ? 'data:image/png;base64,' + this.props.image
+        : this.props.image;
 
-    this.setState({ hoverIndex: nextProps.selectedIndex });
+      // Check canvas dimension with loaded image dimension
+      // in order to change canvas dimension if needed
+      background.onload = () => {
+        if (
+          this.canvas.width !== background.width &&
+          this.canvas.height !== background.height
+        ) {
+          this.canvas.width = background.width;
+          this.canvas.height = background.height;
+          ctx.drawImage(background, 0, 0);
+          this.renderBoxes(this.props.boxes);
+        }
+      };
 
-    const hasSegmentedProps =
-      nextProps.pixelSegmentation && nextProps.pixelSegmentation.length > 0;
-
-    if (hasSegmentedProps) {
-      this.setState({ isSegmented: false });
-      this.renderSegmentation(nextProps.pixelSegmentation);
+      ctx.drawImage(background, 0, 0);
+      this.renderBoxes(this.props.boxes);
     }
 
-    return true;
-  }
+    // Handle selectedIndex changes
+    if (prevProps.selectedIndex !== this.props.selectedIndex) {
+      this.setState({ hoverIndex: this.props.selectedIndex });
+    }
 
-  componentDidUpdate() {
-    this.renderBoxes();
+    // Handle segmentation changes
+    const hasSegmentedProps =
+      this.props.pixelSegmentation && this.props.pixelSegmentation.length > 0;
+
+    if (
+      hasSegmentedProps &&
+      prevProps.pixelSegmentation !== this.props.pixelSegmentation
+    ) {
+      this.setState({ isSegmented: false });
+      this.renderSegmentation(this.props.pixelSegmentation);
+    }
   }
 
   segmentColor(classIndex) {

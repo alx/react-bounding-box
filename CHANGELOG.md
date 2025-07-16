@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2025-07-16
+
 ### Added
 
 - GitHub Actions CI/CD pipeline for automated testing and deployment
@@ -14,18 +16,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated dependency updates via GitHub Actions
 - Code quality checks and security scanning
 - Automated Storybook deployment to GitHub Pages
+- Logger utility for better debugging and development experience
 
 ### Changed
 
 - Improved build process with webpack optimization
 - Enhanced TypeScript configuration and declarations
 - Updated security dependencies
+- Updated Code Quality workflow to use ESLint for console detection
 
 ### Fixed
 
 - Fixed null canvas reference issues in legacy component
 - Fixed TypeScript compilation errors
 - Fixed ESLint configuration for modern JavaScript
+- Fixed console statements to use logger utility with NODE_ENV guards
+- Fixed GitHub CI/CD workflow failures
 
 ## [0.6.0] - 2025-01-16
 
