@@ -23,7 +23,7 @@ export interface Logger {
  * @returns Logger instance
  */
 function createLogger(namespace?: string): Logger {
-  const isDevelopment = process.env.NODE_ENV !== 'production';
+  const isDevelopment = (process as any).env.NODE_ENV !== 'production';
   const prefix = namespace ? `[${namespace}]` : '[react-bounding-box]';
 
   return {

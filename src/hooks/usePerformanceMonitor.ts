@@ -20,7 +20,7 @@ export const usePerformanceMonitor = (
   config: PerformanceMonitorConfig = {}
 ) => {
   const {
-    enabled = process.env.NODE_ENV === 'development',
+    enabled = (process as any).env.NODE_ENV === 'development',
     sampleSize = 60, // Monitor last 60 operations
     memoryMonitoring = true,
   } = config;

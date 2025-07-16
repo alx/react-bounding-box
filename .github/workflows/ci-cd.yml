@@ -209,8 +209,16 @@ jobs:
             exit 1
           fi
 
+      - name: Verify dist artifacts exist
+        run: |
+          if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
+            echo "Error: dist/ directory is missing or empty"
+            exit 1
+          fi
+          echo "✅ Dist artifacts verified"
+
       - name: Publish to npm
-        run: npm publish --access public
+        run: npm publish --ignore-scripts --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
