@@ -209,7 +209,9 @@ export const drawDefaultBox = (
 
     ctx.stroke();
   } catch (error) {
-    console.warn('Error drawing box:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Error drawing box:', error);
+    }
   }
 };
 
@@ -255,7 +257,9 @@ export const drawOptimizedLabel = (
     ctx.fillStyle = color;
     ctx.fillText(box.label, x + padding, y - padding);
   } catch (error) {
-    console.warn('Error drawing label:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Error drawing label:', error);
+    }
   }
 };
 

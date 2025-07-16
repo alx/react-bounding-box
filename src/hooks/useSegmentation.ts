@@ -160,7 +160,9 @@ export const useSegmentation = (
           // renderSegmentationMasks(targetCanvas, segmentationMasks, boxes);
         }
       } catch (error) {
-        console.error('Error rendering segmentation:', error);
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('Error rendering segmentation:', error);
+        }
       } finally {
         setIsProcessing(false);
       }
@@ -191,7 +193,9 @@ export const useSegmentation = (
 
       return data;
     } catch (error) {
-      console.error('Error loading segmentation from URL:', error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Error loading segmentation from URL:', error);
+      }
       throw error;
     } finally {
       setIsProcessing(false);

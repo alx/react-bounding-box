@@ -76,7 +76,11 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
             }
           }
         })
-        .catch(err => console.error('Failed to load segmentation:', err));
+        .catch(err => {
+          if (process.env.NODE_ENV !== 'production') {
+            console.error('Failed to load segmentation:', err);
+          }
+        });
     }
   }, [segmentationJsonUrl]);
 

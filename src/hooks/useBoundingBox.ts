@@ -176,7 +176,9 @@ export const useBoundingBox = (
         ctx.lineTo(x + ninetyPercent, y + height);
         ctx.stroke();
       } catch (err) {
-        console.warn('Error drawing box:', err);
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('Error drawing box:', err);
+        }
       }
     },
     [mainCanvas.canvasRef]
@@ -204,7 +206,9 @@ export const useBoundingBox = (
       ctx.fillStyle = 'rgba(225,0,0,1)';
       ctx.fillText(box.label, x, y + height);
     } catch (err) {
-      console.warn('Error drawing label:', err);
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Error drawing label:', err);
+      }
     }
   }, []);
 
