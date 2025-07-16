@@ -1,8 +1,9 @@
 module.exports = {
   stories: [
-    '../stories/legacy.stories.js',
+    '../stories/welcome.stories.js',
+    '../stories/simple.stories.js',
     '../stories/modern.stories.js',
-    '../stories/simple.stories.js'
+    '../stories/legacy.stories.js'
   ],
   addons: [
     '@storybook/addon-links',
