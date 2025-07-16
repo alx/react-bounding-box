@@ -33,7 +33,9 @@ class Boundingbox extends Component {
 
   componentDidMount() {
     if (!this.canvas) {
-      console.warn('Canvas ref not available during componentDidMount');
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Canvas ref not available during componentDidMount');
+      }
       return;
     }
     const ctx = this.canvas.getContext('2d');
@@ -46,7 +48,9 @@ class Boundingbox extends Component {
     // Make sure the image is loaded first otherwise nothing will draw.
     background.onload = () => {
       if (!this.canvas) {
-        console.warn('Canvas ref not available during image load');
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('Canvas ref not available during image load');
+        }
         return;
       }
       this.canvas.width = background.width;
@@ -308,7 +312,9 @@ class Boundingbox extends Component {
 
   renderBox(box, index) {
     if (!this.canvas) {
-      console.warn('Canvas ref not available during renderBox');
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Canvas ref not available during renderBox');
+      }
       return null;
     }
 
@@ -338,7 +344,9 @@ class Boundingbox extends Component {
 
   renderBoxes(boxes) {
     if (!this.canvas) {
-      console.warn('Canvas ref not available during renderBoxes');
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Canvas ref not available during renderBoxes');
+      }
       return;
     }
 
