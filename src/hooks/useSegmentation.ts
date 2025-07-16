@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import type {
   UseSegmentationConfig,
   UseSegmentationReturn,
@@ -45,7 +45,7 @@ export const useSegmentation = (
       }
 
       const color = colorGenerator.current(classIndex);
-      setSegmentColors(prev => new Map(prev.set(classIndex, color)));
+      setSegmentColors((prev: Map<number, [number, number, number]>) => new Map(prev.set(classIndex, color)));
       return color;
     },
     [segmentColors]
