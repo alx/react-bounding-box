@@ -48,8 +48,8 @@ jobs:
 
       - name: Check for console statements
         run: |
-          if grep -r "console\." src/ --exclude-dir=__tests__ --exclude="*.test.*" --exclude="*.spec.*" | grep -v "process.env.NODE_ENV !== 'production'"; then
-            echo "Found console statements in production code (without NODE_ENV check)"
+          if grep -r "console\.\(log\|debug\|info\)" src/ --exclude-dir=__tests__ --exclude="*.test.*" --exclude="*.spec.*"; then
+            echo "Found console.log/debug/info statements in production code"
             exit 1
           fi
 

@@ -68,10 +68,12 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
           if (data.body?.predictions?.[0]?.vals) {
             // This would need to update the segmentation data
             // Implementation depends on how we want to handle this
-            console.log(
-              'Loaded segmentation data:',
-              data.body.predictions[0].vals
-            );
+            if (process.env.NODE_ENV !== 'production') {
+              console.log(
+                'Loaded segmentation data:',
+                data.body.predictions[0].vals
+              );
+            }
           }
         })
         .catch(err => console.error('Failed to load segmentation:', err));
