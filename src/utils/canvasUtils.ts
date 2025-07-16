@@ -19,7 +19,7 @@ export class CanvasRenderer {
       throw new Error('Failed to get 2D rendering context');
     }
     this.ctx = context;
-    
+
     // Optimize canvas context
     this.optimizeContext();
   }
@@ -31,7 +31,7 @@ export class CanvasRenderer {
     // Enable image smoothing for better quality
     this.ctx.imageSmoothingEnabled = true;
     this.ctx.imageSmoothingQuality = 'high';
-    
+
     // Set default composite operation for performance
     this.ctx.globalCompositeOperation = 'source-over';
   }
@@ -42,7 +42,7 @@ export class CanvasRenderer {
   queueRender(renderFn: () => void): void {
     this.renderQueue.push(renderFn);
     this.isDirty = true;
-    
+
     if (!this.animationFrame) {
       this.animationFrame = requestAnimationFrame(() => {
         this.flushRenderQueue();
@@ -71,7 +71,7 @@ export class CanvasRenderer {
     } finally {
       // Restore context state
       this.ctx.restore();
-      
+
       // Clear queue and reset frame
       this.renderQueue = [];
       this.animationFrame = null;
@@ -132,13 +132,16 @@ export const renderBoxesBatched = (
   drawFunction?: CanvasDrawFunction
 ): void => {
   // Group boxes by style for batch rendering
-  const styleGroups = new Map<string, Array<{ box: BoundingBox; index: number }>>();
-  
+  const styleGroups = new Map<
+    string,
+    Array<{ box: BoundingBox; index: number }>
+  >();
+
   boxes.forEach((box, index) => {
     const color = colors[index] || colors[0] || 'rgba(255,255,255,1)';
     const lineWidth = lineWidths[index] || lineWidths[0] || 2;
     const styleKey = `${color}-${lineWidth}`;
-    
+
     if (!styleGroups.has(styleKey)) {
       styleGroups.set(styleKey, []);
     }
@@ -149,11 +152,11 @@ export const renderBoxesBatched = (
   styleGroups.forEach((groupBoxes, styleKey) => {
     const [color, lineWidthStr] = styleKey.split('-');
     const lineWidth = parseFloat(lineWidthStr);
-    
+
     // Set style once for the entire group
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
-    
+
     // Render all boxes with this style
     groupBoxes.forEach(({ box }) => {
       if (drawFunction) {
@@ -177,8 +180,12 @@ export const drawDefaultBox = (
   try {
     const [x, y, width, height] = extractCoordinates(box);
     const [clampedX, clampedY, clampedWidth, clampedHeight] = clampToCanvas(
-      x, y, width, height,
-      ctx.canvas.width, ctx.canvas.height,
+      x,
+      y,
+      width,
+      height,
+      ctx.canvas.width,
+      ctx.canvas.height,
       lineWidth
     );
 
@@ -187,19 +194,19 @@ export const drawDefaultBox = (
     const ninetyPercent = 9 * tenPercent;
 
     ctx.beginPath();
-    
+
     // Left segment
     ctx.moveTo(clampedX + tenPercent, clampedY);
     ctx.lineTo(clampedX, clampedY);
     ctx.lineTo(clampedX, clampedY + clampedHeight);
     ctx.lineTo(clampedX + tenPercent, clampedY + clampedHeight);
-    
+
     // Right segment
     ctx.moveTo(clampedX + ninetyPercent, clampedY);
     ctx.lineTo(clampedX + clampedWidth, clampedY);
     ctx.lineTo(clampedX + clampedWidth, clampedY + clampedHeight);
     ctx.lineTo(clampedX + ninetyPercent, clampedY + clampedHeight);
-    
+
     ctx.stroke();
   } catch (error) {
     console.warn('Error drawing box:', error);
@@ -225,16 +232,16 @@ export const drawOptimizedLabel = (
     font = '16px Arial',
     color = 'white',
     backgroundColor = 'rgba(0,0,0,0.7)',
-    padding = 4
+    padding = 4,
   } = options;
 
   try {
     const [x, y, , height] = extractCoordinates(box);
-    
+
     ctx.font = font;
     const textMetrics = ctx.measureText(box.label);
     const textHeight = 16; // Approximate height for 16px font
-    
+
     // Draw background
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(
@@ -243,7 +250,7 @@ export const drawOptimizedLabel = (
       textMetrics.width + padding * 2,
       textHeight + padding * 2
     );
-    
+
     // Draw text
     ctx.fillStyle = color;
     ctx.fillText(box.label, x + padding, y - padding);
@@ -264,11 +271,11 @@ export const resizeCanvasWithScaling = (
   // Set actual size in memory (scaled to account for pixel density)
   canvas.width = width * devicePixelRatio;
   canvas.height = height * devicePixelRatio;
-  
+
   // Scale the canvas back down using CSS
   canvas.style.width = width + 'px';
   canvas.style.height = height + 'px';
-  
+
   // Scale the drawing context so everything draws at the correct size
   const ctx = canvas.getContext('2d');
   if (ctx) {
@@ -297,7 +304,7 @@ export const cullInvisibleBoxes = (
   return boxes.filter(box => {
     try {
       const [x, y, width, height] = extractCoordinates(box);
-      
+
       // Check if box intersects with canvas
       return !(
         x + width < 0 ||
@@ -319,12 +326,12 @@ export const createDebouncedCanvasOperation = (
   delay: number = 16 // ~60fps
 ): (() => void) => {
   let timeoutId: number | null = null;
-  
+
   return () => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
-    
+
     timeoutId = window.setTimeout(() => {
       operation();
       timeoutId = null;

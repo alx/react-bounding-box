@@ -19,10 +19,10 @@ export interface BoundingBoxWithLabel {
   label?: string;
 }
 
-export type BoundingBox = 
-  | number[] 
-  | BoundingBoxCoord 
-  | BoundingBoxMinMax 
+export type BoundingBox =
+  | number[]
+  | BoundingBoxCoord
+  | BoundingBoxMinMax
   | BoundingBoxWithLabel;
 
 export interface SegmentationMask {
@@ -57,7 +57,12 @@ export interface BoundingBoxProps {
   selectedIndex?: number;
   className?: string;
   onSelected?: (index: number) => void;
-  drawBox?: (canvas: HTMLCanvasElement, box: BoundingBox, color: string, lineWidth: number) => void;
+  drawBox?: (
+    canvas: HTMLCanvasElement,
+    box: BoundingBox,
+    color: string,
+    lineWidth: number
+  ) => void;
   drawLabel?: (canvas: HTMLCanvasElement, box: BoundingBoxWithLabel) => void;
 }
 
@@ -122,7 +127,12 @@ export interface UseSegmentationReturn {
   generateSegmentColor: (classIndex: number) => [number, number, number];
   loadSegmentationFromUrl: (url: string) => Promise<number[]>;
   clearSegmentation: () => void;
-  getSegmentationStats: () => { totalPixels: number; uniqueClasses: number; classCounts: { [key: string]: number }; backgroundPixels: number } | null;
+  getSegmentationStats: () => {
+    totalPixels: number;
+    uniqueClasses: number;
+    classCounts: { [key: string]: number };
+    backgroundPixels: number;
+  } | null;
   isProcessing: boolean;
 }
 

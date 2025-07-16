@@ -2,9 +2,9 @@ name: Code Quality
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
 
 jobs:
   code-quality:
@@ -23,7 +23,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci --legacy-peer-deps --legacy-peer-deps
 
       - name: Run Prettier check
         run: npm run format:check
@@ -42,7 +42,7 @@ jobs:
         run: |
           npm run build:analyze || true
           # You can add bundle size checks here
-          
+
       - name: Run TypeScript strict check
         run: npm run type-check
 
@@ -57,7 +57,7 @@ jobs:
         run: |
           npm run build
           npm pack --dry-run
-          
+
       - name: Check for vulnerable dependencies
         run: |
           npm audit --audit-level moderate

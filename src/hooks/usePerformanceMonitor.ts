@@ -16,11 +16,13 @@ interface PerformanceMonitorConfig {
 /**
  * Hook for monitoring performance metrics of canvas operations
  */
-export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => {
+export const usePerformanceMonitor = (
+  config: PerformanceMonitorConfig = {}
+) => {
   const {
     enabled = process.env.NODE_ENV === 'development',
     sampleSize = 60, // Monitor last 60 operations
-    memoryMonitoring = true
+    memoryMonitoring = true,
   } = config;
 
   const metricsRef = useRef<PerformanceMetrics[]>([]);
@@ -29,7 +31,7 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
   const [currentMetrics, setCurrentMetrics] = useState<PerformanceMetrics>({
     renderTime: 0,
     frameRate: 0,
-    canvasOperations: 0
+    canvasOperations: 0,
   });
 
   /**
@@ -61,7 +63,7 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
         renderTime,
         frameRate,
         memoryUsage,
-        canvasOperations: operationCountRef.current
+        canvasOperations: operationCountRef.current,
       };
 
       // Update metrics history
@@ -82,17 +84,21 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
     if (metricsRef.current.length === 0) return;
 
     const recent = metricsRef.current.slice(-10); // Last 10 samples
-    const avgRenderTime = recent.reduce((sum, m) => sum + m.renderTime, 0) / recent.length;
-    const avgFrameRate = recent.reduce((sum, m) => sum + m.frameRate, 0) / recent.length;
-    const avgMemory = recent.length > 0 && recent[0].memoryUsage !== undefined
-      ? recent.reduce((sum, m) => sum + (m.memoryUsage || 0), 0) / recent.length
-      : undefined;
+    const avgRenderTime =
+      recent.reduce((sum, m) => sum + m.renderTime, 0) / recent.length;
+    const avgFrameRate =
+      recent.reduce((sum, m) => sum + m.frameRate, 0) / recent.length;
+    const avgMemory =
+      recent.length > 0 && recent[0].memoryUsage !== undefined
+        ? recent.reduce((sum, m) => sum + (m.memoryUsage || 0), 0) /
+          recent.length
+        : undefined;
 
     setCurrentMetrics({
       renderTime: Math.round(avgRenderTime * 100) / 100,
       frameRate: Math.round(avgFrameRate * 10) / 10,
       memoryUsage: avgMemory ? Math.round(avgMemory * 100) / 100 : undefined,
-      canvasOperations: operationCountRef.current
+      canvasOperations: operationCountRef.current,
     });
   }, []);
 
@@ -107,7 +113,7 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
         minRenderTime: 0,
         averageFrameRate: 0,
         totalOperations: 0,
-        memoryUsage: undefined
+        memoryUsage: undefined,
       };
     }
 
@@ -115,12 +121,14 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
     const frameRates = metricsRef.current.map(m => m.frameRate);
 
     return {
-      averageRenderTime: renderTimes.reduce((a, b) => a + b, 0) / renderTimes.length,
+      averageRenderTime:
+        renderTimes.reduce((a, b) => a + b, 0) / renderTimes.length,
       maxRenderTime: Math.max(...renderTimes),
       minRenderTime: Math.min(...renderTimes),
-      averageFrameRate: frameRates.reduce((a, b) => a + b, 0) / frameRates.length,
+      averageFrameRate:
+        frameRates.reduce((a, b) => a + b, 0) / frameRates.length,
       totalOperations: operationCountRef.current,
-      memoryUsage: currentMetrics.memoryUsage
+      memoryUsage: currentMetrics.memoryUsage,
     };
   }, [currentMetrics.memoryUsage]);
 
@@ -133,7 +141,7 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
     setCurrentMetrics({
       renderTime: 0,
       frameRate: 0,
-      canvasOperations: 0
+      canvasOperations: 0,
     });
   }, []);
 
@@ -157,19 +165,27 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
     const recommendations: string[] = [];
 
     if (stats.averageRenderTime > 16) {
-      recommendations.push('Consider reducing the number of bounding boxes or using canvas culling');
+      recommendations.push(
+        'Consider reducing the number of bounding boxes or using canvas culling'
+      );
     }
 
     if (stats.averageFrameRate < 30) {
-      recommendations.push('Enable batched rendering or reduce canvas update frequency');
+      recommendations.push(
+        'Enable batched rendering or reduce canvas update frequency'
+      );
     }
 
     if (stats.memoryUsage && stats.memoryUsage > 100) {
-      recommendations.push('Clear image cache periodically or reduce cache size');
+      recommendations.push(
+        'Clear image cache periodically or reduce cache size'
+      );
     }
 
     if (stats.totalOperations > 1000) {
-      recommendations.push('Consider using requestAnimationFrame for canvas operations');
+      recommendations.push(
+        'Consider using requestAnimationFrame for canvas operations'
+      );
     }
 
     return recommendations;
@@ -182,6 +198,6 @@ export const usePerformanceMonitor = (config: PerformanceMonitorConfig = {}) => 
     resetMetrics,
     isPerformanceDegraded,
     getPerformanceRecommendations,
-    enabled
+    enabled,
   };
 };

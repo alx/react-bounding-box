@@ -15,5 +15,5 @@ export type {
   UseSegmentationConfig,
   UseSegmentationReturn,
   UseBoundingBoxConfig,
-  UseBoundingBoxReturn
+  UseBoundingBoxReturn,
 } from '@/types';

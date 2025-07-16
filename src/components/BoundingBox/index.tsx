@@ -28,7 +28,7 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
     segmentationMasks,
     colors: segmentationColors,
     transparency: segmentationTransparency,
-    separateCanvas: separateSegmentation
+    separateCanvas: separateSegmentation,
   };
 
   // Main hook orchestration
@@ -42,13 +42,13 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
     selectBox,
     handleMouseMove,
     handleMouseOut,
-    handleCanvasClick
+    handleCanvasClick,
   } = useBoundingBox({
     image,
     boxes,
     options,
     segmentation: segmentationConfig,
-    onSelection: onSelected
+    onSelection: onSelected,
   });
 
   // Sync external selectedIndex with internal state
@@ -68,7 +68,10 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
           if (data.body?.predictions?.[0]?.vals) {
             // This would need to update the segmentation data
             // Implementation depends on how we want to handle this
-            console.log('Loaded segmentation data:', data.body.predictions[0].vals);
+            console.log(
+              'Loaded segmentation data:',
+              data.body.predictions[0].vals
+            );
           }
         })
         .catch(err => console.error('Failed to load segmentation:', err));
@@ -96,7 +99,7 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
         role="img"
         aria-label="Image with bounding boxes"
       />
-      
+
       {/* Separate segmentation canvas (if enabled) */}
       {separateSegmentation && (
         <canvas
@@ -107,19 +110,19 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({
           aria-label="Segmentation overlay"
         />
       )}
-      
+
       {/* Loading indicator */}
       {isLoading && (
-        <div 
-          style={{ 
-            position: 'absolute', 
-            top: '50%', 
-            left: '50%', 
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
             transform: 'translate(-50%, -50%)',
             background: 'rgba(0,0,0,0.7)',
             color: 'white',
             padding: '10px',
-            borderRadius: '4px'
+            borderRadius: '4px',
           }}
         >
           Loading...

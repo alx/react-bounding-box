@@ -13,13 +13,13 @@ export default [
         console: 'readonly',
         process: 'readonly',
         global: 'readonly',
-        fetch: 'readonly'
+        fetch: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
-        }
-      }
+          jsx: true,
+        },
+      },
     },
     rules: {
       // We use _ to define private variables and methods in classes
@@ -44,8 +44,11 @@ export default [
       // Allow variable redeclaration in for loops
       'no-redeclare': 'off',
       // Allow unused imports in tests
-      'no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }]
-    }
+      'no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
+    },
   },
   {
     files: ['**/*.test.js', '**/*.spec.js'],
@@ -65,5 +68,5 @@ export default [
         setTimeout: 'readonly',
       },
     },
-  }
+  },
 ];

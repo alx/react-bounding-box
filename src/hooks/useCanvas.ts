@@ -6,9 +6,9 @@ import type { UseCanvasConfig, UseCanvasReturn } from '@/types';
  */
 export const useCanvas = (config: UseCanvasConfig = {}): UseCanvasReturn => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [dimensions, setDimensions] = useState({ 
-    width: config.width || 0, 
-    height: config.height || 0 
+  const [dimensions, setDimensions] = useState({
+    width: config.width || 0,
+    height: config.height || 0,
   });
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 
@@ -28,7 +28,7 @@ export const useCanvas = (config: UseCanvasConfig = {}): UseCanvasReturn => {
       canvasRef.current.width = width;
       canvasRef.current.height = height;
       setDimensions({ width, height });
-      
+
       // Re-get context to ensure it's properly configured
       const ctx = canvasRef.current.getContext('2d');
       setContext(ctx);
@@ -40,7 +40,12 @@ export const useCanvas = (config: UseCanvasConfig = {}): UseCanvasReturn => {
    */
   const clearCanvas = useCallback(() => {
     if (context && canvasRef.current) {
-      context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      context.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
     }
   }, [context]);
 
@@ -49,6 +54,6 @@ export const useCanvas = (config: UseCanvasConfig = {}): UseCanvasReturn => {
     dimensions,
     context,
     resizeCanvas,
-    clearCanvas
+    clearCanvas,
   };
 };

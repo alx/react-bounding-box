@@ -3,14 +3,14 @@ const webpack = require('webpack');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
-  
+
   return {
     mode: isProduction ? 'production' : 'development',
     entry: {
       main: './src/index.ts',
       hooks: './src/hooks/index.ts',
       utils: './src/utils/index.ts',
-      legacy: './src/react-bounding-box.js'
+      legacy: './src/react-bounding-box.js',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -18,30 +18,30 @@ module.exports = (env, argv) => {
       library: {
         name: 'ReactBoundingBox',
         type: 'umd',
-        export: 'default'
+        export: 'default',
       },
       globalObject: 'this',
-      clean: true
+      clean: true,
     },
     externals: {
       react: {
         root: 'React',
         commonjs2: 'react',
         commonjs: 'react',
-        amd: 'react'
+        amd: 'react',
       },
       'react-dom': {
         root: 'ReactDOM',
-        commonjs2: 'react-dom', 
+        commonjs2: 'react-dom',
         commonjs: 'react-dom',
-        amd: 'react-dom'
+        amd: 'react-dom',
       },
       'prop-types': {
         root: 'PropTypes',
         commonjs2: 'prop-types',
-        commonjs: 'prop-types', 
-        amd: 'prop-types'
-      }
+        commonjs: 'prop-types',
+        amd: 'prop-types',
+      },
     },
     optimization: {
       minimize: isProduction,
@@ -68,24 +68,24 @@ module.exports = (env, argv) => {
               presets: [
                 ['@babel/preset-env', { modules: false }],
                 ['@babel/preset-react', { runtime: 'automatic' }],
-                '@babel/preset-typescript'
-              ]
-            }
-          }
+                '@babel/preset-typescript',
+              ],
+            },
+          },
         },
         {
           test: /\.worker\.(js|ts)$/,
           loader: 'worker-loader',
           options: {
-            filename: '[name].[contenthash].worker.js'
-          }
-        }
-      ]
+            filename: '[name].[contenthash].worker.js',
+          },
+        },
+      ],
     },
     plugins: [
       new webpack.EnvironmentPlugin({
-        NODE_ENV: isProduction ? 'production' : 'development'
-      })
+        NODE_ENV: isProduction ? 'production' : 'development',
+      }),
     ],
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     resolve: {
@@ -96,8 +96,8 @@ module.exports = (env, argv) => {
         '@/hooks': path.resolve(__dirname, 'src/hooks'),
         '@/utils': path.resolve(__dirname, 'src/utils'),
         '@/types': path.resolve(__dirname, 'src/types'),
-        '@/constants': path.resolve(__dirname, 'src/constants')
-      }
-    }
+        '@/constants': path.resolve(__dirname, 'src/constants'),
+      },
+    },
   };
 };

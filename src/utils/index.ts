@@ -6,7 +6,7 @@ export {
   scaleCoordinates,
   clampToCanvas,
   findSmallestContainingBox,
-  validateBoundingBox
+  validateBoundingBox,
 } from './coordinateUtils';
 
 export {
@@ -18,7 +18,7 @@ export {
   blendColors,
   getContrastColor,
   createSegmentationPalette,
-  isValidColor
+  isValidColor,
 } from './colorUtils';
 
 // Re-export types for convenience
@@ -26,5 +26,5 @@ export type {
   CoordinateTransform,
   ColorGenerator,
   CanvasDrawFunction,
-  LabelDrawFunction
+  LabelDrawFunction,
 } from '@/types';

@@ -2,9 +2,9 @@ name: Deploy Storybook to GitHub Pages
 
 on:
   push:
-    branches: [ master, main, modernization-refactor ]
+    branches: [master, main, modernization-refactor]
   pull_request:
-    branches: [ master, main ]
+    branches: [master, main]
   workflow_dispatch:
 
 permissions:
@@ -13,38 +13,38 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm install --legacy-peer-deps
-      
-    - name: Build Storybook
-      run: npm run build-storybook || echo "Build failed but continuing with available output"
-      
-    - name: Setup Pages
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'
-      uses: actions/configure-pages@v4
-      
-    - name: Upload artifact
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./storybook-static
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Storybook
+        run: npm run build-storybook || echo "Build failed but continuing with available output"
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./storybook-static
 
   deploy:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'

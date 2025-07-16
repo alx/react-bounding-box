@@ -96,20 +96,20 @@ jobs:
           release_name: Release v${{ steps.version.outputs.new_version }}
           body: |
             ## Changes in v${{ steps.version.outputs.new_version }}
-            
+
             Check the [CHANGELOG.md](CHANGELOG.md) for detailed changes.
-            
+
             ## Installation
             ```bash
             npm install react-bounding-box@${{ steps.version.outputs.new_version }}
             ```
-            
+
             ## Breaking Changes
             - None in this release
-            
+
             ## New Features
             - Check changelog for details
-            
+
             ## Bug Fixes
             - Check changelog for details
           draft: false

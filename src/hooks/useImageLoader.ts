@@ -7,72 +7,83 @@ import { IMAGE_CACHE_MAX_SIZE } from '@/constants/defaults';
  */
 export const useImageLoader = (): UseImageLoaderReturn => {
   const imageCache = useRef(new Map<string, HTMLImageElement>());
-  const [loadingState, setLoadingState] = useState<Record<string, 'loading' | 'loaded' | 'error'>>({});
+  const [loadingState, setLoadingState] = useState<
+    Record<string, 'loading' | 'loaded' | 'error'>
+  >({});
 
   /**
    * Load image asynchronously with promise-based API
    */
-  const loadImageAsync = useCallback((src: string): Promise<HTMLImageElement> => {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      
-      image.onload = () => resolve(image);
-      image.onerror = () => reject(new Error(`Failed to load image: ${src}`));
-      
-      // Handle base64 images
-      if (src.startsWith('data:')) {
-        image.src = src;
-      } else {
-        // Enable CORS for cross-origin images
-        image.crossOrigin = 'anonymous';
-        image.src = src;
-      }
-    });
-  }, []);
+  const loadImageAsync = useCallback(
+    (src: string): Promise<HTMLImageElement> => {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+
+        // Handle base64 images
+        if (src.startsWith('data:')) {
+          image.src = src;
+        } else {
+          // Enable CORS for cross-origin images
+          image.crossOrigin = 'anonymous';
+          image.src = src;
+        }
+      });
+    },
+    []
+  );
 
   /**
    * Load image with caching support
    */
-  const loadImage = useCallback(async (src: string): Promise<HTMLImageElement> => {
-    // Check cache first
-    if (imageCache.current.has(src)) {
-      const cachedImage = imageCache.current.get(src)!;
-      setLoadingState(prev => ({ ...prev, [src]: 'loaded' }));
-      return cachedImage;
-    }
-
-    // Set loading state
-    setLoadingState(prev => ({ ...prev, [src]: 'loading' }));
-
-    try {
-      const image = await loadImageAsync(src);
-      
-      // Manage cache size
-      if (imageCache.current.size >= IMAGE_CACHE_MAX_SIZE) {
-        const firstKey = imageCache.current.keys().next().value;
-        if (firstKey) {
-          imageCache.current.delete(firstKey);
-        }
+  const loadImage = useCallback(
+    async (src: string): Promise<HTMLImageElement> => {
+      // Check cache first
+      if (imageCache.current.has(src)) {
+        const cachedImage = imageCache.current.get(src)!;
+        setLoadingState(prev => ({ ...prev, [src]: 'loaded' }));
+        return cachedImage;
       }
-      
-      // Cache the loaded image
-      imageCache.current.set(src, image);
-      setLoadingState(prev => ({ ...prev, [src]: 'loaded' }));
-      
-      return image;
-    } catch (error) {
-      setLoadingState(prev => ({ ...prev, [src]: 'error' }));
-      throw error;
-    }
-  }, [loadImageAsync]);
+
+      // Set loading state
+      setLoadingState(prev => ({ ...prev, [src]: 'loading' }));
+
+      try {
+        const image = await loadImageAsync(src);
+
+        // Manage cache size
+        if (imageCache.current.size >= IMAGE_CACHE_MAX_SIZE) {
+          const firstKey = imageCache.current.keys().next().value;
+          if (firstKey) {
+            imageCache.current.delete(firstKey);
+          }
+        }
+
+        // Cache the loaded image
+        imageCache.current.set(src, image);
+        setLoadingState(prev => ({ ...prev, [src]: 'loaded' }));
+
+        return image;
+      } catch (error) {
+        setLoadingState(prev => ({ ...prev, [src]: 'error' }));
+        throw error;
+      }
+    },
+    [loadImageAsync]
+  );
 
   /**
    * Preload multiple images
    */
-  const preloadImages = useCallback(async (sources: string[]): Promise<HTMLImageElement[]> => {
-    const promises = sources.map(src => loadImage(src));
-    return Promise.all(promises);
-  }, [loadImage]);
+  const preloadImages = useCallback(
+    async (sources: string[]): Promise<HTMLImageElement[]> => {
+      const promises = sources.map(src => loadImage(src));
+      return Promise.all(promises);
+    },
+    [loadImage]
+  );
 
   /**
    * Clear cache and loading states
@@ -101,7 +112,7 @@ export const useImageLoader = (): UseImageLoaderReturn => {
     return {
       size: imageCache.current.size,
       maxSize: IMAGE_CACHE_MAX_SIZE,
-      cachedImages: Array.from(imageCache.current.keys())
+      cachedImages: Array.from(imageCache.current.keys()),
     };
   }, []);
 
@@ -119,6 +130,6 @@ export const useImageLoader = (): UseImageLoaderReturn => {
     preloadImages,
     clearCache,
     removeFromCache,
-    getCacheStats
+    getCacheStats,
   };
 };

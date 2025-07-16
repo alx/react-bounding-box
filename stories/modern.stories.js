@@ -18,8 +18,8 @@ import boxesBorderZeroJson from './static/boxesBorderZero.json';
 import boxesAgeReal from './static/boxesAgeReal.json';
 
 // Helper function to create copy button
-const createCopyButton = (code) => (
-  <button 
+const createCopyButton = code => (
+  <button
     onClick={() => {
       navigator.clipboard.writeText(code);
       const btn = event.target;
@@ -39,7 +39,7 @@ const createCopyButton = (code) => (
       borderRadius: '4px',
       cursor: 'pointer',
       fontSize: '12px',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     }}
   >
     📋 Copy Code
@@ -47,21 +47,38 @@ const createCopyButton = (code) => (
 );
 
 // Helper function to create code display with copy button
-const createCodeDisplay = (code) => (
-  <div style={{ 
-    padding: '12px', 
-    background: '#f8fafc', 
-    border: '1px solid #cbd5e1', 
-    borderRadius: '6px', 
-    marginBottom: '16px',
-    fontFamily: 'monospace',
-    fontSize: '14px'
-  }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+const createCodeDisplay = code => (
+  <div
+    style={{
+      padding: '12px',
+      background: '#f8fafc',
+      border: '1px solid #cbd5e1',
+      borderRadius: '6px',
+      marginBottom: '16px',
+      fontFamily: 'monospace',
+      fontSize: '14px',
+    }}
+  >
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '8px',
+      }}
+    >
       <strong>📋 Code used in this story:</strong>
       {createCopyButton(code)}
     </div>
-    <pre style={{ margin: '0', background: '#f1f5f9', padding: '8px', borderRadius: '4px', overflow: 'auto' }}>
+    <pre
+      style={{
+        margin: '0',
+        background: '#f1f5f9',
+        padding: '8px',
+        borderRadius: '4px',
+        overflow: 'auto',
+      }}
+    >
       {code}
     </pre>
   </div>
@@ -132,9 +149,9 @@ function MyComponent() {
 ✅ **Fully backward compatible** - your existing code continues to work
 ✅ **Drop-in replacement** - just update your imports
 ✅ **Performance boost** - automatic with no code changes required
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     const boxes = [
@@ -146,20 +163,26 @@ function MyComponent() {
 
     return (
       <div>
-        <div style={{ 
-          padding: '16px', 
-          background: '#f0f9ff', 
-          border: '1px solid #0ea5e9', 
-          borderRadius: '8px', 
-          marginBottom: '20px' 
-        }}>
-          <h3 style={{ margin: '0 0 8px 0', color: '#0c4a6e' }}>🆕 Modern BoundingBox v2.x</h3>
+        <div
+          style={{
+            padding: '16px',
+            background: '#f0f9ff',
+            border: '1px solid #0ea5e9',
+            borderRadius: '8px',
+            marginBottom: '20px',
+          }}
+        >
+          <h3 style={{ margin: '0 0 8px 0', color: '#0c4a6e' }}>
+            🆕 Modern BoundingBox v2.x
+          </h3>
           <p style={{ margin: 0, color: '#075985' }}>
-            Enhanced performance, improved accessibility, and modern React patterns. 
-            <strong> 40% faster rendering</strong> with full backward compatibility.
+            Enhanced performance, improved accessibility, and modern React
+            patterns.
+            <strong> 40% faster rendering</strong> with full backward
+            compatibility.
           </p>
         </div>
-        
+
         {createCodeDisplay(`<Boundingbox
   image={demoImageLarge}
   boxes={[
@@ -177,7 +200,7 @@ function MyComponent() {
         />
       </div>
     );
-  }
+  },
 };
 
 export const EnhancedInteractivity = {
@@ -226,26 +249,31 @@ function InteractiveExample() {
 - 🎨 **Customizable color schemes** for selected/unselected states  
 - ⚡ **Smooth transitions** between hover states
 - 📱 **Touch-friendly** for mobile devices
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     return (
       <div>
-        <div style={{ 
-          padding: '12px', 
-          background: '#fef3c7', 
-          border: '1px solid #f59e0b', 
-          borderRadius: '6px', 
-          marginBottom: '16px' 
-        }}>
-          <h4 style={{ margin: '0 0 4px 0', color: '#92400e' }}>🖱️ Try It Out</h4>
+        <div
+          style={{
+            padding: '12px',
+            background: '#fef3c7',
+            border: '1px solid #f59e0b',
+            borderRadius: '6px',
+            marginBottom: '16px',
+          }}
+        >
+          <h4 style={{ margin: '0 0 4px 0', color: '#92400e' }}>
+            🖱️ Try It Out
+          </h4>
           <p style={{ margin: 0, color: '#a16207', fontSize: '14px' }}>
-            <strong>Hover:</strong> See immediate visual feedback • <strong>Click:</strong> Trigger selection event in Actions panel
+            <strong>Hover:</strong> See immediate visual feedback •{' '}
+            <strong>Click:</strong> Trigger selection event in Actions panel
           </p>
         </div>
-        
+
         {createCodeDisplay(`<Boundingbox
   image={demoImageDog}
   boxes={[
@@ -267,7 +295,7 @@ function InteractiveExample() {
           boxes={[
             [10, 10, 100, 100],
             [150, 50, 120, 80],
-            [300, 100, 80, 120]
+            [300, 100, 80, 120],
           ]}
           onSelected={action('enhanced-selection')}
           options={{
@@ -275,12 +303,12 @@ function InteractiveExample() {
               normal: 'rgba(255,225,255,1)',
               selected: 'rgba(0,225,204,1)',
               unselected: 'rgba(100,100,100,0.7)',
-            }
+            },
           }}
         />
       </div>
     );
-  }
+  },
 };
 
 export const AdvancedSegmentation = {
@@ -329,24 +357,30 @@ function SegmentationExample() {
 - ⚡ **Optimized rendering** for large segmentation maps
 - 🔄 **Real-time updates** when segmentation data changes
 - 📝 **Note:** Selection events are triggered for bounding boxes, not individual segments
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     return (
       <div>
-        <div style={{ 
-          padding: '12px', 
-          background: '#f3e8ff', 
-          border: '1px solid #a855f7', 
-          borderRadius: '6px', 
-          marginBottom: '16px' 
-        }}>
-          <h4 style={{ margin: '0 0 4px 0', color: '#7c2d12' }}>🎨 Segmentation Demo</h4>
-          <p style={{ margin: 0, color: '#8b5cf6', fontSize: '14px' }}>Pixel-level segmentation with customizable colors and transparency</p>
+        <div
+          style={{
+            padding: '12px',
+            background: '#f3e8ff',
+            border: '1px solid #a855f7',
+            borderRadius: '6px',
+            marginBottom: '16px',
+          }}
+        >
+          <h4 style={{ margin: '0 0 4px 0', color: '#7c2d12' }}>
+            🎨 Segmentation Demo
+          </h4>
+          <p style={{ margin: 0, color: '#8b5cf6', fontSize: '14px' }}>
+            Pixel-level segmentation with customizable colors and transparency
+          </p>
         </div>
-        
+
         {createCodeDisplay(`<Boundingbox
   image={demoImage}
   pixelSegmentation={segmentationJson.body.predictions[0].vals}
@@ -363,13 +397,13 @@ function SegmentationExample() {
           segmentationTransparency={150}
           boxes={[
             [50, 50, 100, 100],
-            [200, 150, 120, 80]
+            [200, 150, 120, 80],
           ]}
           onSelected={action('segmentation-selected')}
         />
       </div>
     );
-  }
+  },
 };
 
 export const PerformanceDemo = {
@@ -416,28 +450,37 @@ function PerformanceExample() {
 - 🎯 **Optimized hit detection** for multiple overlapping boxes
 - 💾 **44% lower memory usage** with efficient caching
 - ⚡ **Smooth 60fps** even with 100+ bounding boxes
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     const boxes = Array.from({ length: 50 }, (_, i) => [
-      (i % 10) * 80, Math.floor(i / 10) * 50, 70, 40
+      (i % 10) * 80,
+      Math.floor(i / 10) * 50,
+      70,
+      40,
     ]);
 
     return (
       <div>
-        <div style={{ 
-          padding: '12px', 
-          background: '#dcfce7', 
-          border: '1px solid #16a34a', 
-          borderRadius: '6px', 
-          marginBottom: '16px' 
-        }}>
-          <h4 style={{ margin: '0 0 4px 0', color: '#15803d' }}>⚡ Performance Showcase</h4>
-          <p style={{ margin: 0, color: '#166534', fontSize: '14px' }}>Rendering 50 bounding boxes with optimized performance</p>
+        <div
+          style={{
+            padding: '12px',
+            background: '#dcfce7',
+            border: '1px solid #16a34a',
+            borderRadius: '6px',
+            marginBottom: '16px',
+          }}
+        >
+          <h4 style={{ margin: '0 0 4px 0', color: '#15803d' }}>
+            ⚡ Performance Showcase
+          </h4>
+          <p style={{ margin: 0, color: '#166534', fontSize: '14px' }}>
+            Rendering 50 bounding boxes with optimized performance
+          </p>
         </div>
-        
+
         {createCodeDisplay(`const boxes = Array.from({ length: 50 }, (_, i) => [
   (i % 10) * 80, Math.floor(i / 10) * 50, 70, 40
 ]);
@@ -454,7 +497,7 @@ function PerformanceExample() {
         />
       </div>
     );
-  }
+  },
 };
 
 export const CustomStyling = {
@@ -507,30 +550,36 @@ function CustomStyledExample() {
 - 📏 **Array format**: \`[x, y, width, height]\`
 - 📦 **Min/Max format**: \`{xmin, ymin, xmax, ymax}\`
 - 🏷️ **Labeled boxes**: \`{coord: [x,y,w,h], label: "text"}\`
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     const typedBoxes = [
       { xmin: 10, ymin: 10, xmax: 110, ymax: 110 },
       { xmin: 150, ymin: 50, xmax: 300, ymax: 200 },
-      { coord: [350, 100, 100, 80], label: 'Custom' }
+      { coord: [350, 100, 100, 80], label: 'Custom' },
     ];
 
     return (
       <div>
-        <div style={{ 
-          padding: '12px', 
-          background: '#fdf2f8', 
-          border: '1px solid #ec4899', 
-          borderRadius: '6px', 
-          marginBottom: '16px' 
-        }}>
-          <h4 style={{ margin: '0 0 4px 0', color: '#be185d' }}>💅 Styling Options</h4>
-          <p style={{ margin: 0, color: '#be185d', fontSize: '14px' }}>Multiple coordinate formats with custom colors and container styling</p>
+        <div
+          style={{
+            padding: '12px',
+            background: '#fdf2f8',
+            border: '1px solid #ec4899',
+            borderRadius: '6px',
+            marginBottom: '16px',
+          }}
+        >
+          <h4 style={{ margin: '0 0 4px 0', color: '#be185d' }}>
+            💅 Styling Options
+          </h4>
+          <p style={{ margin: 0, color: '#be185d', fontSize: '14px' }}>
+            Multiple coordinate formats with custom colors and container styling
+          </p>
         </div>
-        
+
         {createCodeDisplay(`<Boundingbox
   image={demoImageAgeReal}
   boxes={[
@@ -559,19 +608,19 @@ function CustomStyledExample() {
             colors: {
               normal: '#3b82f6',
               selected: '#ef4444',
-              unselected: '#6b7280'
+              unselected: '#6b7280',
             },
             style: {
               maxWidth: '600px',
               border: '1px solid #e5e7eb',
-              borderRadius: '8px'
-            }
+              borderRadius: '8px',
+            },
           }}
           onSelected={action('styled-selected')}
         />
       </div>
     );
-  }
+  },
 };
 
 export const SeparateSegmentation = {
@@ -621,24 +670,30 @@ function SeparateSegmentationExample() {
 - 🎯 **Precise mask control** with pixel-level accuracy
 - 🔄 **Dynamic transparency** adjustment
 - ⚡ **Optimized rendering** for large mask datasets
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     return (
       <div>
-        <div style={{ 
-          padding: '12px', 
-          background: '#f0fdf4', 
-          border: '1px solid #22c55e', 
-          borderRadius: '6px', 
-          marginBottom: '16px' 
-        }}>
-          <h4 style={{ margin: '0 0 4px 0', color: '#15803d' }}>🌐 Advanced Segmentation</h4>
-          <p style={{ margin: 0, color: '#16a34a', fontSize: '14px' }}>Separate canvas layer for independent segmentation control</p>
+        <div
+          style={{
+            padding: '12px',
+            background: '#f0fdf4',
+            border: '1px solid #22c55e',
+            borderRadius: '6px',
+            marginBottom: '16px',
+          }}
+        >
+          <h4 style={{ margin: '0 0 4px 0', color: '#15803d' }}>
+            🌐 Advanced Segmentation
+          </h4>
+          <p style={{ margin: 0, color: '#16a34a', fontSize: '14px' }}>
+            Separate canvas layer for independent segmentation control
+          </p>
         </div>
-        
+
         {createCodeDisplay(`<Boundingbox
   image={demoImageDog}
   segmentationMasks={segmentationMasksJson}
@@ -657,7 +712,7 @@ function SeparateSegmentationExample() {
         />
       </div>
     );
-  }
+  },
 };
 
 // Migration Examples
@@ -718,29 +773,35 @@ function ComparisonExample() {
 - 🔍 **Visual differences** between configurations
 - 🎨 **Color customization** impact
 - ⚙️ **Options testing** environment
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     const boxes = [
       [50, 50, 150, 100],
-      [250, 80, 120, 120]
+      [250, 80, 120, 120],
     ];
 
     return (
       <div>
-        <div style={{ 
-          padding: '12px', 
-          background: '#fffbeb', 
-          border: '1px solid #f59e0b', 
-          borderRadius: '6px', 
-          marginBottom: '16px' 
-        }}>
-          <h4 style={{ margin: '0 0 4px 0', color: '#92400e' }}>🔄 Configuration Comparison</h4>
-          <p style={{ margin: 0, color: '#a16207', fontSize: '14px' }}>Compare standard vs enhanced visual configurations</p>
+        <div
+          style={{
+            padding: '12px',
+            background: '#fffbeb',
+            border: '1px solid #f59e0b',
+            borderRadius: '6px',
+            marginBottom: '16px',
+          }}
+        >
+          <h4 style={{ margin: '0 0 4px 0', color: '#92400e' }}>
+            🔄 Configuration Comparison
+          </h4>
+          <p style={{ margin: 0, color: '#a16207', fontSize: '14px' }}>
+            Compare standard vs enhanced visual configurations
+          </p>
         </div>
-        
+
         {createCodeDisplay(`// Standard Configuration
 <Boundingbox
   image={demoImage}
@@ -787,14 +848,14 @@ function ComparisonExample() {
                   normal: 'rgba(59, 130, 246, 1)',
                   selected: 'rgba(239, 68, 68, 1)',
                   unselected: 'rgba(107, 114, 128, 0.7)',
-                }
+                },
               }}
             />
           </div>
         </div>
       </div>
     );
-  }
+  },
 };
 
 export const LegacyCompatibility = {
@@ -840,24 +901,30 @@ import { useBoundingBox } from 'react-bounding-box/hooks';
 - 💾 **Lower memory usage** - 44% reduction
 - 🎆 **Enhanced features** available when ready
 - 🔧 **Gradual migration** - migrate at your own pace
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     return (
       <div>
-        <div style={{ 
-          padding: '12px', 
-          background: '#f0f9ff', 
-          border: '1px solid #0ea5e9', 
-          borderRadius: '6px', 
-          marginBottom: '16px' 
-        }}>
-          <h4 style={{ margin: '0 0 4px 0', color: '#0c4a6e' }}>🔗 Legacy Support</h4>
-          <p style={{ margin: 0, color: '#075985', fontSize: '14px' }}>100% backward compatibility with v1.x API</p>
+        <div
+          style={{
+            padding: '12px',
+            background: '#f0f9ff',
+            border: '1px solid #0ea5e9',
+            borderRadius: '6px',
+            marginBottom: '16px',
+          }}
+        >
+          <h4 style={{ margin: '0 0 4px 0', color: '#0c4a6e' }}>
+            🔗 Legacy Support
+          </h4>
+          <p style={{ margin: 0, color: '#075985', fontSize: '14px' }}>
+            100% backward compatibility with v1.x API
+          </p>
         </div>
-        
+
         {createCodeDisplay(`<Boundingbox
   image={demoImageDog}
   boxes={segmentationMasksBoxesJson}
@@ -865,10 +932,17 @@ import { useBoundingBox } from 'react-bounding-box/hooks';
   separateSegmentation={true}
   onSelected={(index) => console.log('Selected:', index)}
 />`)}
-        
+
         <div style={{ marginBottom: '20px' }}>
           <h4>Same import, enhanced performance:</h4>
-          <pre style={{ background: '#f5f5f5', padding: '10px', fontSize: '12px', borderRadius: '4px' }}>
+          <pre
+            style={{
+              background: '#f5f5f5',
+              padding: '10px',
+              fontSize: '12px',
+              borderRadius: '4px',
+            }}
+          >
             {`import Boundingbox from 'react-bounding-box';`}
           </pre>
         </div>
@@ -881,5 +955,5 @@ import { useBoundingBox } from 'react-bounding-box/hooks';
         />
       </div>
     );
-  }
+  },
 };

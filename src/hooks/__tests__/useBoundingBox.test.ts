@@ -9,19 +9,21 @@ jest.mock('../useCanvas', () => ({
     dimensions: { width: 0, height: 0 },
     context: null,
     resizeCanvas: jest.fn(),
-    clearCanvas: jest.fn()
-  }))
+    clearCanvas: jest.fn(),
+  })),
 }));
 
 jest.mock('../useImageLoader', () => ({
   useImageLoader: jest.fn(() => ({
-    loadImage: jest.fn(() => Promise.resolve({
-      width: 100,
-      height: 100
-    })),
+    loadImage: jest.fn(() =>
+      Promise.resolve({
+        width: 100,
+        height: 100,
+      })
+    ),
     loadingState: {},
-    imageCache: new Map()
-  }))
+    imageCache: new Map(),
+  })),
 }));
 
 jest.mock('../useMouseInteraction', () => ({
@@ -33,8 +35,8 @@ jest.mock('../useMouseInteraction', () => ({
     handleCanvasClick: jest.fn(),
     selectBox: jest.fn(),
     getCurrentBox: jest.fn(),
-    clearSelection: jest.fn()
-  }))
+    clearSelection: jest.fn(),
+  })),
 }));
 
 jest.mock('../useSegmentation', () => ({
@@ -46,8 +48,8 @@ jest.mock('../useSegmentation', () => ({
     loadSegmentationFromUrl: jest.fn(),
     clearSegmentation: jest.fn(),
     getSegmentationStats: jest.fn(),
-    isProcessing: false
-  }))
+    isProcessing: false,
+  })),
 }));
 
 describe('useBoundingBox Hook', () => {
@@ -55,8 +57,8 @@ describe('useBoundingBox Hook', () => {
     image: 'test-image.jpg',
     boxes: [
       [10, 10, 50, 50],
-      [70, 70, 40, 40]
-    ]
+      [70, 70, 40, 40],
+    ],
   };
 
   beforeEach(() => {
@@ -66,7 +68,7 @@ describe('useBoundingBox Hook', () => {
   describe('Initialization', () => {
     it('initializes with correct default state', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.selectedIndex).toBe(-1);
       expect(result.current.hoveredIndex).toBe(-1);
       expect(result.current.mainCanvasRef).toBeDefined();
@@ -80,14 +82,14 @@ describe('useBoundingBox Hook', () => {
         colors: {
           normal: 'red',
           selected: 'green',
-          unselected: 'blue'
-        }
+          unselected: 'blue',
+        },
       };
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useBoundingBox({
           ...defaultConfig,
-          options: customOptions
+          options: customOptions,
         })
       );
 
@@ -99,19 +101,19 @@ describe('useBoundingBox Hook', () => {
   describe('Box Selection', () => {
     it('provides selectBox function', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.selectBox).toBeInstanceOf(Function);
     });
 
     it('provides clearSelection function', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.clearSelection).toBeInstanceOf(Function);
     });
 
     it('provides getCurrentBox function', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.getCurrentBox).toBeInstanceOf(Function);
     });
   });
@@ -119,7 +121,7 @@ describe('useBoundingBox Hook', () => {
   describe('Event Handlers', () => {
     it('provides mouse event handlers', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.handleMouseMove).toBeInstanceOf(Function);
       expect(result.current.handleMouseOut).toBeInstanceOf(Function);
       expect(result.current.handleCanvasClick).toBeInstanceOf(Function);
@@ -129,13 +131,13 @@ describe('useBoundingBox Hook', () => {
   describe('Rendering Functions', () => {
     it('provides renderBoxes function', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.renderBoxes).toBeInstanceOf(Function);
     });
 
     it('provides renderSegmentation function', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.renderSegmentation).toBeInstanceOf(Function);
     });
   });
@@ -161,7 +163,12 @@ describe('useBoundingBox Hook', () => {
       );
 
       // Change boxes
-      rerender({ boxes: [[20, 20, 60, 60], [80, 80, 30, 30]] });
+      rerender({
+        boxes: [
+          [20, 20, 60, 60],
+          [80, 80, 30, 30],
+        ],
+      });
 
       // Hook should handle the change without errors
       expect(result.current).toBeDefined();
@@ -169,7 +176,8 @@ describe('useBoundingBox Hook', () => {
 
     it('handles segmentation configuration changes', () => {
       const { result, rerender } = renderHook(
-        ({ segmentation }) => useBoundingBox({ ...defaultConfig, segmentation }),
+        ({ segmentation }) =>
+          useBoundingBox({ ...defaultConfig, segmentation }),
         { initialProps: { segmentation: {} } }
       );
 
@@ -177,8 +185,8 @@ describe('useBoundingBox Hook', () => {
       rerender({
         segmentation: {
           segmentationData: [1, 2, 3, 4, 5],
-          colors: ['#ff0000', '#00ff00']
-        }
+          colors: ['#ff0000', '#00ff00'],
+        },
       });
 
       // Hook should handle the change without errors
@@ -190,18 +198,18 @@ describe('useBoundingBox Hook', () => {
     it('handles invalid configuration gracefully', () => {
       const invalidConfig = {
         image: '',
-        boxes: null as any
+        boxes: null as any,
       };
 
       const { result } = renderHook(() => useBoundingBox(invalidConfig));
-      
+
       // Should not crash
       expect(result.current).toBeDefined();
     });
 
     it('provides error state', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.error).toBeNull();
     });
   });
@@ -209,7 +217,7 @@ describe('useBoundingBox Hook', () => {
   describe('Loading State', () => {
     it('provides loading state', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(typeof result.current.isLoading).toBe('boolean');
     });
   });
@@ -217,14 +225,14 @@ describe('useBoundingBox Hook', () => {
   describe('Canvas References', () => {
     it('provides main canvas ref', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.mainCanvasRef).toBeDefined();
       expect(result.current.mainCanvasRef).toHaveProperty('current');
     });
 
     it('provides segmentation canvas ref', () => {
       const { result } = renderHook(() => useBoundingBox(defaultConfig));
-      
+
       expect(result.current.segmentationCanvasRef).toBeDefined();
       expect(result.current.segmentationCanvasRef).toHaveProperty('current');
     });
@@ -233,11 +241,11 @@ describe('useBoundingBox Hook', () => {
   describe('Callback Integration', () => {
     it('handles onSelection callback', () => {
       const onSelection = jest.fn();
-      
-      const { result } = renderHook(() => 
+
+      const { result } = renderHook(() =>
         useBoundingBox({
           ...defaultConfig,
-          onSelection
+          onSelection,
         })
       );
 
@@ -249,14 +257,17 @@ describe('useBoundingBox Hook', () => {
   describe('Performance', () => {
     it('handles large number of boxes efficiently', () => {
       const largeBoundingBoxes = Array.from({ length: 1000 }, (_, i) => [
-        i % 100 * 10, Math.floor(i / 100) * 10, 50, 50
+        (i % 100) * 10,
+        Math.floor(i / 100) * 10,
+        50,
+        50,
       ]);
 
       const start = performance.now();
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useBoundingBox({
           ...defaultConfig,
-          boxes: largeBoundingBoxes
+          boxes: largeBoundingBoxes,
         })
       );
       const end = performance.now();

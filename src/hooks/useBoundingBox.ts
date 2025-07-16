@@ -1,5 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
-import type { UseBoundingBoxConfig, UseBoundingBoxReturn, BoundingBox } from '@/types';
+import type {
+  UseBoundingBoxConfig,
+  UseBoundingBoxReturn,
+  BoundingBox,
+} from '@/types';
 import { useCanvas } from './useCanvas';
 import { useImageLoader } from './useImageLoader';
 import { useMouseInteraction } from './useMouseInteraction';
@@ -9,17 +13,13 @@ import { DEFAULT_OPTIONS } from '@/constants/defaults';
 /**
  * Main hook that orchestrates all bounding box functionality
  */
-export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxReturn => {
-  const {
-    image,
-    boxes,
-    options = {},
-    segmentation = {},
-    onSelection
-  } = config;
+export const useBoundingBox = (
+  config: UseBoundingBoxConfig
+): UseBoundingBoxReturn => {
+  const { image, boxes, options = {}, segmentation = {}, onSelection } = config;
 
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
-  
+
   // State management
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,11 +29,11 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
   const mainCanvas = useCanvas({ style: mergedOptions.style });
   const imageLoader = useImageLoader();
   const segmentationHook = useSegmentation(segmentation);
-  
+
   const mouseInteraction = useMouseInteraction({
     boxes,
     onSelected: onSelection,
-    canvasRef: mainCanvas.canvasRef
+    canvasRef: mainCanvas.canvasRef,
   });
 
   /**
@@ -69,7 +69,8 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
    * Render bounding boxes on canvas
    */
   const renderBoxes = useCallback(() => {
-    if (!mainCanvas.context || !mainCanvas.canvasRef.current || !imageLoaded) return;
+    if (!mainCanvas.context || !mainCanvas.canvasRef.current || !imageLoaded)
+      return;
 
     const canvas = mainCanvas.canvasRef.current;
     const ctx = mainCanvas.context;
@@ -85,7 +86,7 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
         box,
         index,
         isSelected: index === mouseInteraction.selectedIndex,
-        isHovered: index === mouseInteraction.hoveredIndex
+        isHovered: index === mouseInteraction.hoveredIndex,
       }))
       .sort((a, b) => {
         if (a.isSelected || a.isHovered) return 1;
@@ -96,17 +97,17 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
     // Render each box
     sortedBoxes.forEach(({ box, index, isSelected, isHovered }) => {
       let color = mergedOptions.colors.normal;
-      
+
       if (mouseInteraction.hoveredIndex >= 0) {
         color = mergedOptions.colors.unselected;
       }
-      
+
       if (isSelected || isHovered) {
         color = mergedOptions.colors.selected;
       }
 
       drawBox(ctx, box, color, lineWidth);
-      
+
       // Draw label if present
       if (typeof box === 'object' && 'label' in box && box.label) {
         drawLabel(ctx, box);
@@ -119,71 +120,72 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
     boxes,
     mouseInteraction.selectedIndex,
     mouseInteraction.hoveredIndex,
-    mergedOptions.colors
+    mergedOptions.colors,
   ]);
 
   /**
    * Default box drawing function
    */
-  const drawBox = useCallback((
-    ctx: CanvasRenderingContext2D,
-    box: BoundingBox,
-    color: string,
-    lineWidth: number
-  ) => {
-    try {
-      const coord = typeof box === 'object' && 'coord' in box ? box.coord : box;
-      let [x, y, width, height] = Array.isArray(coord) ? coord : [0, 0, 0, 0];
+  const drawBox = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      box: BoundingBox,
+      color: string,
+      lineWidth: number
+    ) => {
+      try {
+        const coord =
+          typeof box === 'object' && 'coord' in box ? box.coord : box;
+        let [x, y, width, height] = Array.isArray(coord) ? coord : [0, 0, 0, 0];
 
-      // Handle min/max coordinate format
-      if (typeof coord === 'object' && 'xmin' in coord) {
-        x = Math.min(coord.xmin, coord.xmax);
-        y = Math.min(coord.ymin, coord.ymax);
-        width = Math.abs(coord.xmax - coord.xmin);
-        height = Math.abs(coord.ymax - coord.ymin);
+        // Handle min/max coordinate format
+        if (typeof coord === 'object' && 'xmin' in coord) {
+          x = Math.min(coord.xmin, coord.xmax);
+          y = Math.min(coord.ymin, coord.ymax);
+          width = Math.abs(coord.xmax - coord.xmin);
+          height = Math.abs(coord.ymax - coord.ymin);
+        }
+
+        // Clamp coordinates to canvas bounds
+        const canvas = mainCanvas.canvasRef.current!;
+        if (x < lineWidth / 2) x = lineWidth / 2;
+        if (y < lineWidth / 2) y = lineWidth / 2;
+        if (x + width > canvas.width) width = canvas.width - lineWidth - x;
+        if (y + height > canvas.height) height = canvas.height - lineWidth - y;
+
+        // Draw segmented corners (original style)
+        const tenPercent = width / 10;
+        const ninetyPercent = 9 * tenPercent;
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+
+        // Left segment
+        ctx.beginPath();
+        ctx.moveTo(x + tenPercent, y);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x, y + height);
+        ctx.lineTo(x + tenPercent, y + height);
+        ctx.stroke();
+
+        // Right segment
+        ctx.beginPath();
+        ctx.moveTo(x + ninetyPercent, y);
+        ctx.lineTo(x + width, y);
+        ctx.lineTo(x + width, y + height);
+        ctx.lineTo(x + ninetyPercent, y + height);
+        ctx.stroke();
+      } catch (err) {
+        console.warn('Error drawing box:', err);
       }
-
-      // Clamp coordinates to canvas bounds
-      const canvas = mainCanvas.canvasRef.current!;
-      if (x < lineWidth / 2) x = lineWidth / 2;
-      if (y < lineWidth / 2) y = lineWidth / 2;
-      if (x + width > canvas.width) width = canvas.width - lineWidth - x;
-      if (y + height > canvas.height) height = canvas.height - lineWidth - y;
-
-      // Draw segmented corners (original style)
-      const tenPercent = width / 10;
-      const ninetyPercent = 9 * tenPercent;
-      
-      ctx.strokeStyle = color;
-      ctx.lineWidth = lineWidth;
-      
-      // Left segment
-      ctx.beginPath();
-      ctx.moveTo(x + tenPercent, y);
-      ctx.lineTo(x, y);
-      ctx.lineTo(x, y + height);
-      ctx.lineTo(x + tenPercent, y + height);
-      ctx.stroke();
-
-      // Right segment
-      ctx.beginPath();
-      ctx.moveTo(x + ninetyPercent, y);
-      ctx.lineTo(x + width, y);
-      ctx.lineTo(x + width, y + height);
-      ctx.lineTo(x + ninetyPercent, y + height);
-      ctx.stroke();
-    } catch (err) {
-      console.warn('Error drawing box:', err);
-    }
-  }, [mainCanvas.canvasRef]);
+    },
+    [mainCanvas.canvasRef]
+  );
 
   /**
    * Default label drawing function
    */
-  const drawLabel = useCallback((
-    ctx: CanvasRenderingContext2D,
-    box: any
-  ) => {
+  const drawLabel = useCallback((ctx: CanvasRenderingContext2D, box: any) => {
     if (!box.label) return;
 
     try {
@@ -212,14 +214,19 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
   const renderSegmentation = useCallback(() => {
     if (segmentation.separateCanvas) {
       // Setup separate canvas
-      if (segmentationHook.segmentationCanvasRef.current && mainCanvas.canvasRef.current) {
+      if (
+        segmentationHook.segmentationCanvasRef.current &&
+        mainCanvas.canvasRef.current
+      ) {
         const segCanvas = segmentationHook.segmentationCanvasRef.current;
         const mainCanvasEl = mainCanvas.canvasRef.current;
-        
+
         segCanvas.width = mainCanvasEl.width;
         segCanvas.height = mainCanvasEl.height;
-        
-        segmentationHook.renderSegmentation(segmentationHook.segmentationCanvasRef);
+
+        segmentationHook.renderSegmentation(
+          segmentationHook.segmentationCanvasRef
+        );
       }
     } else {
       // Render on main canvas
@@ -252,7 +259,7 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
     renderBoxes,
     renderSegmentation,
     segmentation.segmentationData,
-    segmentation.segmentationMasks
+    segmentation.segmentationMasks,
   ]);
 
   return {
@@ -269,6 +276,6 @@ export const useBoundingBox = (config: UseBoundingBoxConfig): UseBoundingBoxRetu
     handleMouseOut: mouseInteraction.handleMouseOut,
     handleCanvasClick: mouseInteraction.handleCanvasClick,
     clearSelection: mouseInteraction.clearSelection,
-    getCurrentBox: mouseInteraction.getCurrentBox
+    getCurrentBox: mouseInteraction.getCurrentBox,
   };
 };

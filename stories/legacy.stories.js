@@ -17,8 +17,8 @@ import boxesAgeReal from './static/boxesAgeReal.json';
 import './static/styles.css';
 
 // Helper function to create copy button
-const createCopyButton = (code) => (
-  <button 
+const createCopyButton = code => (
+  <button
     onClick={() => {
       navigator.clipboard.writeText(code);
       const btn = event.target;
@@ -38,7 +38,7 @@ const createCopyButton = (code) => (
       borderRadius: '4px',
       cursor: 'pointer',
       fontSize: '12px',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     }}
   >
     📋 Copy Code
@@ -46,21 +46,38 @@ const createCopyButton = (code) => (
 );
 
 // Helper function to create code display with copy button
-const createCodeDisplay = (code) => (
-  <div style={{ 
-    padding: '12px', 
-    background: '#f8fafc', 
-    border: '1px solid #cbd5e1', 
-    borderRadius: '6px', 
-    marginBottom: '16px',
-    fontFamily: 'monospace',
-    fontSize: '14px'
-  }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+const createCodeDisplay = code => (
+  <div
+    style={{
+      padding: '12px',
+      background: '#f8fafc',
+      border: '1px solid #cbd5e1',
+      borderRadius: '6px',
+      marginBottom: '16px',
+      fontFamily: 'monospace',
+      fontSize: '14px',
+    }}
+  >
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '8px',
+      }}
+    >
       <strong>📋 Code used in this story:</strong>
       {createCopyButton(code)}
     </div>
-    <pre style={{ margin: '0', background: '#f1f5f9', padding: '8px', borderRadius: '4px', overflow: 'auto' }}>
+    <pre
+      style={{
+        margin: '0',
+        background: '#f1f5f9',
+        padding: '8px',
+        borderRadius: '4px',
+        overflow: 'auto',
+      }}
+    >
       {code}
     </pre>
   </div>
@@ -106,9 +123,9 @@ function LegacyExample() {
 
 ### Migration Recommendation:
 ✨ **Upgrade to Modern v2.x** for 40% better performance and enhanced features while maintaining the same API.
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     const params = {
@@ -124,11 +141,20 @@ function LegacyExample() {
     };
     return (
       <div>
-        <div style={{ padding: '10px', background: '#fff3cd', border: '1px solid #ffeaa7', borderRadius: '4px', marginBottom: '10px' }}>
-          <strong>Legacy v1.x Component:</strong> This example uses the original Boundingbox component. 
-          Check out the "Modern BoundingBox (v2.x)" section for updated examples with enhanced features.
+        <div
+          style={{
+            padding: '10px',
+            background: '#fff3cd',
+            border: '1px solid #ffeaa7',
+            borderRadius: '4px',
+            marginBottom: '10px',
+          }}
+        >
+          <strong>Legacy v1.x Component:</strong> This example uses the original
+          Boundingbox component. Check out the "Modern BoundingBox (v2.x)"
+          section for updated examples with enhanced features.
         </div>
-        
+
         {createCodeDisplay(`<Boundingbox
   image={imageLarge}
   boxes={[
@@ -138,13 +164,10 @@ function LegacyExample() {
     [1100, 0, 25, 300]
   ]}
 />`)}
-        <Boundingbox
-          image={params.image}
-          boxes={params.boxes}
-        />
+        <Boundingbox image={params.image} boxes={params.boxes} />
       </div>
     );
-  }
+  },
 };
 
 export const XMinMaxCoordinates = {
@@ -180,18 +203,18 @@ function XMinMaxCoordinatesExample() {
 - **Array format**: [x, y, width, height]
 - **XMin/Max format**: {xmin, ymin, xmax, ymax}
 - Both formats are supported interchangeably
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     const params = {
       image: demoImageLarge,
       boxes: [
-        {xmin: 0, ymin: 0, xmax: 250, ymax: 250},
-        {xmin: 300, ymin: 0, xmax: 550, ymax: 250},
-        {xmin: 700, ymin: 0, xmax: 1000, ymax: 25},
-        {xmin: 1100, ymin: 0, xmax: 1125, ymax: 300}
+        { xmin: 0, ymin: 0, xmax: 250, ymax: 250 },
+        { xmin: 300, ymin: 0, xmax: 550, ymax: 250 },
+        { xmin: 700, ymin: 0, xmax: 1000, ymax: 25 },
+        { xmin: 1100, ymin: 0, xmax: 1125, ymax: 300 },
       ],
     };
     return (
@@ -208,7 +231,7 @@ function XMinMaxCoordinatesExample() {
         <Boundingbox image={params.image} boxes={params.boxes} />
       </div>
     );
-  }
+  },
 };
 
 export const AgeRealDataset = {
@@ -221,7 +244,7 @@ export const AgeRealDataset = {
 />`)}
       <Boundingbox image={demoImageAgeReal} boxes={boxesAgeReal} />
     </div>
-  )
+  ),
 };
 
 export const BoxSelection = {
@@ -258,9 +281,9 @@ function BoxSelectionExample() {
   );
 }
 \`\`\`
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => {
     const params = {
@@ -293,7 +316,7 @@ function BoxSelectionExample() {
         />
       </div>
     );
-  }
+  },
 };
 
 export const LabelDisplay = {
@@ -324,7 +347,7 @@ export const LabelDisplay = {
         <Boundingbox image={params.image} boxes={params.boxes} />
       </div>
     );
-  }
+  },
 };
 
 export const PixelSegmentation = {
@@ -340,7 +363,7 @@ export const PixelSegmentation = {
         pixelSegmentation={segmentationJson.body.predictions[0].vals}
       />
     </div>
-  )
+  ),
 };
 
 export const SegmentationFromJsonUrl = {
@@ -380,9 +403,9 @@ The JSON file should contain segmentation data in this format:
   }
 }
 \`\`\`
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => (
     <div>
@@ -395,7 +418,7 @@ The JSON file should contain segmentation data in this format:
         pixelSegmentation={segmentationJson.body.predictions[0].vals}
       />
     </div>
-  )
+  ),
 };
 
 export const CustomColorScheme = {
@@ -427,9 +450,9 @@ function CustomColorSchemeExample() {
   );
 }
 \`\`\`
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => (
     <div>
@@ -444,12 +467,19 @@ function CustomColorSchemeExample() {
       <Boundingbox
         image={demoImage}
         pixelSegmentation={segmentationJson.body.predictions[0].vals}
-        segmentationColors={
-          ['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d','#666666']
-        }
+        segmentationColors={[
+          '#1b9e77',
+          '#d95f02',
+          '#7570b3',
+          '#e7298a',
+          '#66a61e',
+          '#e6ab02',
+          '#a6761d',
+          '#666666',
+        ]}
       />
     </div>
-  )
+  ),
 };
 
 export const RemoteImage = {
@@ -481,9 +511,9 @@ function RemoteImageExample() {
 - Remote image loading with CORS support
 - Separate segmentation canvas for better performance
 - Maintains aspect ratio and responsiveness
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => (
     <div>
@@ -498,7 +528,7 @@ function RemoteImageExample() {
         separateSegmentation={true}
       />
     </div>
-  )
+  ),
 };
 
 export const RemoteImageWithCss = {
@@ -548,9 +578,9 @@ function RemoteImageWithCssExample() {
 - Custom CSS container styling
 - Separate segmentation canvas
 - Combined segmentation and bounding box display
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => (
     <div>
@@ -573,13 +603,13 @@ function RemoteImageWithCssExample() {
           boxes={[
             [50, 50, 100, 100],
             [200, 150, 120, 80],
-            [300, 200, 80, 60]
+            [300, 200, 80, 60],
           ]}
           separateSegmentation={true}
         />
       </div>
     </div>
-  )
+  ),
 };
 
 export const SegmentationMasks = {
@@ -625,9 +655,9 @@ function SegmentationMasksExample() {
 - Combines segmentation masks with bounding boxes
 - Separate segmentation canvas for better performance
 - Supports multiple mask objects with different dimensions
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => (
     <div>
@@ -644,7 +674,7 @@ function SegmentationMasksExample() {
         separateSegmentation={true}
       />
     </div>
-  )
+  ),
 };
 
 export const BorderOnZeroValue = {
@@ -682,9 +712,9 @@ function BorderOnZeroValueExample() {
 - Handles zero-height bounding boxes gracefully
 - Maintains visual consistency with normal boxes
 - Prevents rendering errors in edge cases
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   render: () => (
     <div>
@@ -692,10 +722,7 @@ function BorderOnZeroValueExample() {
   image={demoImageDog}
   boxes={boxesBorderZeroJson}
 />`)}
-      <Boundingbox
-        image={demoImageDog}
-        boxes={boxesBorderZeroJson}
-      />
+      <Boundingbox image={demoImageDog} boxes={boxesBorderZeroJson} />
     </div>
-  )
+  ),
 };
