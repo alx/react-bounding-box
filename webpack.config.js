@@ -14,7 +14,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: isProduction ? '[name].[contenthash].js' : '[name].js',
+      filename: '[name].js',
       library: {
         name: 'ReactBoundingBox',
         type: 'umd',

@@ -1,9 +1,7 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
+import js from '@eslint/js';
 
-const js = require('@eslint/js');
-
-module.exports = [
+export default [
   js.configs.recommended,
   {
     languageOptions: {
@@ -15,7 +13,7 @@ module.exports = [
         console: 'readonly',
         process: 'readonly',
         global: 'readonly',
-        Image: 'readonly'
+        fetch: 'readonly'
       },
       parserOptions: {
         ecmaFeatures: {
@@ -42,7 +40,11 @@ module.exports = [
       'no-console': 'warn',
       // Relax some rules for the current codebase
       'no-var': 'off',
-      'prefer-const': 'warn'
+      'prefer-const': 'warn',
+      // Allow variable redeclaration in for loops
+      'no-redeclare': 'off',
+      // Allow unused imports in tests
+      'no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }]
     }
   },
   {

@@ -1,77 +1,84 @@
 /* global Image */
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import seedrandom from 'seedrandom';
 
 class Boundingbox extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       canvasCreated: false,
       hoverIndex: -1,
-      segmentColors: []
+      segmentColors: [],
     };
 
-    if(props.segmentationJsonUrl) {
+    if (props.segmentationJsonUrl) {
       fetch(props.segmentationJsonUrl)
-      .then(response => response.json())
-      .then(response => {
-
-        if(response.body &&
-           response.body.predictions &&
-           response.body.predictions[0] &&
-           response.body.predictions[0].vals &&
-           response.body.predictions[0].vals.length > 0) {
-
-          this.setState({isSegmented: false});
-          this.renderSegmentation(response.body.predictions[0].vals);
-
-        }
-      });
+        .then(response => response.json())
+        .then(response => {
+          if (
+            response.body &&
+            response.body.predictions &&
+            response.body.predictions[0] &&
+            response.body.predictions[0].vals &&
+            response.body.predictions[0].vals.length > 0
+          ) {
+            this.setState({ isSegmented: false });
+            this.renderSegmentation(response.body.predictions[0].vals);
+          }
+        });
     }
   }
 
   componentDidMount() {
+    if (!this.canvas) {
+      console.warn('Canvas ref not available during componentDidMount');
+      return;
+    }
     const ctx = this.canvas.getContext('2d');
 
     const background = new Image();
-    background.src = this.props.options.base64Image ?
-      'data:image/png;base64,' + this.props.image
-      :
-      this.props.image;
+    background.src = this.props.options.base64Image
+      ? 'data:image/png;base64,' + this.props.image
+      : this.props.image;
 
     // Make sure the image is loaded first otherwise nothing will draw.
-    background.onload = (() => {
+    background.onload = () => {
+      if (!this.canvas) {
+        console.warn('Canvas ref not available during image load');
+        return;
+      }
       this.canvas.width = background.width;
       this.canvas.height = background.height;
 
       ctx.drawImage(background, 0, 0);
       this.renderBoxes();
 
-      const hasSegmentedState = this.state.pixelSegmentation &&
-         this.state.pixelSegmentation.length > 0 &&
-         !this.state.isSegmented;
+      const hasSegmentedState =
+        this.state.pixelSegmentation &&
+        this.state.pixelSegmentation.length > 0 &&
+        !this.state.isSegmented;
 
-      const hasSegmentedProps = this.props.pixelSegmentation &&
-         this.props.pixelSegmentation.length > 0 &&
-         !this.state.isSegmented;
+      const hasSegmentedProps =
+        this.props.pixelSegmentation &&
+        this.props.pixelSegmentation.length > 0 &&
+        !this.state.isSegmented;
 
-      const hasSegmentionMasks = this.props.segmentationMasks &&
-         this.props.segmentationMasks.length > 0 &&
-         !this.state.isSegmented;
+      const hasSegmentionMasks =
+        this.props.segmentationMasks &&
+        this.props.segmentationMasks.length > 0 &&
+        !this.state.isSegmented;
 
-      if(hasSegmentedState)
+      if (hasSegmentedState)
         this.renderSegmentation(this.state.pixelSegmentation);
 
-      if(hasSegmentedProps)
+      if (hasSegmentedProps)
         this.renderSegmentation(this.props.pixelSegmentation);
 
-      if(hasSegmentionMasks)
-        this.renderSegmentationMasks();
+      if (hasSegmentionMasks) this.renderSegmentationMasks();
 
-      this.canvas.onmousemove = ((e) => {
+      this.canvas.onmousemove = e => {
         // Get the current mouse position
         const r = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / r.width;
@@ -83,17 +90,13 @@ class Boundingbox extends Component {
 
         const selectedBox = { index: -1, dimensions: null };
 
-        if(this.props.boxes &&
-           this.props.boxes.length > 0) {
-
+        if (this.props.boxes && this.props.boxes.length > 0) {
           this.props.boxes.forEach((box, index) => {
-
-            if(!box || typeof box === 'undefined')
-              return null;
+            if (!box || typeof box === 'undefined') return null;
 
             const coord = box.coord ? box.coord : box;
 
-            let [bx, by, bw, bh] = [0, 0, 0, 0]
+            let [bx, by, bw, bh] = [0, 0, 0, 0];
 
             if (
               typeof coord.xmin !== 'undefined' &&
@@ -101,7 +104,6 @@ class Boundingbox extends Component {
               typeof coord.ymin !== 'undefined' &&
               typeof coord.ymax !== 'undefined'
             ) {
-
               // coord is an object containing xmin, xmax, ymin, ymax attributes
               // width is absolute value of (xmax - xmin)
               // height is absolute value of (ymax - ymin)
@@ -111,73 +113,136 @@ class Boundingbox extends Component {
               [bx, by, bw, bh] = [
                 Math.min(coord.xmin, coord.xmax),
                 Math.min(coord.ymin, coord.ymax),
-                Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
-                Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
+                Math.max(coord.xmin, coord.xmax) -
+                  Math.min(coord.xmin, coord.xmax),
+                Math.max(coord.ymin, coord.ymax) -
+                  Math.min(coord.ymin, coord.ymax),
               ];
-
             } else {
-
               // coord is an array containing [x, y, width, height] values
               [bx, by, bw, bh] = coord;
-
             }
 
-            if (x >= bx && x <= bx + bw &&
-               y >= by && y <= by + bh) {
-                // The mouse honestly hits the rect
-              const insideBox = !selectedBox.dimensions || (
-                  bx >= selectedBox.dimensions[0] &&
+            if (x >= bx && x <= bx + bw && y >= by && y <= by + bh) {
+              // The mouse honestly hits the rect
+              const insideBox =
+                !selectedBox.dimensions ||
+                (bx >= selectedBox.dimensions[0] &&
                   bx <= selectedBox.dimensions[0] + selectedBox.dimensions[2] &&
                   by >= selectedBox.dimensions[1] &&
-                  by <= selectedBox.dimensions[1] + selectedBox.dimensions[3]
-                );
+                  by <= selectedBox.dimensions[1] + selectedBox.dimensions[3]);
               if (insideBox) {
                 selectedBox.index = index;
                 selectedBox.dimensions = box;
               }
             }
           });
-
-        }
-        else if(this.state.pixelSegmentation &&
-                this.state.pixelSegmentation.length > 0) {
-          selectedBox.index = this.state.pixelSegmentation[x + this.canvas.width * y];
+        } else if (
+          this.state.pixelSegmentation &&
+          this.state.pixelSegmentation.length > 0
+        ) {
+          selectedBox.index =
+            this.state.pixelSegmentation[x + this.canvas.width * y];
         }
 
         this.props.onSelected(selectedBox.index);
         this.setState({ hoverIndex: selectedBox.index });
-      });
+      };
 
       this.canvas.onmouseout = () => {
         this.props.onSelected(-1);
         this.setState({ hoverIndex: -1 });
         // this.renderBoxes();
       };
-    });
+
+      // Add click event handler for actual selection
+      this.canvas.onclick = e => {
+        // Get the current mouse position with scaling
+        const r = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / r.width;
+        const scaleY = this.canvas.height / r.height;
+        const x = (e.clientX - r.left) * scaleX;
+        const y = (e.clientY - r.top) * scaleY;
+
+        const selectedBox = { index: -1, dimensions: null };
+
+        if (this.props.boxes && this.props.boxes.length > 0) {
+          this.props.boxes.forEach((box, index) => {
+            if (!box || typeof box === 'undefined') return null;
+
+            const coord = box.coord ? box.coord : box;
+
+            let [bx, by, bw, bh] = [0, 0, 0, 0];
+
+            if (
+              typeof coord.xmin !== 'undefined' &&
+              typeof coord.xmax !== 'undefined' &&
+              typeof coord.ymin !== 'undefined' &&
+              typeof coord.ymax !== 'undefined'
+            ) {
+              // coord is an object containing xmin, xmax, ymin, ymax attributes
+              [bx, by, bw, bh] = [
+                Math.min(coord.xmin, coord.xmax),
+                Math.min(coord.ymin, coord.ymax),
+                Math.max(coord.xmin, coord.xmax) -
+                  Math.min(coord.xmin, coord.xmax),
+                Math.max(coord.ymin, coord.ymax) -
+                  Math.min(coord.ymin, coord.ymax),
+              ];
+            } else {
+              // coord is an array containing [x, y, width, height] values
+              [bx, by, bw, bh] = coord;
+            }
+
+            if (x >= bx && x <= bx + bw && y >= by && y <= by + bh) {
+              // The mouse honestly hits the rect
+              const insideBox =
+                !selectedBox.dimensions ||
+                (bx >= selectedBox.dimensions[0] &&
+                  bx <= selectedBox.dimensions[0] + selectedBox.dimensions[2] &&
+                  by >= selectedBox.dimensions[1] &&
+                  by <= selectedBox.dimensions[1] + selectedBox.dimensions[3]);
+              if (insideBox) {
+                selectedBox.index = index;
+                selectedBox.dimensions = box;
+              }
+            }
+          });
+        } else if (
+          this.state.pixelSegmentation &&
+          this.state.pixelSegmentation.length > 0
+        ) {
+          selectedBox.index =
+            this.state.pixelSegmentation[x + this.canvas.width * y];
+        }
+
+        // Call onSelected for click events (same as hover)
+        if (this.props.onSelected) {
+          this.props.onSelected(selectedBox.index);
+        }
+      };
+    };
   }
 
   componentWillReceiveProps(nextProps) {
-
     const ctx = this.canvas.getContext('2d');
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    if(this.segCanvas) {
+    if (this.segCanvas) {
       // Clean segCanvas when receiving new props
       const segCtx = this.segCanvas.getContext('2d');
       segCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     const background = new Image();
-    background.src = nextProps.options.base64Image ?
-      'data:image/png;base64,' + this.props.image
-      :
-      nextProps.image;
+    background.src = nextProps.options.base64Image
+      ? 'data:image/png;base64,' + this.props.image
+      : nextProps.image;
 
     // Check canvas dimension with loaded image dimension
     // in order to change canvas dimension if needed
-    background.onload = (() => {
-
-      if(
+    background.onload = () => {
+      if (
         this.canvas.width !== background.width &&
         this.canvas.height !== background.height
       ) {
@@ -186,19 +251,18 @@ class Boundingbox extends Component {
         ctx.drawImage(background, 0, 0);
         this.renderBoxes(nextProps.boxes);
       }
-
-    });
+    };
 
     ctx.drawImage(background, 0, 0);
     this.renderBoxes(nextProps.boxes);
 
     this.setState({ hoverIndex: nextProps.selectedIndex });
 
-    const hasSegmentedProps = nextProps.pixelSegmentation &&
-       nextProps.pixelSegmentation.length > 0;
+    const hasSegmentedProps =
+      nextProps.pixelSegmentation && nextProps.pixelSegmentation.length > 0;
 
-    if(hasSegmentedProps) {
-      this.setState({isSegmented: false});
+    if (hasSegmentedProps) {
+      this.setState({ isSegmented: false });
       this.renderSegmentation(nextProps.pixelSegmentation);
     }
 
@@ -210,11 +274,9 @@ class Boundingbox extends Component {
   }
 
   segmentColor(classIndex) {
+    const segmentColors = this.state.segmentColors;
 
-    let segmentColors = this.state.segmentColors;
-
-    if(segmentColors[classIndex] &&
-      segmentColors[classIndex].length === 3) {
+    if (segmentColors[classIndex] && segmentColors[classIndex].length === 3) {
       return segmentColors[classIndex];
     }
 
@@ -222,8 +284,10 @@ class Boundingbox extends Component {
     let g;
     let b;
 
-    if(this.props.segmentationColors &&
-       this.props.segmentationColors[classIndex]) {
+    if (
+      this.props.segmentationColors &&
+      this.props.segmentationColors[classIndex]
+    ) {
       const hex = this.props.segmentationColors[classIndex];
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       r = parseInt(result[1], 16);
@@ -237,15 +301,18 @@ class Boundingbox extends Component {
     }
 
     segmentColors[classIndex] = [r, g, b];
-    this.setState({segmentColors: segmentColors});
+    this.setState({ segmentColors: segmentColors });
 
     return [r, g, b];
-  };
+  }
 
   renderBox(box, index) {
-
-    if(!box || typeof box === 'undefined')
+    if (!this.canvas) {
+      console.warn('Canvas ref not available during renderBox');
       return null;
+    }
+
+    if (!box || typeof box === 'undefined') return null;
 
     let color = this.props.options.colors.normal;
     if (this.state.hoverIndex >= 0) {
@@ -256,93 +323,96 @@ class Boundingbox extends Component {
     }
 
     let lineWidth = 2;
-    if (this.canvas.width > 600) { lineWidth = 3; }
-    if (this.canvas.width > 1000) { lineWidth = 5; }
+    if (this.canvas.width > 600) {
+      lineWidth = 3;
+    }
+    if (this.canvas.width > 1000) {
+      lineWidth = 5;
+    }
 
     this.props.drawBox(this.canvas, box, color, lineWidth);
-    if(box.label) { this.props.drawLabel(this.canvas, box) };
+    if (box.label) {
+      this.props.drawLabel(this.canvas, box);
+    }
   }
 
   renderBoxes(boxes) {
+    if (!this.canvas) {
+      console.warn('Canvas ref not available during renderBoxes');
+      return;
+    }
 
-    if(typeof boxes === 'undefined')
-      boxes = this.props.boxes;
+    if (typeof boxes === 'undefined') boxes = this.props.boxes;
 
-    if(boxes === null)
-      boxes = []
+    if (boxes === null) boxes = [];
 
     boxes
       .map((box, index) => {
         const selected = index === this.state.hoverIndex;
         return { box, index, selected };
       })
-      .sort((a) => {
+      .sort(a => {
         return a.selected ? 1 : -1;
       })
       .forEach(box => this.renderBox(box.box, box.index));
-
   }
 
   renderSegmentation(segmentation) {
-
     let ctx = null;
     let imgd = null;
 
-    if(this.props.separateSegmentation && this.segCanvas) {
-
+    if (this.props.separateSegmentation && this.segCanvas) {
       this.segCanvas.width = this.canvas.width;
       this.segCanvas.height = this.canvas.height;
       ctx = this.segCanvas.getContext('2d');
-      imgd = ctx.getImageData(0, 0, this.segCanvas.width, this.segCanvas.height);
-      let pix = imgd.data;
+      imgd = ctx.getImageData(
+        0,
+        0,
+        this.segCanvas.width,
+        this.segCanvas.height
+      );
+      const pix = imgd.data;
 
-      for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
-          const segmentClass = segmentation[j];
-          const segmentColor = this.segmentColor(segmentClass);
-          pix[i]     = segmentColor[0];
-          pix[i + 1] = segmentColor[1];
-          pix[i + 2] = segmentColor[2];
-          pix[i + 3] = 255;
+      for (var i = 0, j = 0, n = pix.length; i < n; i += 4, j += 1) {
+        const segmentClass = segmentation[j];
+        const segmentColor = this.segmentColor(segmentClass);
+        pix[i] = segmentColor[0];
+        pix[i + 1] = segmentColor[1];
+        pix[i + 2] = segmentColor[2];
+        pix[i + 3] = 255;
       }
-
     } else {
-
       ctx = this.canvas.getContext('2d');
       imgd = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-      let pix = imgd.data;
+      const pix = imgd.data;
 
-      for (var i = 0, j = 0, n = pix.length; i <n; i += 4, j += 1) {
-          const segmentClass = segmentation[j];
-          const segmentColor = this.segmentColor(segmentClass);
-          pix[i] = Math.round((pix[i] + segmentColor[0]) / 2);
-          pix[i + 1] = Math.round((pix[i + 1] + segmentColor[1]) / 2);
-          pix[i + 2] = Math.round((pix[i + 2] + segmentColor[2]) / 2);
-          pix[i + 3] = 200;
+      for (var i = 0, j = 0, n = pix.length; i < n; i += 4, j += 1) {
+        const segmentClass = segmentation[j];
+        const segmentColor = this.segmentColor(segmentClass);
+        pix[i] = Math.round((pix[i] + segmentColor[0]) / 2);
+        pix[i + 1] = Math.round((pix[i + 1] + segmentColor[1]) / 2);
+        pix[i + 2] = Math.round((pix[i + 2] + segmentColor[2]) / 2);
+        pix[i + 3] = 200;
       }
-
     }
 
     ctx.putImageData(imgd, 0, 0);
-    this.setState({isSegmented: true});
+    this.setState({ isSegmented: true });
   }
 
   renderSegmentationMasks() {
-
-    const {
-      boxes,
-      segmentationMasks,
-      segmentationTransparency
-    } = this.props;
+    const { boxes, segmentationMasks, segmentationTransparency } = this.props;
 
     this.segCanvas.width = this.canvas.width;
     this.segCanvas.height = this.canvas.height;
     const ctx = this.segCanvas.getContext('2d');
 
     segmentationMasks.forEach((mask, index) => {
-
       // Fetch segment color,
       // using box label or current mask index
-      const segmentColor = this.segmentColor(boxes[index].label ? boxes[index].label : index);
+      const segmentColor = this.segmentColor(
+        boxes[index].label ? boxes[index].label : index
+      );
 
       // Fetch image data
       // using the box coordinates
@@ -356,8 +426,8 @@ class Boundingbox extends Component {
 
       // Fill image data with new mask color
       for (let i = 0, j = 0; i < maskData.data.length; j++, i += 4) {
-        if(mask.data[j] > 0) {
-          maskData.data[i]     = segmentColor[0];
+        if (mask.data[j] > 0) {
+          maskData.data[i] = segmentColor[0];
           maskData.data[i + 1] = segmentColor[1];
           maskData.data[i + 2] = segmentColor[2];
           maskData.data[i + 3] = segmentationTransparency;
@@ -376,30 +446,30 @@ class Boundingbox extends Component {
       );
     });
 
-    this.setState({isSegmented: true});
+    this.setState({ isSegmented: true });
   }
 
   render() {
-
-    return <div className={this.props.className}>
-      <canvas
-        className="boundingBoxCanvas"
-        style={this.props.options.style}
-        ref={(canvas) => {
-          this.canvas = canvas;
-        }}
-      />
-      { this.props.separateSegmentation ?
+    return (
+      <div className={this.props.className}>
         <canvas
-          className="boundingSegmentationCanvas"
-          style={this.props.options.styleSegmentation}
-          ref={(canvas) => {
-            this.segCanvas = canvas;
+          className="boundingBoxCanvas"
+          style={this.props.options.style}
+          ref={canvas => {
+            this.canvas = canvas;
           }}
         />
-        : null
-      }
-    </div>;
+        {this.props.separateSegmentation ? (
+          <canvas
+            className="boundingSegmentationCanvas"
+            style={this.props.options.styleSegmentation}
+            ref={canvas => {
+              this.segCanvas = canvas;
+            }}
+          />
+        ) : null}
+      </div>
+    );
   }
 }
 
@@ -431,21 +501,18 @@ Boundingbox.propTypes = {
 };
 
 Boundingbox.defaultProps = {
-
   boxes: [],
   separateSegmentation: false,
   segmentationTransparency: 190,
   onSelected() {},
   drawBox(canvas, box, color, lineWidth) {
-
-    if(!box || typeof box === 'undefined')
-      return null;
+    if (!box || typeof box === 'undefined') return null;
 
     const ctx = canvas.getContext('2d');
 
     const coord = box.coord ? box.coord : box;
 
-    let [x, y, width, height] = [0, 0, 0, 0]
+    let [x, y, width, height] = [0, 0, 0, 0];
 
     if (
       typeof coord.xmin !== 'undefined' &&
@@ -453,7 +520,6 @@ Boundingbox.defaultProps = {
       typeof coord.ymin !== 'undefined' &&
       typeof coord.ymax !== 'undefined'
     ) {
-
       // coord is an object containing xmin, xmax, ymin, ymax attributes
       // width is absolute value of (xmax - xmin)
       // height is absolute value of (ymax - ymin)
@@ -464,21 +530,26 @@ Boundingbox.defaultProps = {
         Math.min(coord.xmin, coord.xmax),
         Math.min(coord.ymin, coord.ymax),
         Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
-        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
+        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax),
       ];
-
     } else {
-
       // coord is an array containing [x, y, width, height] values
       [x, y, width, height] = coord;
-
     }
 
-    if (x < lineWidth / 2) { x = lineWidth / 2; }
-    if (y < lineWidth / 2) { y = lineWidth / 2; }
+    if (x < lineWidth / 2) {
+      x = lineWidth / 2;
+    }
+    if (y < lineWidth / 2) {
+      y = lineWidth / 2;
+    }
 
-    if ((x + width) > canvas.width) { width = canvas.width - lineWidth - x; }
-    if ((y + height) > canvas.height) { height = canvas.height - lineWidth - y; }
+    if (x + width > canvas.width) {
+      width = canvas.width - lineWidth - x;
+    }
+    if (y + height > canvas.height) {
+      height = canvas.height - lineWidth - y;
+    }
 
     // Left segment
     const tenPercent = width / 10;
@@ -501,15 +572,13 @@ Boundingbox.defaultProps = {
     ctx.stroke();
   },
   drawLabel(canvas, box) {
-
-    if(!box || typeof box === 'undefined')
-      return null;
+    if (!box || typeof box === 'undefined') return null;
 
     const ctx = canvas.getContext('2d');
 
     const coord = box.coord ? box.coord : box;
 
-    let [x, y, width, height] = [0, 0, 0, 0]
+    let [x, y, _width, height] = [0, 0, 0, 0];
 
     if (
       typeof coord.xmin !== 'undefined' &&
@@ -517,25 +586,21 @@ Boundingbox.defaultProps = {
       typeof coord.ymin !== 'undefined' &&
       typeof coord.ymax !== 'undefined'
     ) {
-
       // coord is an object containing xmin, xmax, ymin, ymax attributes
       // width is absolute value of (xmax - xmin)
       // height is absolute value of (ymax - ymin)
       // absolute value takes care of various possible referentials:
       //   - sometimes 0,0 is top-left corner
       //   - sometimes 0,0 is bottom-left corner
-      [x, y, width, height] = [
+      [x, y, _width, height] = [
         Math.min(coord.xmin, coord.xmax),
         Math.min(coord.ymin, coord.ymax),
         Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
-        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
+        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax),
       ];
-
     } else {
-
       // coord is an array containing [x, y, width, height] values
-      [x, y, width, height] = coord;
-
+      [x, y, _width, height] = coord;
     }
 
     ctx.font = '60px Arial';
@@ -558,7 +623,7 @@ Boundingbox.defaultProps = {
       pointerEvents: 'none',
     },
     base64Image: false,
-  }
-}
+  },
+};
 
 export default Boundingbox;

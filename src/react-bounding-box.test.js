@@ -1,6 +1,6 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Boundingbox from './react-bounding-box';
+import Boundingbox from './react-bounding-box'; // eslint-disable-line no-unused-vars
 
 // Mock HTMLCanvasElement methods
 const mockCanvas = {
@@ -17,32 +17,37 @@ const mockCanvas = {
     stroke: jest.fn(),
     fillStyle: '',
     font: '',
-    fillText: jest.fn()
+    fillText: jest.fn(),
   })),
   getBoundingClientRect: jest.fn(() => ({
     left: 0,
     top: 0,
     width: 100,
-    height: 100
+    height: 100,
   })),
   width: 100,
   height: 100,
   onmousemove: null,
-  onmouseout: null
+  onmouseout: null,
 };
 
 HTMLCanvasElement.prototype.getContext = mockCanvas.getContext;
-HTMLCanvasElement.prototype.getBoundingClientRect = mockCanvas.getBoundingClientRect;
+HTMLCanvasElement.prototype.getBoundingClientRect =
+  mockCanvas.getBoundingClientRect;
 
 // Mock canvas width/height setters
 Object.defineProperty(HTMLCanvasElement.prototype, 'width', {
   get: () => mockCanvas.width,
-  set: (value) => { mockCanvas.width = value; }
+  set: value => {
+    mockCanvas.width = value;
+  },
 });
 
 Object.defineProperty(HTMLCanvasElement.prototype, 'height', {
   get: () => mockCanvas.height,
-  set: (value) => { mockCanvas.height = value; }
+  set: value => {
+    mockCanvas.height = value;
+  },
 });
 
 // Mock Image constructor
@@ -74,9 +79,9 @@ describe('Boundingbox Component', () => {
     image: 'test-image.jpg',
     boxes: [
       [10, 10, 50, 50],
-      [60, 60, 40, 40]
+      [60, 60, 40, 40],
     ],
-    onSelected: jest.fn()
+    onSelected: jest.fn(),
   };
 
   beforeEach(() => {
@@ -98,7 +103,7 @@ describe('Boundingbox Component', () => {
 
   test('handles array-format boxes', async () => {
     const { container } = render(<Boundingbox {...defaultProps} />);
-    
+
     await waitFor(() => {
       const canvas = container.querySelector('.boundingBoxCanvas');
       expect(canvas).toBeInTheDocument();
@@ -108,11 +113,11 @@ describe('Boundingbox Component', () => {
   test('handles object-format boxes with coord property', async () => {
     const objectBoxes = [
       { coord: [10, 10, 50, 50], label: 'Box 1' },
-      { coord: [60, 60, 40, 40], label: 'Box 2' }
+      { coord: [60, 60, 40, 40], label: 'Box 2' },
     ];
 
     render(<Boundingbox {...defaultProps} boxes={objectBoxes} />);
-    
+
     await waitFor(() => {
       const canvas = document.querySelector('.boundingBoxCanvas');
       expect(canvas).toBeInTheDocument();
@@ -122,11 +127,11 @@ describe('Boundingbox Component', () => {
   test('handles object-format boxes with xmin/xmax/ymin/ymax', async () => {
     const minMaxBoxes = [
       { xmin: 10, ymin: 10, xmax: 60, ymax: 60 },
-      { xmin: 70, ymin: 70, xmax: 110, ymax: 110 }
+      { xmin: 70, ymin: 70, xmax: 110, ymax: 110 },
     ];
 
     render(<Boundingbox {...defaultProps} boxes={minMaxBoxes} />);
-    
+
     await waitFor(() => {
       const canvas = document.querySelector('.boundingBoxCanvas');
       expect(canvas).toBeInTheDocument();
@@ -136,9 +141,9 @@ describe('Boundingbox Component', () => {
   test('calls onSelected when mouse moves over canvas', async () => {
     const onSelected = jest.fn();
     render(<Boundingbox {...defaultProps} onSelected={onSelected} />);
-    
+
     const canvas = document.querySelector('.boundingBoxCanvas');
-    
+
     await waitFor(() => {
       expect(canvas).toBeInTheDocument();
     });
@@ -146,7 +151,7 @@ describe('Boundingbox Component', () => {
     // Simulate mouse move over the first box
     fireEvent.mouseMove(canvas, {
       clientX: 30,
-      clientY: 30
+      clientY: 30,
     });
 
     expect(onSelected).toHaveBeenCalled();
@@ -155,9 +160,9 @@ describe('Boundingbox Component', () => {
   test('calls onSelected with -1 when mouse leaves canvas', async () => {
     const onSelected = jest.fn();
     render(<Boundingbox {...defaultProps} onSelected={onSelected} />);
-    
+
     const canvas = document.querySelector('.boundingBoxCanvas');
-    
+
     await waitFor(() => {
       expect(canvas).toBeInTheDocument();
     });
@@ -172,23 +177,23 @@ describe('Boundingbox Component', () => {
       colors: {
         normal: 'rgba(255,0,0,1)',
         selected: 'rgba(0,255,0,1)',
-        unselected: 'rgba(0,0,255,1)'
+        unselected: 'rgba(0,0,255,1)',
       },
       style: {
         maxWidth: '500px',
-        maxHeight: '400px'
-      }
+        maxHeight: '400px',
+      },
     };
 
     render(<Boundingbox {...defaultProps} options={customOptions} />);
-    
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
 
   test('renders with selectedIndex prop', async () => {
     render(<Boundingbox {...defaultProps} selectedIndex={0} />);
-    
+
     await waitFor(() => {
       const canvas = document.querySelector('.boundingBoxCanvas');
       expect(canvas).toBeInTheDocument();
@@ -197,10 +202,11 @@ describe('Boundingbox Component', () => {
 
   test('handles base64 images', () => {
     const base64Options = { base64Image: true };
-    const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
-    
+    const base64Image =
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+
     render(<Boundingbox image={base64Image} options={base64Options} />);
-    
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
@@ -209,14 +215,14 @@ describe('Boundingbox Component', () => {
     const segmentationProps = {
       ...defaultProps,
       pixelSegmentation: new Array(10000).fill(1),
-      separateSegmentation: true
+      separateSegmentation: true,
     };
 
     render(<Boundingbox {...segmentationProps} />);
-    
+
     const mainCanvas = document.querySelector('.boundingBoxCanvas');
     const segCanvas = document.querySelector('.boundingSegmentationCanvas');
-    
+
     expect(mainCanvas).toBeInTheDocument();
     expect(segCanvas).toBeInTheDocument();
   });
@@ -224,19 +230,26 @@ describe('Boundingbox Component', () => {
   test('fetches segmentation JSON from URL', async () => {
     const mockSegmentationData = {
       body: {
-        predictions: [{
-          vals: new Array(10000).fill(1)
-        }]
-      }
+        predictions: [
+          {
+            vals: new Array(10000).fill(1),
+          },
+        ],
+      },
     };
 
     fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => mockSegmentationData
+      json: async () => mockSegmentationData,
     });
 
-    render(<Boundingbox {...defaultProps} segmentationJsonUrl="./test-segmentation.json" />);
-    
+    render(
+      <Boundingbox
+        {...defaultProps}
+        segmentationJsonUrl="./test-segmentation.json"
+      />
+    );
+
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith('./test-segmentation.json');
     });
@@ -245,80 +258,84 @@ describe('Boundingbox Component', () => {
   test('handles segmentationMasks prop', () => {
     const segmentationMasks = [
       { width: 50, height: 50, data: new Array(2500).fill(1) },
-      { width: 40, height: 40, data: new Array(1600).fill(1) }
+      { width: 40, height: 40, data: new Array(1600).fill(1) },
     ];
 
     const boxesWithMinMax = [
       { xmin: 10, ymin: 10, xmax: 60, ymax: 60, label: 0 },
-      { xmin: 70, ymin: 70, xmax: 110, ymax: 110, label: 1 }
+      { xmin: 70, ymin: 70, xmax: 110, ymax: 110, label: 1 },
     ];
 
-    render(<Boundingbox 
-      {...defaultProps} 
-      boxes={boxesWithMinMax}
-      segmentationMasks={segmentationMasks}
-      separateSegmentation={true}
-    />);
-    
+    render(
+      <Boundingbox
+        {...defaultProps}
+        boxes={boxesWithMinMax}
+        segmentationMasks={segmentationMasks}
+        separateSegmentation={true}
+      />
+    );
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
 
   test('handles custom drawBox function', () => {
     const customDrawBox = jest.fn();
-    
+
     render(<Boundingbox {...defaultProps} drawBox={customDrawBox} />);
-    
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
 
   test('handles custom drawLabel function', () => {
     const customDrawLabel = jest.fn();
-    const boxesWithLabels = [
-      { coord: [10, 10, 50, 50], label: 'Test Label' }
-    ];
-    
-    render(<Boundingbox 
-      {...defaultProps} 
-      boxes={boxesWithLabels}
-      drawLabel={customDrawLabel} 
-    />);
-    
+    const boxesWithLabels = [{ coord: [10, 10, 50, 50], label: 'Test Label' }];
+
+    render(
+      <Boundingbox
+        {...defaultProps}
+        boxes={boxesWithLabels}
+        drawLabel={customDrawLabel}
+      />
+    );
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
 
   test('handles segmentationColors prop', () => {
     const segmentationColors = ['#ff0000', '#00ff00', '#0000ff'];
-    
-    render(<Boundingbox 
-      {...defaultProps}
-      pixelSegmentation={new Array(10000).fill(1)}
-      segmentationColors={segmentationColors}
-    />);
-    
+
+    render(
+      <Boundingbox
+        {...defaultProps}
+        pixelSegmentation={new Array(10000).fill(1)}
+        segmentationColors={segmentationColors}
+      />
+    );
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
 
   test('handles null and undefined boxes gracefully', () => {
     render(<Boundingbox image="test.jpg" boxes={null} />);
-    
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
 
   test('handles empty boxes array', () => {
     render(<Boundingbox image="test.jpg" boxes={[]} />);
-    
+
     const canvas = document.querySelector('.boundingBoxCanvas');
     expect(canvas).toBeInTheDocument();
   });
 
   test('applies custom className', () => {
     render(<Boundingbox {...defaultProps} className="custom-class" />);
-    
+
     const container = document.querySelector('.custom-class');
     expect(container).toBeInTheDocument();
   });

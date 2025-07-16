@@ -1,8 +1,10 @@
 # React Bounding Box Component
 
-[![CI](https://github.com/alx/react-bounding-box/workflows/CI/badge.svg)](https://github.com/alx/react-bounding-box/actions)
+[![CI/CD Pipeline](https://github.com/alx/react-bounding-box/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/alx/react-bounding-box/actions)
+[![Code Quality](https://github.com/alx/react-bounding-box/workflows/Code%20Quality/badge.svg)](https://github.com/alx/react-bounding-box/actions)
 [![npm version](https://badge.fury.io/js/react-bounding-box.svg)](https://badge.fury.io/js/react-bounding-box)
 [![codecov](https://codecov.io/gh/alx/react-bounding-box/branch/master/graph/badge.svg)](https://codecov.io/gh/alx/react-bounding-box)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 React Bounding Box Component displays bounding boxes on an image inside an HTML Canvas.
 
@@ -137,6 +139,52 @@ npm run security:audit
 npm run security:check
 ```
 
+## CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+### Automated Workflows
+
+- **CI/CD Pipeline**: Runs on every push and PR
+  - Installs dependencies with caching
+  - Runs linting and type checking
+  - Executes all tests with coverage
+  - Performs security audits
+  - Builds the package
+  - Publishes to npm on tagged releases
+
+- **Code Quality**: Additional quality checks
+  - Prettier formatting verification
+  - Bundle size analysis
+  - Console statement detection
+  - TODO/FIXME comment detection
+
+- **Release Management**: Manual workflow for creating releases
+  - Version bumping (patch/minor/major)
+  - Changelog generation
+  - Git tagging
+  - GitHub release creation
+
+### Publishing Process
+
+1. **Automatic Publishing**: Push a git tag starting with `v` (e.g., `v1.0.0`)
+
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+2. **Manual Release**: Use GitHub Actions workflow_dispatch
+   - Go to Actions tab → Release Management
+   - Select version type (patch/minor/major)
+   - Trigger the workflow
+
+### Security
+
+- Automated dependency updates every Monday
+- Security vulnerability scanning on every build
+- npm audit checks with configurable severity levels
+
 ## Contributing
 
 1. Fork the repository
@@ -144,6 +192,8 @@ npm run security:check
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+**Note**: All PRs must pass CI/CD checks including tests, linting, and security scans.
 
 ## License
 

@@ -2,4 +2,20 @@ node_modules
 *.log
 .idea
 CLAUDE.md
-plan.md
+TODO.md
+
+# Build outputs
+dist/
+storybook-static/
+
+# Development files
+debug-*.log
+*.backup
+
+# Editor files
+.idea
+.vscode
+
+# OS files
+.DS_Store
+Thumbs.db

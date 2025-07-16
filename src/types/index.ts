@@ -83,6 +83,11 @@ export interface UseImageLoaderReturn {
   preloadImages: (urls: string[]) => Promise<HTMLImageElement[]>;
   clearCache: () => void;
   removeFromCache: (src: string) => void;
+  getCacheStats: () => {
+    size: number;
+    maxSize: number;
+    cachedImages: string[];
+  };
 }
 
 export interface UseMouseInteractionConfig {
