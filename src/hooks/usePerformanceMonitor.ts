@@ -85,13 +85,21 @@ export const usePerformanceMonitor = (
 
     const recent = metricsRef.current.slice(-10); // Last 10 samples
     const avgRenderTime =
-      recent.reduce((sum: number, m: PerformanceMetrics) => sum + m.renderTime, 0) / recent.length;
+      recent.reduce(
+        (sum: number, m: PerformanceMetrics) => sum + m.renderTime,
+        0
+      ) / recent.length;
     const avgFrameRate =
-      recent.reduce((sum: number, m: PerformanceMetrics) => sum + m.frameRate, 0) / recent.length;
+      recent.reduce(
+        (sum: number, m: PerformanceMetrics) => sum + m.frameRate,
+        0
+      ) / recent.length;
     const avgMemory =
       recent.length > 0 && recent[0].memoryUsage !== undefined
-        ? recent.reduce((sum: number, m: PerformanceMetrics) => sum + (m.memoryUsage || 0), 0) /
-          recent.length
+        ? recent.reduce(
+            (sum: number, m: PerformanceMetrics) => sum + (m.memoryUsage || 0),
+            0
+          ) / recent.length
         : undefined;
 
     setCurrentMetrics({
@@ -117,16 +125,22 @@ export const usePerformanceMonitor = (
       };
     }
 
-    const renderTimes = metricsRef.current.map((m: PerformanceMetrics) => m.renderTime);
-    const frameRates = metricsRef.current.map((m: PerformanceMetrics) => m.frameRate);
+    const renderTimes = metricsRef.current.map(
+      (m: PerformanceMetrics) => m.renderTime
+    );
+    const frameRates = metricsRef.current.map(
+      (m: PerformanceMetrics) => m.frameRate
+    );
 
     return {
       averageRenderTime:
-        renderTimes.reduce((a: number, b: number) => a + b, 0) / renderTimes.length,
+        renderTimes.reduce((a: number, b: number) => a + b, 0) /
+        renderTimes.length,
       maxRenderTime: Math.max(...renderTimes),
       minRenderTime: Math.min(...renderTimes),
       averageFrameRate:
-        frameRates.reduce((a: number, b: number) => a + b, 0) / frameRates.length,
+        frameRates.reduce((a: number, b: number) => a + b, 0) /
+        frameRates.length,
       totalOperations: operationCountRef.current,
       memoryUsage: currentMetrics.memoryUsage,
     };

@@ -45,7 +45,10 @@ export const useSegmentation = (
       }
 
       const color = colorGenerator.current(classIndex);
-      setSegmentColors((prev: Map<number, [number, number, number]>) => new Map(prev.set(classIndex, color)));
+      setSegmentColors(
+        (prev: Map<number, [number, number, number]>) =>
+          new Map(prev.set(classIndex, color))
+      );
       return color;
     },
     [segmentColors]
