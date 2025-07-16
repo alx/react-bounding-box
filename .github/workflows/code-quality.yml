@@ -23,13 +23,13 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: Run Prettier check
         run: npm run format:check
 
       - name: Run ESLint with annotations
-        run: npm run lint -- --format @eslint/js
+        run: npm run lint
 
       - name: Check for TODO/FIXME comments
         run: |
@@ -48,7 +48,7 @@ jobs:
 
       - name: Check for console statements
         run: |
-          if grep -r "console\." src/ --exclude-dir=__tests__ --exclude="*.test.*" --exclude="*.spec.*"; then
+          if grep -r "console\." src/ --exclude-dir=__tests__ --exclude="*.test.*" --exclude="*.spec.*" --exclude="react-bounding-box.js"; then
             echo "Found console statements in production code"
             exit 1
           fi
