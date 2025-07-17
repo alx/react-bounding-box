@@ -159,6 +159,9 @@ jobs:
       - name: Build package
         run: npm run build
 
+      - name: Verify package exports
+        run: node scripts/verify-exports.js
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -216,6 +219,9 @@ jobs:
             exit 1
           fi
           echo "✅ Dist artifacts verified"
+
+      - name: Final export verification before publish
+        run: node scripts/verify-exports.js
 
       - name: Publish to npm
         run: npm publish --ignore-scripts --access public
