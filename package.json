@@ -15,6 +15,7 @@
     "build:dev": "webpack --mode=development",
     "build:types": "tsc --emitDeclarationOnly",
     "build:analyze": "mkdir -p dist && npx webpack --mode=production --profile --json > dist/stats.json && npx webpack-bundle-analyzer dist/stats.json",
+    "verify": "npm run build && node scripts/verify-exports.js",
     "dev": "webpack serve --mode=development",
     "prepare": "husky || exit 0",
     "lint": "eslint src",
