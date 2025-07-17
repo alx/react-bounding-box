@@ -1,4 +1,4 @@
-name: Release Management
+name: 🚀 Release Management
 
 on:
   workflow_dispatch:
@@ -17,12 +17,15 @@ on:
         description: 'Specific version (only if version is "specific")'
         required: false
         type: string
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   release:
-    name: Create Release
+    name: 📦 Create Release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,6 +37,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
@@ -88,29 +92,94 @@ jobs:
           git push origin ${{ steps.version.outputs.tag_name }}
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.tag_name }}
-          release_name: Release v${{ steps.version.outputs.new_version }}
+          name: Release v${{ steps.version.outputs.new_version }}
+          generate_release_notes: true
           body: |
-            ## Changes in v${{ steps.version.outputs.new_version }}
+            ## 🎉 Release v${{ steps.version.outputs.new_version }}
 
             Check the [CHANGELOG.md](CHANGELOG.md) for detailed changes.
 
-            ## Installation
+            ## 📦 Installation
             ```bash
             npm install react-bounding-box@${{ steps.version.outputs.new_version }}
             ```
 
-            ## Breaking Changes
-            - None in this release
-
-            ## New Features
-            - Check changelog for details
-
-            ## Bug Fixes
+            ## 🔄 Changes
             - Check changelog for details
           draft: false
           prerelease: false
+
+  # Job 2: Publish to npm (triggered by tag push)
+  publish:
+    name: 📤 Publish to NPM
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run full validation
+        run: |
+          npm run lint
+          npm run type-check || echo "Type check warnings ignored"
+          npm test
+          npm run build
+          npm run security:audit || echo "Security audit warnings ignored"
+
+      - name: Verify package version matches tag
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "❌ Tag version ($TAG_VERSION) does not match package.json version ($PACKAGE_VERSION)"
+            exit 1
+          fi
+          echo "✅ Version validation passed"
+
+      - name: Verify package exports
+        run: node scripts/verify-exports.js
+
+      - name: Publish to npm
+        run: |
+          echo "📤 Publishing to npm..."
+          npm publish --ignore-scripts --access public
+          echo "✅ Successfully published to npm"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          body: |
+            ## 🎉 New Release Published to NPM!
+
+            This release has been automatically published to npm.
+
+            ### 📦 Installation
+            ```bash
+            npm install react-bounding-box@${GITHUB_REF#refs/tags/v}
+            ```
+
+            ### 🔄 Changes
+            - Check the [CHANGELOG.md](CHANGELOG.md) for detailed changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

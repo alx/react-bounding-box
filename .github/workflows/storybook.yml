@@ -1,9 +1,7 @@
-name: Deploy Storybook to GitHub Pages
+name: 📚 Deploy Storybook
 
 on:
   push:
-    branches: [master, main, modernization-refactor]
-  pull_request:
     branches: [master, main]
   workflow_dispatch:
 
@@ -18,6 +16,7 @@ concurrency:
 
 jobs:
   build:
+    name: 🏗️ Build Storybook
     runs-on: ubuntu-latest
 
     steps:
@@ -37,17 +36,18 @@ jobs:
         run: npm run build-storybook
 
       - name: Setup Pages
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./storybook-static
 
   deploy:
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/modernization-refactor'
+    name: 🚀 Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
