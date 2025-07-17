@@ -8,7 +8,7 @@ on:
   schedule:
     # Run CodeQL analysis every Monday at 6 AM UTC
     - cron: '0 6 * * 1'
-    # Run dependency updates every Monday at 9 AM UTC  
+    # Run dependency updates every Monday at 9 AM UTC
     - cron: '0 9 * * 1'
   workflow_dispatch:
 
@@ -42,7 +42,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:${{matrix.language}}"
+          category: '/language:${{matrix.language}}'
 
   dependency-update:
     name: 🔄 Update Dependencies
@@ -93,7 +93,7 @@ jobs:
           title: '🔄 Automated dependency update'
           body: |
             ## 🤖 Automated Dependency Update
-            
+
             This PR contains automated dependency updates and security fixes.
 
             ### 🔄 Changes
@@ -142,12 +142,12 @@ jobs:
         run: |
           echo "🔒 Running security audit..."
           npm run security:audit || echo "Security audit completed with warnings"
-          
+
       - name: Check for vulnerabilities
         run: |
           echo "🔍 Checking for vulnerabilities..."
           npm audit --audit-level moderate || echo "Vulnerability check completed with warnings"
-          
+
       - name: Security audit summary
         run: |
           echo "✅ Security audit completed"
