@@ -50,8 +50,13 @@
     
     <link href="./sb-addons/links-1/manager-bundle.js" rel="modulepreload" />
     
-    <link href="./sb-addons/actions-2/manager-bundle.js" rel="modulepreload" />
-       
+    <link href="./sb-addons/docs-2/manager-bundle.js" rel="modulepreload" />
+    
+    <link href="./sb-addons/actions-3/manager-bundle.js" rel="modulepreload" />
+      
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' ws: wss:;">
+   
 
     <style>
       #storybook-root[hidden] {
@@ -71,7 +76,8 @@
           window['FEATURES'] = {
   "argTypeTargetsV7": true,
   "legacyDecoratorFileOrder": false,
-  "disallowImplicitActionsInRenderV8": true
+  "disallowImplicitActionsInRenderV8": true,
+  "buildStoriesJson": true
 };
         
       
@@ -136,14 +142,12 @@
       
         import './sb-addons/links-1/manager-bundle.js';
       
-        import './sb-addons/actions-2/manager-bundle.js';
+        import './sb-addons/docs-2/manager-bundle.js';
+      
+        import './sb-addons/actions-3/manager-bundle.js';
       
       
       import './sb-manager/runtime.js';
     </script>
-
-    
-    <link href="./sb-preview/runtime.js" rel="prefetch" as="script" />
-    
   </body>
 </html>

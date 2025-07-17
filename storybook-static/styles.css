@@ -1,3 +1,13 @@
+.cssStory {
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+}
+
 .cssStory .boundingSegmentationCanvas {
   position: relative;
   top: -485px;
