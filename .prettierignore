@@ -6,3 +6,4 @@ package-lock.json
 .scripts
 stories/static
 public
+storybook-static
