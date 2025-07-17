@@ -16,9 +16,8 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
       library: {
-        name: 'ReactBoundingBox',
         type: 'umd',
-        export: 'default',
+        umdNamedDefine: true,
       },
       globalObject: 'this',
       clean: true,
@@ -45,16 +44,7 @@ module.exports = (env, argv) => {
     },
     optimization: {
       minimize: isProduction,
-      splitChunks: {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-        },
-      },
+      splitChunks: false,
     },
     module: {
       rules: [
