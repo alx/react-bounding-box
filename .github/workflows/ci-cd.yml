@@ -242,14 +242,14 @@ jobs:
           generate_release_notes: true
           body: |
             ## 🎉 New Release!
-            
+
             This release includes webpack fixes and export verification improvements.
-            
+
             ### Installation
             ```bash
             npm install react-bounding-box@${{ github.ref_name }}
             ```
-            
+
             ### Changes
             - Check the [CHANGELOG.md](CHANGELOG.md) for detailed changes
         env:
