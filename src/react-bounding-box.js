@@ -147,13 +147,18 @@ class Boundingbox extends Component {
         }
 
         this.props.onSelected(selectedBox.index);
-        this.setState({ hoverIndex: selectedBox.index });
+        this.setState({ hoverIndex: selectedBox.index }, () => {
+          // Redraw canvas with updated hover state
+          this.redrawCanvas();
+        });
       };
 
       this.canvas.onmouseout = () => {
         this.props.onSelected(-1);
-        this.setState({ hoverIndex: -1 });
-        // this.renderBoxes();
+        this.setState({ hoverIndex: -1 }, () => {
+          // Redraw canvas with updated hover state
+          this.redrawCanvas();
+        });
       };
 
       // Add click event handler for actual selection
@@ -363,6 +368,53 @@ class Boundingbox extends Component {
         return a.selected ? 1 : -1;
       })
       .forEach(box => this.renderBox(box.box, box.index));
+  }
+
+  redrawCanvas() {
+    if (!this.canvas) {
+      logger.warn('Canvas ref not available during redrawCanvas');
+      return;
+    }
+
+    const ctx = this.canvas.getContext('2d');
+
+    // Clear the canvas
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Redraw the background image
+    const background = new Image();
+    background.src = this.props.options.base64Image
+      ? 'data:image/png;base64,' + this.props.image
+      : this.props.image;
+
+    background.onload = () => {
+      ctx.drawImage(background, 0, 0);
+      this.renderBoxes();
+
+      // Re-render segmentation if needed
+      const hasSegmentedState =
+        this.state.pixelSegmentation &&
+        this.state.pixelSegmentation.length > 0 &&
+        !this.state.isSegmented;
+
+      const hasSegmentedProps =
+        this.props.pixelSegmentation &&
+        this.props.pixelSegmentation.length > 0 &&
+        !this.state.isSegmented;
+
+      const hasSegmentionMasks =
+        this.props.segmentationMasks &&
+        this.props.segmentationMasks.length > 0 &&
+        !this.state.isSegmented;
+
+      if (hasSegmentedState)
+        this.renderSegmentation(this.state.pixelSegmentation);
+
+      if (hasSegmentedProps)
+        this.renderSegmentation(this.props.pixelSegmentation);
+
+      if (hasSegmentionMasks) this.renderSegmentationMasks();
+    };
   }
 
   renderSegmentation(segmentation) {
