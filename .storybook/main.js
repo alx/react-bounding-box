@@ -18,6 +18,17 @@ module.exports = {
     reactDocgen: false,
   },
   staticDirs: ['../stories/static'],
+  features: {
+    buildStoriesJson: true,
+  },
+  managerHead: (head) => `
+    ${head}
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' ws: wss:;">
+  `,
+  previewHead: (head) => `
+    ${head}
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' ws: wss:; frame-src 'self';">
+  `,
   babel: async options => ({
     ...options,
     presets: [
