@@ -13,6 +13,7 @@ class Boundingbox extends Component {
       hoverIndex: -1,
       segmentColors: [],
     };
+    this.backgroundImage = null;
 
     if (props.segmentationJsonUrl) {
       fetch(props.segmentationJsonUrl)
@@ -52,6 +53,9 @@ class Boundingbox extends Component {
       }
       this.canvas.width = background.width;
       this.canvas.height = background.height;
+
+      // Store the loaded image for reuse
+      this.backgroundImage = background;
 
       ctx.drawImage(background, 0, 0);
       this.renderBoxes();
@@ -245,6 +249,11 @@ class Boundingbox extends Component {
         segCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
 
+      // Clear cached background image when image prop changes
+      if (prevProps.image !== this.props.image) {
+        this.backgroundImage = null;
+      }
+
       const background = new Image();
       background.src = this.props.options.base64Image
         ? 'data:image/png;base64,' + this.props.image
@@ -253,6 +262,9 @@ class Boundingbox extends Component {
       // Check canvas dimension with loaded image dimension
       // in order to change canvas dimension if needed
       background.onload = () => {
+        // Update cached background image
+        this.backgroundImage = background;
+
         if (
           this.canvas.width !== background.width &&
           this.canvas.height !== background.height
@@ -261,11 +273,11 @@ class Boundingbox extends Component {
           this.canvas.height = background.height;
           ctx.drawImage(background, 0, 0);
           this.renderBoxes(this.props.boxes);
+        } else {
+          ctx.drawImage(background, 0, 0);
+          this.renderBoxes(this.props.boxes);
         }
       };
-
-      ctx.drawImage(background, 0, 0);
-      this.renderBoxes(this.props.boxes);
     }
 
     // Handle selectedIndex changes
@@ -381,14 +393,9 @@ class Boundingbox extends Component {
     // Clear the canvas
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // Redraw the background image
-    const background = new Image();
-    background.src = this.props.options.base64Image
-      ? 'data:image/png;base64,' + this.props.image
-      : this.props.image;
-
-    background.onload = () => {
-      ctx.drawImage(background, 0, 0);
+    // Use cached background image if available, otherwise load it
+    if (this.backgroundImage) {
+      ctx.drawImage(this.backgroundImage, 0, 0);
       this.renderBoxes();
 
       // Re-render segmentation if needed
@@ -414,7 +421,43 @@ class Boundingbox extends Component {
         this.renderSegmentation(this.props.pixelSegmentation);
 
       if (hasSegmentionMasks) this.renderSegmentationMasks();
-    };
+    } else {
+      // Fallback to loading the image if not cached
+      const background = new Image();
+      background.src = this.props.options.base64Image
+        ? 'data:image/png;base64,' + this.props.image
+        : this.props.image;
+
+      background.onload = () => {
+        this.backgroundImage = background;
+        ctx.drawImage(background, 0, 0);
+        this.renderBoxes();
+
+        // Re-render segmentation if needed
+        const hasSegmentedState =
+          this.state.pixelSegmentation &&
+          this.state.pixelSegmentation.length > 0 &&
+          !this.state.isSegmented;
+
+        const hasSegmentedProps =
+          this.props.pixelSegmentation &&
+          this.props.pixelSegmentation.length > 0 &&
+          !this.state.isSegmented;
+
+        const hasSegmentionMasks =
+          this.props.segmentationMasks &&
+          this.props.segmentationMasks.length > 0 &&
+          !this.state.isSegmented;
+
+        if (hasSegmentedState)
+          this.renderSegmentation(this.state.pixelSegmentation);
+
+        if (hasSegmentedProps)
+          this.renderSegmentation(this.props.pixelSegmentation);
+
+        if (hasSegmentionMasks) this.renderSegmentationMasks();
+      };
+    }
   }
 
   renderSegmentation(segmentation) {
