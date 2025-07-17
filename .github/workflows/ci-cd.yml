@@ -259,7 +259,7 @@ jobs:
   deploy-storybook:
     name: Deploy Storybook
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [install, build]
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     steps:
       - name: Checkout code
@@ -271,12 +271,17 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Restore node_modules cache
+        id: cache-storybook
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ needs.install.outputs.cache-key }}
           restore-keys: |
             ${{ env.CACHE_VERSION }}-
+
+      - name: Install dependencies if cache miss
+        run: npm ci --legacy-peer-deps
+        if: steps.cache-storybook.outputs.cache-hit != 'true'
 
       - name: Build Storybook
         run: npm run build-storybook

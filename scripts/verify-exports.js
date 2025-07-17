@@ -38,6 +38,11 @@ for (const file of requiredFiles) {
 console.log('✅ All required build files present\n');
 
 try {
+  // Create mock environment for UMD modules that require React
+  global.React = { createElement: () => null, Component: class {} };
+  global.ReactDOM = { render: () => null };
+  global.PropTypes = { object: () => null, func: () => null };
+  
   // Test main exports
   console.log('2. Testing main exports...');
   const main = require(path.join(distPath, 'main.js'));
