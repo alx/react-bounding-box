@@ -51,6 +51,12 @@ module.exports = [
     },
   },
   {
+    files: ['**/logger.js', '**/utils/logger.js'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+  {
     files: ['**/*.test.js', '**/*.spec.js'],
     languageOptions: {
       globals: {
